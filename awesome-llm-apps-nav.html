@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超棒的 LLM 应用大全 · 全中文交互导航</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Directory + Sidebar Rail · theme: Almanac · tone: curated-reference · accent hue: botanical ink-green */
+/* Hallmark · critique: P5 H5 E4 S5 R4 V5 */
+:root{
+  --font-display:"Fraunces","Songti SC","STSong","Noto Serif SC",Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --paper:oklch(96.5% 0.018 95);
+  --paper-raised:oklch(93.5% 0.022 95);
+  --paper-inset:oklch(98% 0.012 95);
+  --ink:oklch(27% 0.02 70);
+  --ink-soft:oklch(46% 0.02 70);
+  --ink-faint:oklch(60% 0.016 75);
+  --rule:oklch(84% 0.02 88);
+  --rule-strong:oklch(72% 0.025 85);
+  --accent:oklch(46% 0.1 148);
+  --accent-deep:oklch(38% 0.09 150);
+  --accent-wash:oklch(92% 0.04 142);
+  --ext:oklch(52% 0.13 46);
+  --ext-wash:oklch(93% 0.045 55);
+
+  --space-2xs:4px; --space-xs:8px; --space-sm:12px; --space-md:20px;
+  --space-lg:32px; --space-xl:52px; --space-2xl:80px;
+
+  --ease-out:cubic-bezier(.22,.61,.36,1);
+  --ease-in-out:cubic-bezier(.45,.05,.55,.95);
+
+  --rail-w:236px; --shell:1220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--font-body);line-height:1.62;
+  font-feature-settings:"tnum" 1;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent-wash)}
+
+/* ---------- masthead ---------- */
+.masthead{
+  border-bottom:1.5px solid var(--rule-strong);
+  background:var(--paper);
+  padding:var(--space-lg) var(--space-md) var(--space-md);
+}
+.masthead-in{max-width:var(--shell);margin:0 auto}
+.kicker{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:var(--space-sm);
+}
+.masthead h1{
+  font-family:var(--font-display);font-weight:900;font-style:normal;
+  font-size:clamp(28px,5.2vw,46px);line-height:1.04;letter-spacing:-.01em;
+  overflow-wrap:anywhere;min-width:0;
+}
+.lede{
+  margin-top:var(--space-sm);max-width:64ch;color:var(--ink-soft);
+  font-size:15px;line-height:1.6;
+}
+.lede a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash)}
+.lede a:hover{border-bottom-color:var(--accent)}
+
+.searchbar{
+  margin-top:var(--space-md);display:flex;align-items:baseline;gap:var(--space-md);
+  flex-wrap:wrap;
+}
+.search{
+  flex:1;min-width:min(100%,320px);
+  padding:12px 2px;border:none;border-bottom:1.5px solid var(--rule-strong);
+  background:transparent;color:var(--ink);font-family:var(--font-body);
+  font-size:17px;outline:none;transition:border-color .18s var(--ease-out);
+}
+.search::placeholder{color:var(--ink-faint)}
+.search:focus-visible{border-bottom-color:var(--accent);box-shadow:0 1.5px 0 0 var(--accent)}
+.readout{
+  font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);
+  white-space:nowrap;
+}
+.readout b{color:var(--accent-deep);font-weight:500}
+
+/* ---------- shell ---------- */
+.shell{
+  max-width:var(--shell);margin:0 auto;
+  display:grid;grid-template-columns:var(--rail-w) 1fr;
+  align-items:start;gap:0;
+}
+
+/* ---------- rail ---------- */
+.rail{
+  position:sticky;top:0;align-self:start;
+  padding:var(--space-lg) var(--space-md) var(--space-2xl) var(--space-md);
+  border-right:1px solid var(--rule);
+}
+.rail-title{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--ink-faint);
+  padding-bottom:var(--space-xs);margin-bottom:var(--space-xs);
+  border-bottom:1px solid var(--rule);
+}
+.rail ul{list-style:none}
+.rail li{
+  display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-sm);
+  padding:7px 10px 7px 12px;margin:1px 0;cursor:pointer;position:relative;
+  border-radius:2px;color:var(--ink-soft);
+  transition:color .15s var(--ease-out),background-color .15s var(--ease-out);
+}
+.rail li::before{
+  content:"";position:absolute;left:0;top:50%;height:60%;width:2px;
+  background:var(--accent);transform:translateY(-50%) scaleY(0);
+  transform-origin:center;transition:transform .18s var(--ease-out);
+}
+.rail li:hover{color:var(--ink);background:var(--paper-inset)}
+.rail li.active{color:var(--accent-deep);background:var(--accent-wash)}
+.rail li.active::before{transform:translateY(-50%) scaleY(1)}
+.rail li:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.rail-name{font-size:14px}
+.rail-count{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;
+}
+.rail li.active .rail-count{color:var(--accent-deep)}
+
+/* ---------- catalogue ---------- */
+.catalogue{padding:var(--space-lg) var(--space-md) var(--space-2xl) var(--space-xl)}
+.cat-block{margin-bottom:var(--space-xl)}
+.cat-head{
+  display:flex;align-items:baseline;gap:var(--space-sm);
+  padding-bottom:var(--space-xs);margin-bottom:var(--space-sm);
+  border-bottom:1.5px solid var(--rule-strong);
+}
+.cat-head h2{
+  font-family:var(--font-display);font-weight:600;font-style:normal;
+  font-size:clamp(20px,2.6vw,26px);line-height:1.15;letter-spacing:-.01em;
+  overflow-wrap:anywhere;min-width:0;
+}
+.cat-full{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);
+  font-weight:400;letter-spacing:.02em;
+}
+.cat-count{
+  margin-left:auto;font-family:var(--font-mono);font-size:13px;
+  color:var(--accent-deep);font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+
+.entry{
+  display:grid;grid-template-columns:52px 1fr auto;
+  column-gap:var(--space-md);align-items:baseline;
+  padding:var(--space-md) 0;border-bottom:1px solid var(--rule);
+  transition:background-color .16s var(--ease-out);
+}
+.entry:hover{background:var(--paper-inset)}
+.entry:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.entry-num{
+  font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;padding-top:3px;letter-spacing:.02em;
+}
+.entry:hover .entry-num{color:var(--accent)}
+.entry-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 12px}
+.entry-title{
+  font-family:var(--font-display);font-weight:600;font-style:normal;
+  font-size:18px;line-height:1.3;letter-spacing:-.005em;
+  overflow-wrap:anywhere;min-width:0;
+}
+.entry:hover .entry-title{color:var(--accent-deep)}
+.entry-en{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);
+  font-style:normal;letter-spacing:.01em;
+}
+.tag-ext{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;
+  color:var(--ext);background:var(--ext-wash);
+  padding:2px 7px;border-radius:2px;
+}
+.entry-desc{
+  margin-top:6px;color:var(--ink-soft);font-size:14px;line-height:1.66;
+  max-width:74ch;
+}
+.entry-tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.entry-tags span{
+  font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);
+  padding:2px 8px;border:1px solid var(--rule-strong);border-radius:2px;
+  white-space:nowrap;
+}
+.entry-go{
+  font-family:var(--font-mono);font-size:12px;color:var(--accent-deep);
+  white-space:nowrap;padding-top:3px;
+  transform:translateX(0);transition:transform .16s var(--ease-out),color .16s var(--ease-out);
+}
+.entry:hover .entry-go{transform:translateX(3px);color:var(--accent)}
+
+/* fade primitive on filter */
+.fade-in{animation:fade .32s var(--ease-out) both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.empty{
+  padding:var(--space-2xl) 0;text-align:center;color:var(--ink-soft);
+  font-family:var(--font-display);font-size:20px;font-style:normal;
+}
+.empty small{display:block;margin-top:8px;font-family:var(--font-body);font-size:14px;color:var(--ink-faint)}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:1.5px solid var(--rule-strong);
+  max-width:var(--shell);margin:0 auto;
+  padding:var(--space-md);
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);
+  line-height:1.7;
+}
+footer a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash)}
+footer a:hover{border-bottom-color:var(--accent)}
+
+/* ---------- mobile ---------- */
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .rail{
+    position:sticky;top:0;z-index:5;
+    border-right:none;border-bottom:1px solid var(--rule);
+    background:var(--paper);
+    padding:var(--space-sm) var(--space-md);
+  }
+  .rail-title{display:none}
+  .rail ul{
+    display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;
+    scrollbar-width:thin;
+  }
+  .rail li{
+    flex:0 0 auto;white-space:nowrap;border:1px solid var(--rule);
+    border-radius:999px;padding:6px 12px;margin:0;
+  }
+  .rail li::before{display:none}
+  .rail li.active{border-color:var(--accent)}
+  .rail-count{margin-left:2px}
+  .catalogue{padding:var(--space-md)}
+}
+@media (max-width:560px){
+  .entry{grid-template-columns:1fr;row-gap:2px}
+  .entry-num{padding-top:0;order:0}
+  .entry-go{grid-column:1;padding-top:8px}
+  .cat-head{flex-wrap:wrap}
+  .cat-count{margin-left:0;flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.12s !important}
+  .fade-in{animation:none}
+  .entry:hover .entry-go{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <div class="kicker">开源索引 · Apache-2.0</div>
+    <h1>超棒的 LLM 应用大全</h1>
+    <p class="lede">100+ 开源 AI Agent、Agent 技能与 RAG 应用模板的全中文导航。项目名已全部汉化，鼠标悬停可见英文原名，点击任意条目直达 GitHub 目录。整理并翻译自 <a href="https://github.com/Shubhamsaboo/awesome-llm-apps" target="_blank" rel="noopener">Shubhamsaboo/awesome-llm-apps</a>。</p>
+    <div class="searchbar">
+      <input class="search" id="search" type="search" placeholder="搜索中文名、英文名、说明或技术（如 检索、语音、Gemini、Qdrant…）" aria-label="搜索">
+      <div class="readout" id="readout"></div>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="分类索引"></nav>
+  <main class="catalogue" id="catalogue">
+    <div id="list"></div>
+    <div class="empty" id="empty" style="display:none">没有匹配的项目<small>换个关键词或切换分类试试</small></div>
+  </main>
+</div>
+
+<footer>
+  内容整理并翻译自 <a href="https://github.com/Shubhamsaboo/awesome-llm-apps" target="_blank" rel="noopener">awesome-llm-apps</a>（Apache-2.0 开源协议）· 点击任意条目直达 GitHub 项目目录 · 整理日期 2026-07-17
+</footer>
+
+<script>
+const DATA = [{"cat": "Agent 技能", "catFull": "Agent Skills（给编程 Agent 装新技能）", "catId": "skills", "emoji": "🧩", "cn": "项目坟场", "en": "Project Graveyard", "desc": "扫描本机所有烂尾 side project，只读 git 元数据（提交时间/消息/文件名，不读代码内容），用 7 类启发式规则判定每个项目的死因（喜新厌旧/发布恐惧/支付墙/配置墙/重写循环/范围爆炸/慢慢飘走），并按“脉搏”排出最接近完工的那个帮你复活。单文件纯 Python、仅标准库、可 `--redact` 脱敏。是“确定性规则做脏活 + Agent 做叙事”分层范式的极佳样例。", "tech": ["纯 Python", "git 元数据", "本地/零网络", "Skill"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/agent_skills/project-graveyard/", "external": false}, {"cat": "Agent 技能", "catFull": "Agent Skills（给编程 Agent 装新技能）", "catId": "skills", "emoji": "🧩", "cn": "范围蔓延检测器", "en": "Scope Creep Detector", "desc": "检查一次代码 diff 是否超出了它声称的意图，建议哪些改动保留、哪些拆分、哪些需要额外解释，适合接入 PR/MR 流程做自动把关。", "tech": ["Skill", "代码审查"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/agent_skills/scope-creep-detector/", "external": false}, {"cat": "Agent 技能", "catFull": "Agent Skills（给编程 Agent 装新技能）", "catId": "skills", "emoji": "🧩", "cn": "顾问·编排者·执行者三层协作", "en": "Advisor Orchestrator Worker", "desc": "元编排循环范式：一个模型当顾问、一个当编排者、一个当执行者的三层分工，演示如何用不同模型担任不同角色协作。", "tech": ["多模型协作", "Skill"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/agent_skills/advisor-orchestrator-worker/", "external": false}, {"cat": "Agent 技能", "catFull": "Agent Skills（给编程 Agent 装新技能）", "catId": "skills", "emoji": "🧩", "cn": "自我进化的 Agent 技能", "en": "Self-Improving Agent Skills", "desc": "上传一个 Skill，系统自动生成测试场景与评估标准，再由三个 ADK Agent（Executor 执行打分 / Analyst 诊断根因 / Mutator 一次只改一处）迭代优化，分数升即保留、降即回滚，直到达标。灵感来自 Karpathy 的 autoresearch，是“用 Agent 优化 Agent”的完整闭环。", "tech": ["Google ADK", "Gemini", "FastAPI", "Next.js", "SSE", "Pydantic"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/agent_skills/self-improving-agent-skills/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "博客转播客 Agent", "en": "AI Blog to Podcast Agent", "desc": "把任意博客 URL 转成有旁白的播客音频。", "tech": ["TTS"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_blog_to_podcast_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "失恋疗愈 Agent", "en": "AI Breakup Recovery Agent", "desc": "由多个 Agent 组成的小队，陪你走出分手后的情绪低谷。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_breakup_recovery_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "数据分析 Agent", "en": "AI Data Analysis Agent", "desc": "用自然语言查询任意 CSV / Excel：自动类型推断与 schema 识别，把自然语言转 SQL 用 DuckDB 执行，无需 SQL 基础即可做聚合、筛选、统计与可视化。", "tech": ["Agno", "GPT-4o", "DuckDB", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_data_analysis_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "医学影像诊断 Agent", "en": "AI Medical Imaging Agent", "desc": "用 Gemini 对 X 光、扫描图等医学影像做诊断分析。", "tech": ["Gemini", "多模态"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_medical_imaging_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "表情包生成 Agent（浏览器版）", "en": "AI Meme Generator Agent (Browser)", "desc": "靠驱动真实浏览器生成表情包，而不是调用图像生成 API。", "tech": ["Browser-Use"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_meme_generator_agent_browseruse/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "音乐生成 Agent", "en": "AI Music Generator Agent", "desc": "输入提示词，产出一段 MP3 音乐。", "tech": ["音频生成"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_music_generator_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "旅行规划 Agent（本地与云端）", "en": "AI Travel Agent (Local & Cloud)", "desc": "生成逐日个性化旅行行程，提供本地与云端两个版本。", "tech": ["Agno", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/ai_travel_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "Gemini 多模态 Agent", "en": "Gemini Multimodal Agent", "desc": "把视频分析与网页搜索合到一个 Agent 里。", "tech": ["Gemini", "多模态"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/multimodal_ai_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "多 Agent 混合（MoA）", "en": "Mixture of Agents", "desc": "多个 LLM 各自作答，再由一个聚合器综合出最佳答案。", "tech": ["多模型"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/mixture_of_agents/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "xAI 金融分析 Agent", "en": "xAI Finance Agent", "desc": "基于 xAI Grok 的实时股票分析 Agent。", "tech": ["Grok", "YFinance"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/xai_finance_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "OpenAI 研究 Agent", "en": "OpenAI Research Agent", "desc": "用 OpenAI Agents SDK 做多 Agent 的主题研究。", "tech": ["OpenAI Agents SDK"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/openai_research_agent/", "external": false}, {"cat": "入门 Agent", "catFull": "Starter AI Agents（入门单文件 Agent）", "catId": "starter", "emoji": "🌱", "cn": "网页抓取 Agent", "en": "Web Scraping AI Agent", "desc": "用自然语言描述要抓取什么，Agent 就自动去抓。", "tech": ["爬虫"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/web_scraping_ai_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "家居翻新 Agent（Nano Banana Pro）", "en": "AI Home Renovation Agent", "desc": "多 Agent 系统：输入房间照片 + 灵感图，Visual Assessor 分析空间、Design Planner 出预算适配方案、Project Coordinator 生成路线图并用 Gemini 3 Pro 产出照片级效果图。演示 Coordinator/Dispatcher + Sequential Pipeline 编排模式，支持按反馈迭代修图。", "tech": ["Google ADK", "Gemini 3 Flash/Pro", "多模态"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/ai_home_renovation_agent", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "DevPulse AI 多 Agent 信号情报", "en": "DevPulse AI", "desc": "聚合并打分各类技术信号，产出每日情报摘要。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/devpulse_ai/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "深度研究 Agent", "en": "AI Deep Research Agent", "desc": "用 OpenAI Agents SDK + Firecrawl 做全面网络研究：Firecrawl 负责搜索与抽取，第一个 Agent 生成初版报告、第二个 Agent 补充深度，最终产出可下载的 Markdown。“检索 Agent + 增强 Agent”两段式是研究类应用的通用骨架。", "tech": ["OpenAI Agents SDK", "Firecrawl", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_deep_research_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "风投尽调 Agent 团队", "en": "AI VC Due Diligence Agent Team", "desc": "用 Gemini 3 做创业投资的多 Agent 尽职调查分析。", "tech": ["Gemini 3", "多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_vc_due_diligence_agent_team", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "研究规划与执行 Agent（Google Interactions API）", "en": "AI Research Planner & Executor", "desc": "多阶段研究 + 有状态会话，并自动生成信息图。", "tech": ["Gemini", "有状态会话"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/research_agent_gemini_interaction_api", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "咨询顾问 Agent", "en": "AI Consultant Agent", "desc": "结合实时网络调研做市场分析与策略建议。", "tech": ["网络调研"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_consultant_agent", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "系统架构师 Agent", "en": "AI System Architect Agent", "desc": "用 DeepSeek R1 推理 + Claude 做软件架构评审。", "tech": ["DeepSeek R1", "Claude"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_system_architect_r1/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "理财教练 Agent", "en": "AI Financial Coach Agent", "desc": "做个性化的预算、债务与储蓄分析。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/ai_financial_coach_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "电影制作 Agent", "en": "AI Movie Production Agent", "desc": "从一句话电影创意生成剧本草稿与选角建议。", "tech": ["Agno"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_movie_production_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "投资分析 Agent", "en": "AI Investment Agent", "desc": "基于 Yahoo Finance 数据生成股票对比报告。", "tech": ["YFinance"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_investment_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "财报电话会分析 Agent", "en": "Earnings Call Analyst Agent", "desc": "把 YouTube 财报电话会变成随播放同步的分析工作台。", "tech": ["YouTube", "转写"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/earnings_call_analyst_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "健康健身 Agent", "en": "AI Health & Fitness Agent", "desc": "按你的目标定制饮食与训练计划。", "tech": ["Agno"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_health_fitness_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "产品发布情报 Agent", "en": "AI Product Launch Intelligence Agent", "desc": "针对竞品发布做进入市场（GTM）情报分析。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/product_launch_intelligence_agent", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "欺诈调查 Agent", "en": "AI Fraud Investigation Agent", "desc": "交叉比对公开记录，标记“对不上账”的可疑机构。", "tech": ["公开记录"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_fraud_investigation_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "记者 Agent", "en": "AI Journalist Agent", "desc": "就任意主题自动做研究、写稿并编辑成文。", "tech": ["Agno"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_journalist_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "心理健康 Agent", "en": "AI Mental Wellbeing Agent", "desc": "面向心理健康支持方案的协作 Agent 小队。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/ai_mental_wellbeing_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "会议准备 Agent", "en": "AI Meeting Agent", "desc": "开会前给你背景、行业洞察与策略简报。", "tech": ["Agno"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/single_agent_apps/ai_meeting_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "自进化 Agent", "en": "AI Self-Evolving Agent", "desc": "用 EvoAgentX 让 Agent 重写自己的工作流，实现自进化。", "tech": ["EvoAgentX"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/ai_self_evolving_agent/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "销售情报 Agent 团队", "en": "AI Sales Intelligence Agent Team", "desc": "实时生成竞争性销售 battle card（对战卡）。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_sales_intelligence_agent_team", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "社媒资讯与播客 Agent", "en": "AI Social Media News and Podcast Agent", "desc": "把可信信息源整理成简报，并生成播客音频。", "tech": ["多 Agent", "TTS"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/ai_news_and_podcast_agents/", "external": false}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "Openwork 开源浏览器自动化", "en": "Openwork", "desc": "开源 Agent，操作一个真实浏览器完成任务（外部仓库）。", "tech": ["浏览器自动化", "外链"], "url": "https://github.com/accomplish-ai/openwork", "external": true}, {"cat": "生产级 Agent", "catFull": "Advanced AI Agents（生产级 Agent）", "catId": "advanced", "emoji": "🚀", "cn": "信任门禁多 Agent 研究团队", "en": "Trust-Gated Multi-Agent Research Team", "desc": "每个 Agent 都被验证、每一步操作都进哈希链审计轨迹，强调可信与可审计。", "tech": ["多 Agent", "审计"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/trust_gated_agent_team/", "external": false}, {"cat": "常驻 Agent", "catFull": "Always-on Agents（常驻后台 Agent）", "catId": "alwayson", "emoji": "🛰️", "cn": "常驻版 Hacker News 简报 Agent", "en": "Always-on Hacker News Briefing Agent", "desc": "AgentScout 用 Google ADK 扫 Hacker News，按相关度/点数/评论/首页位置为 AI Agent、MCP、编程 Agent、自动化、LLM 应用类故事打分排序，生成文本+HTML 简报。可作为交互式 ADK агент 手动取简报，也可挂 FastAPI 让 Cloud Scheduler 每日触发并经 Gmail/Slack/Linear/Jira 投递；默认 dry-run，未显式配置凭证不发送。", "tech": ["Google ADK", "Gemini", "FastAPI", "Cloud Scheduler", "Gmail/Slack"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/always_on_agents/always_on_hn_briefing_agent/", "external": false}, {"cat": "常驻 Agent", "catFull": "Always-on Agents（常驻后台 Agent）", "catId": "alwayson", "emoji": "🛰️", "cn": "发版雷达 Agent", "en": "Release Radar Agent", "desc": "盯依赖库发版，就破坏性变更、弃用、安全问题、大版本升级给你简报。", "tech": ["依赖监控"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/always_on_agents/release_radar_agent/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "竞品情报 Agent 团队", "en": "AI Competitor Intelligence Agent Team", "desc": "从竞品官网构建结构化的竞品拆解报告。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_competitor_intelligence_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "金融分析 Agent 团队", "en": "AI Finance Agent Team", "desc": "约 20 行 Python 搭一个金融分析师团队：Web Agent 做通用调研、Finance Agent 用 YFinance 取实时财务数据、Team Agent 负责协调，用 SQLite 持久化交互。最简洁的“多 Agent 分工 + 工具挂载”入门样例。", "tech": ["Agno", "GPT-4o", "YFinance", "DuckDuckGo", "SQLite"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_finance_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "游戏设计 Agent 团队", "en": "AI Game Design Agent Team", "desc": "一群设计专家 Agent 协作产出完整的游戏概念。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_game_design_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "AG2 自适应研究团队", "en": "AG2 Adaptive Research Team", "desc": "基于 AG2、带路由与降级（fallback）的 Agent 协作研究团队。", "tech": ["AG2"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ag2_adaptive_research_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "法律 Agent 团队（云端与本地）", "en": "AI Legal Agent Team", "desc": "研究、合同分析与策略的完整法律团队，提供云端与本地版本。", "tech": ["多 Agent", "RAG"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_legal_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "招聘 Agent 团队", "en": "AI Recruitment Agent Team", "desc": "端到端招聘：Technical Recruiter 做简历分析与技术评估、Communication 处理邮件、Scheduling Coordinator 排面试。真实集成 Gmail App Password 发信、Zoom Server-to-Server OAuth 自动建会议链接，是 Agent 接真实 SaaS 完成有副作用动作的范例。", "tech": ["GPT-4o", "Streamlit", "Gmail", "Zoom OAuth"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_recruitment_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "房地产 Agent 团队", "en": "AI Real Estate Agent Team", "desc": "房源搜索、市场分析与推荐一体的地产 Agent 团队。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_real_estate_agent_team", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "数字服务代理机构（CrewAI）", "en": "AI Services Agency", "desc": "一个数字代理机构，帮你梳理并规划软件项目。", "tech": ["CrewAI"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_services_agency/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "教学 Agent 团队", "en": "AI Teaching Agent Team", "desc": "一群“教师” Agent 为你搭建完整学习路径。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_teaching_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "多模态编程 Agent 团队", "en": "Multimodal Coding Agent Team", "desc": "拍一张编程题照片，得到沙箱内运行的解答。", "tech": ["多模态", "沙箱"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/multimodal_coding_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "多模态设计 Agent 团队", "en": "Multimodal Design Agent Team", "desc": "由 Gemini 驱动的专家小组做设计评审。", "tech": ["Gemini", "多模态"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/multimodal_design_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "多模态 UI/UX 反馈 Agent 团队", "en": "Multimodal UI/UX Feedback Agent Team", "desc": "给落地页反馈，并自动生成一个改进版。", "tech": ["多模态", "Gemini"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/multimodal_uiux_feedback_agent_team/", "external": false}, {"cat": "多 Agent 团队", "catFull": "Multi-agent Teams（多 Agent 协作团队）", "catId": "teams", "emoji": "🤝", "cn": "旅行规划 Agent 团队", "en": "AI Travel Planner Agent Team", "desc": "由一个团队协作打磨出的完整旅行行程。", "tech": ["多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_travel_planner_agent_team/", "external": false}, {"cat": "语音 Agent", "catFull": "Voice AI Agents（语音 Agent）", "catId": "voice", "emoji": "🗣️", "cn": "语音导览 Agent", "en": "AI Audio Tour Agent", "desc": "对话式语音导览：按用户位置、兴趣、时长生成沉浸式自助音频游览。多 Agent 架构（Orchestrator 编排 + History/Architecture/Culture/Culinary 各领域专家，各带不同语气），实时网络检索补充最新信息，用富有表现力的 TTS 输出。", "tech": ["OpenAI Agents SDK", "TTS", "多 Agent", "实时检索"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/voice_ai_agents/ai_audio_tour_agent/", "external": false}, {"cat": "语音 Agent", "catFull": "Voice AI Agents（语音 Agent）", "catId": "voice", "emoji": "🗣️", "cn": "客服语音 Agent", "en": "Customer Support Voice Agent", "desc": "基于自有文档的语音客服问答。", "tech": ["语音", "RAG"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/voice_ai_agents/customer_support_voice_agent/", "external": false}, {"cat": "语音 Agent", "catFull": "Voice AI Agents（语音 Agent）", "catId": "voice", "emoji": "🗣️", "cn": "保险理赔实时语音 Agent 团队", "en": "Insurance Claim Live Agent Team", "desc": "语音优先的保险理赔录入（FNOL 首次报案流程）：报案人自然说话，Agent 实时构建结构化理赔单——自动抽取姓名/联系方式/保单号/损失类型/时间/地点/描述/证据等字段，高亮缺失/不确定项，并在通话进行中就生成可交给理赔员的交接包。UI 同时展示实时对话、已抽取事实、话务员指引与审计轨迹。", "tech": ["Gemini Live", "语音", "实时结构化抽取"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/voice_ai_agents/insurance_claim_live_agent_team/", "external": false}, {"cat": "语音 Agent", "catFull": "Voice AI Agents（语音 Agent）", "catId": "voice", "emoji": "🗣️", "cn": "语音 RAG Agent（OpenAI SDK）", "en": "Voice RAG Agent", "desc": "对着 PDF 提问，用语音听到答案。", "tech": ["OpenAI SDK", "RAG", "语音"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/voice_ai_agents/voice_rag_openaisdk/", "external": false}, {"cat": "语音 Agent", "catFull": "Voice AI Agents（语音 Agent）", "catId": "voice", "emoji": "🗣️", "cn": "开源语音听写 Agent（Wispr Flow 复刻）", "en": "OpenSource Voice Dictation Agent", "desc": "开源语音听写，说到哪就把文字打到哪（外部仓库）。", "tech": ["语音听写", "外链"], "url": "https://github.com/akshayaggarwal99/jarvis-ai-assistant", "external": true}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "生成式 UI 入门项目", "en": "Generative UI Starter Project", "desc": "你和 Agent 一起协作的对话式看板（kanban）。", "tech": ["CopilotKit", "AG-UI"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/generative-ui-starter-project/", "external": false}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "理财教练 Agent（生成式 UI）", "en": "AI Financial Coach Agent", "desc": "把预算、储蓄、债务方案渲染成交互式卡片。", "tech": ["生成式 UI"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/ai-financial-coach-agent/", "external": false}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "仪表盘画布 Agent", "en": "AI Dashboard Canvas Agent", "desc": "用对话描述仪表盘，图表、KPI、面板在一个持久 Canvas 上自动拼装。Agent 把图表当作可寻址的“工件”跨轮次放置/更新/重排，更像用白板的协作者而非返回文字的聊天机器人。前端 CopilotKit + AG-UI 协议，后端 Google ADK。", "tech": ["CopilotKit", "AG-UI", "Google ADK"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/ai-dashboard-canvas-agent/", "external": false}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "MCP 应用生成器", "en": "AI MCP App Builder", "desc": "描述一个 MCP 应用，拿回一个可运行的沙箱实例。", "tech": ["MCP", "沙箱"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/ai-mcp-app-builder/", "external": false}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "MCP 应用生成式 UI 展示", "en": "MCP Apps Generative UI Showcase", "desc": "能渲染真实交互 UI 的 MCP 应用集（含机票搜索）。", "tech": ["MCP", "生成式 UI"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/mcp-apps-generative-ui-showcase/", "external": false}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "Shadcn 组件生成器", "en": "AI Shadcn Component Generator", "desc": "对话生成生产可用的 shadcn 组件。", "tech": ["shadcn/ui"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/ai-shadcn-component-generator/", "external": false}, {"cat": "生成式 UI", "catFull": "Generative UI / Agentic Frontends（生成式 UI）", "catId": "genui", "emoji": "🖼️", "cn": "深度研究 Agent（生成式 UI）", "en": "AI Deep Research Agent", "desc": "研究 Agent，每次工具调用都渲染成实时的工作台卡片。", "tech": ["生成式 UI"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/generative_ui_agents/ai-deep-research-agent/", "external": false}, {"cat": "玩游戏 Agent", "catFull": "Autonomous Game-Playing Agents（自主玩游戏）", "catId": "game", "emoji": "🎮", "cn": "3D PyGame 游戏 Agent", "en": "AI 3D Pygame Agent", "desc": "DeepSeek R1 写 PyGame 代码，浏览器 Agent 实时运行它。", "tech": ["DeepSeek R1", "浏览器 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/autonomous_game_playing_agent_apps/ai_3dpygame_r1/", "external": false}, {"cat": "玩游戏 Agent", "catFull": "Autonomous Game-Playing Agents（自主玩游戏）", "catId": "game", "emoji": "🎮", "cn": "国际象棋对弈 Agent", "en": "AI Chess Agent", "desc": "两个 AI Agent（白方策略型 / 黑方战术型）用 Autogen 在 Streamlit 里对弈，配一个 Board Proxy 验证 Agent 负责走子合法性与棋局状态管理，实现完整规则与非法走子拦截。", "tech": ["Autogen", "OpenAI", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/autonomous_game_playing_agent_apps/ai_chess_agent/", "external": false}, {"cat": "玩游戏 Agent", "catFull": "Autonomous Game-Playing Agents（自主玩游戏）", "catId": "game", "emoji": "🎮", "cn": "井字棋对弈 Agent", "en": "AI Tic-Tac-Toe Agent", "desc": "两个不同的 LLM 逐步对弈井字棋。", "tech": ["多模型"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/autonomous_game_playing_agent_apps/ai_tic_tac_toe_agent/", "external": false}, {"cat": "MCP Agent", "catFull": "MCP AI Agents（基于 Model Context Protocol）", "catId": "mcp", "emoji": "♾️", "cn": "浏览器 MCP Agent", "en": "Browser MCP Agent", "desc": "用自然语言经 MCP + Playwright 驱动真实（headless）浏览器：导航、点击、填表、滚动、截图、抽取并总结内容。基于 lastmile-ai 的 mcp-agent，需装 Node.js/npm，支持接本地 Ollama 或任意自定义 base URL。", "tech": ["MCP", "mcp-agent", "Playwright", "Streamlit", "Node.js"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/mcp_ai_agents/browser_mcp_agent/", "external": false}, {"cat": "MCP Agent", "catFull": "MCP AI Agents（基于 Model Context Protocol）", "catId": "mcp", "emoji": "♾️", "cn": "GitHub MCP Agent", "en": "GitHub MCP Agent", "desc": "用大白话探索分析任意仓库：issue、PR、活跃度、代码统计。使用 GitHub 官方 MCP Server（需 Docker + GitHub PAT + OpenAI Key），演示如何把第三方官方 MCP server 接入 Agent。", "tech": ["MCP", "官方 GitHub MCP Server", "Docker", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/mcp_ai_agents/github_mcp_agent/", "external": false}, {"cat": "MCP Agent", "catFull": "MCP AI Agents（基于 Model Context Protocol）", "catId": "mcp", "emoji": "♾️", "cn": "Notion MCP Agent", "en": "Notion MCP Agent", "desc": "在终端里对话你的 Notion 页面。", "tech": ["MCP", "Notion"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/mcp_ai_agents/notion_mcp_agent", "external": false}, {"cat": "MCP Agent", "catFull": "MCP AI Agents（基于 Model Context Protocol）", "catId": "mcp", "emoji": "♾️", "cn": "旅行规划 MCP Agent", "en": "AI Travel Planner MCP Agent", "desc": "基于实时 Airbnb 和 Google Maps 数据构建行程。", "tech": ["MCP", "Airbnb", "Google Maps"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/mcp_ai_agents/ai_travel_planner_mcp_agent_team", "external": false}, {"cat": "MCP Agent", "catFull": "MCP AI Agents（基于 Model Context Protocol）", "catId": "mcp", "emoji": "♾️", "cn": "多 MCP Agent 路由器", "en": "Multi-MCP Agent Router", "desc": "多个专家 Agent，每个各接自己的 MCP server，由路由分发。", "tech": ["MCP", "路由"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/mcp_ai_agents/multi_mcp_agent_router/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "Agentic RAG（EmbeddingGemma 版）", "en": "Agentic RAG with Embedding Gemma", "desc": "EmbeddingGemma + Llama 3.2 的全本地 Agentic RAG。", "tech": ["EmbeddingGemma", "Llama 3.2", "本地"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/agentic_rag_embedding_gemma", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "带推理的 Agentic RAG", "en": "Agentic RAG with Reasoning", "desc": "边检索边展示 Agent 的逐步推理过程。", "tech": ["Agentic RAG"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/agentic_rag_with_reasoning/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "博客搜索 RAG", "en": "AI Blog Search (RAG)", "desc": "基于 LangGraph 的博客内容 Agentic 搜索。", "tech": ["LangGraph"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/ai_blog_search/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "自主 RAG", "en": "Autonomous RAG", "desc": "GPT-4o + PgVector：上传 PDF 进知识库提问，先查知识库、不够再用 DuckDuckGo 网络搜索兜底。PgVector 用 Docker 起（phidata/pgvector:16, localhost:5532）。“本地向量库 + 网络回退”是 RAG 进阶核心思路。", "tech": ["GPT-4o", "PgVector", "DuckDuckGo", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/autonomous_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "Contextual AI 托管 RAG", "en": "Contextual AI RAG Agent", "desc": "托管式 RAG，几分钟从数据存储到有依据的对话。", "tech": ["Contextual AI"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/contextualai_rag_agent/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "纠错式 RAG（CRAG）", "en": "Corrective RAG (CRAG)", "desc": "检索会给自己打分、答前先重试的纠错式 RAG。", "tech": ["CRAG", "LangGraph"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/corrective_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "类型化 Agentic RAG（Pydantic AI）", "en": "Typed Agentic RAG with Pydantic AI", "desc": "带精确引用的校验式回答，证据不足时直接拒答。", "tech": ["Pydantic AI", "类型安全"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/agentic_typed_rag_pydanticai/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "DeepSeek 本地 RAG Agent", "en": "Deepseek Local RAG Agent", "desc": "本地 DeepSeek 推理，问自己的文档。", "tech": ["DeepSeek", "本地"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/deepseek_local_rag_agent/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "Gemini Agentic RAG", "en": "Gemini Agentic RAG", "desc": "用 Gemini Flash Thinking 做查询改写 + 网络回退。", "tech": ["Gemini Flash Thinking"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/gemini_agentic_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "混合检索 RAG（云端）", "en": "Hybrid Search RAG (Cloud)", "desc": "关键词 + 向量混合检索，结果喂给 Claude。", "tech": ["混合检索", "Claude"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/hybrid_search_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "Llama 3.1 本地 RAG", "en": "Llama 3.1 Local RAG", "desc": "全离线跟任意网页对话。", "tech": ["Llama 3.1", "本地"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/llama3.1_local_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "本地混合检索 RAG", "en": "Local Hybrid Search RAG", "desc": "混合检索，全部组件都在本机运行。", "tech": ["混合检索", "本地"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/local_hybrid_search_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "多模态 Agentic RAG", "en": "Multimodal Agentic RAG", "desc": "文本/PDF/图/音/视频统一检索，带引用作答。", "tech": ["多模态"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/multimodal_agentic_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "本地 RAG Agent", "en": "Local RAG Agent", "desc": "Llama 3.2（经 Ollama）+ Qdrant 向量库的全本地 RAG，基于 Agno v2.0 的 Knowledge 类做文档管理，AgentOS 交互界面，无需任何 API Key。", "tech": ["Llama 3.2", "Ollama", "Qdrant", "Agno v2.0"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/local_rag_agent/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "RAG 即服务", "en": "RAG-as-a-Service", "desc": "不到 50 行代码的生产级 RAG 服务。", "tech": ["生产化"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/rag-as-a-service/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "RAG Agent（Cohere 版）", "en": "RAG Agent with Cohere", "desc": "Command R7B 检索 + 网络搜索回退。", "tech": ["Cohere Command R7B"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/rag_agent_cohere/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "基础 RAG 链路", "en": "Basic RAG Chain", "desc": "最小检索链路，应用于医药研究场景。", "tech": ["基础链路"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/rag_chain/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "带数据库路由的 RAG", "en": "RAG with Database Routing", "desc": "自动把每个问题路由到正确的数据库。", "tech": ["路由"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/rag_database_routing/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "视觉 RAG", "en": "Vision RAG", "desc": "用 Embed-4 就图片和 PDF 页面提问。", "tech": ["Cohere Embed-4", "多模态"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/vision_rag/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "RAG 故障诊断诊所", "en": "RAG Failure Diagnostics Clinic", "desc": "系统化诊断你的 RAG 流水线为什么答错。", "tech": ["诊断"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/rag_failure_diagnostics_clinic/", "external": false}, {"cat": "RAG 检索增强", "catFull": "RAG（检索增强生成）", "catId": "rag", "emoji": "📀", "cn": "带引用的知识图谱 RAG", "en": "Knowledge Graph RAG with Citations", "desc": "可验证来源归因的多跳问答。", "tech": ["知识图谱", "多跳"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/rag_tutorials/knowledge_graph_rag_citations/", "external": false}, {"cat": "带记忆的应用", "catFull": "LLM Apps with Memory（带记忆的应用）", "catId": "memory", "emoji": "💾", "cn": "带记忆的 ArXiv 论文 Agent", "en": "AI ArXiv Agent with Memory", "desc": "记住你研究兴趣的论文搜索 Agent。", "tech": ["记忆"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_apps_with_memory_tutorials/ai_arxiv_agent_memory/", "external": false}, {"cat": "带记忆的应用", "catFull": "LLM Apps with Memory（带记忆的应用）", "catId": "memory", "emoji": "💾", "cn": "带记忆的旅行 Agent", "en": "AI Travel Agent with Memory", "desc": "记住你偏好的旅行助手。", "tech": ["记忆"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_apps_with_memory_tutorials/ai_travel_agent_memory/", "external": false}, {"cat": "带记忆的应用", "catFull": "LLM Apps with Memory（带记忆的应用）", "catId": "memory", "emoji": "💾", "cn": "Llama3 有状态聊天", "en": "Llama3 Stateful Chat", "desc": "会话持久化的 Llama 3 聊天。", "tech": ["Llama 3", "会话持久化"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_apps_with_memory_tutorials/llama3_stateful_chat/", "external": false}, {"cat": "带记忆的应用", "catFull": "LLM Apps with Memory（带记忆的应用）", "catId": "memory", "emoji": "💾", "cn": "带个性化记忆的 LLM 应用", "en": "LLM App with Personalized Memory", "desc": "跨对话保留上下文的聊天机器人。", "tech": ["记忆"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_apps_with_memory_tutorials/llm_app_personalized_memory/", "external": false}, {"cat": "带记忆的应用", "catFull": "LLM Apps with Memory（带记忆的应用）", "catId": "memory", "emoji": "💾", "cn": "带记忆的本地 ChatGPT 复刻", "en": "Local ChatGPT Clone with Memory", "desc": "全本地的 ChatGPT 式体验：Llama 3.1（经 Ollama）+ Nomic Embed 本地嵌入 + Qdrant 向量库，每个用户独立的个人记忆空间，无需任何外部 API Key。", "tech": ["Llama 3.1", "Ollama", "Nomic Embed", "Qdrant"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_apps_with_memory_tutorials/local_chatgpt_with_memory/", "external": false}, {"cat": "带记忆的应用", "catFull": "LLM Apps with Memory（带记忆的应用）", "catId": "memory", "emoji": "💾", "cn": "共享记忆的多模型应用", "en": "Multi-LLM Application with Shared Memory", "desc": "不同模型共享同一份对话记忆。", "tech": ["多模型", "共享记忆"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_apps_with_memory_tutorials/multi_llm_memory/", "external": false}, {"cat": "万物皆可聊", "catFull": "Chat with X（万物皆可聊）", "catId": "chatx", "emoji": "💬", "cn": "与 GitHub 仓库对话（GPT & Llama3）", "en": "Chat with GitHub", "desc": "30 行 RAG 问答任意 GitHub 仓库。", "tech": ["RAG"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/chat_with_X_tutorials/chat_with_github/", "external": false}, {"cat": "万物皆可聊", "catFull": "Chat with X（万物皆可聊）", "catId": "chatx", "emoji": "💬", "cn": "与 Gmail 邮箱对话", "en": "Chat with Gmail", "desc": "向你的收件箱提问。", "tech": ["RAG", "Gmail"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/chat_with_X_tutorials/chat_with_gmail/", "external": false}, {"cat": "万物皆可聊", "catFull": "Chat with X（万物皆可聊）", "catId": "chatx", "emoji": "💬", "cn": "与 PDF 对话（GPT & Llama3）", "en": "Chat with PDF", "desc": "经典款：30 行 Python 用 RAG 对上传的 PDF 精准问答，可切换所选 LLM。", "tech": ["RAG", "Streamlit"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/chat_with_X_tutorials/chat_with_pdf/", "external": false}, {"cat": "万物皆可聊", "catFull": "Chat with X（万物皆可聊）", "catId": "chatx", "emoji": "💬", "cn": "与论文对话（ArXiv）", "en": "Chat with Research Papers", "desc": "用 GPT-4o 对话式探索 arXiv 论文。", "tech": ["RAG", "GPT-4o"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/chat_with_X_tutorials/chat_with_research_papers/", "external": false}, {"cat": "万物皆可聊", "catFull": "Chat with X（万物皆可聊）", "catId": "chatx", "emoji": "💬", "cn": "与 Substack 通讯对话", "en": "Chat with Substack", "desc": "跟任意 newsletter 的存档对话。", "tech": ["RAG"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/chat_with_X_tutorials/chat_with_substack/", "external": false}, {"cat": "万物皆可聊", "catFull": "Chat with X（万物皆可聊）", "catId": "chatx", "emoji": "💬", "cn": "与 YouTube 视频对话", "en": "Chat with YouTube Videos", "desc": "靠字幕对 YouTube 视频提问。", "tech": ["RAG", "字幕"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/chat_with_X_tutorials/chat_with_youtube_videos/", "external": false}, {"cat": "成本优化", "catFull": "LLM Optimization Tools（成本 / Token 优化）", "catId": "opt", "emoji": "🎯", "cn": "Toonify Token 优化", "en": "Toonify Token Optimization", "desc": "用 TOON（Token-Oriented Object Notation）格式序列化结构化数据，相比 JSON 平均省 63.9%、表格数据最高省 73.4% Token（GPT-4 定价下每百万请求省约 $2147），同时保持人类可读、开销 <1ms。含 JSON/TOON 对比、成本计算器与基准测试。", "tech": ["TOON", "成本优化"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_optimization_tools/toonify_token_optimization/", "external": false}, {"cat": "成本优化", "catFull": "LLM Optimization Tools（成本 / Token 优化）", "catId": "opt", "emoji": "🎯", "cn": "Headroom 上下文优化", "en": "Headroom Context Optimization", "desc": "上下文压缩，把 LLM API 成本降低 50-90%。", "tech": ["上下文压缩", "成本优化"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_optimization_tools/headroom_context_optimization/", "external": false}, {"cat": "模型微调", "catFull": "LLM Fine-tuning（微调实操）", "catId": "finetune", "emoji": "🔧", "cn": "Gemma 3 微调", "en": "Gemma 3 Fine-tuning", "desc": "用 Unsloth 做 4-bit LoRA 微调 Gemma 3，代码短小易读。", "tech": ["Unsloth", "4-bit LoRA", "Gemma 3"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_finetuning_tutorials/gemma3_finetuning/", "external": false}, {"cat": "模型微调", "catFull": "LLM Fine-tuning（微调实操）", "catId": "finetune", "emoji": "🔧", "cn": "Llama 3.2 微调", "en": "Llama 3.2 Fine-tuning", "desc": "30 行微调 Llama 3.2，Colab 免费跑。", "tech": ["Unsloth", "LoRA", "Colab"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_llm_apps/llm_finetuning_tutorials/llama3.2_finetuning/", "external": false}, {"cat": "框架速成课", "catFull": "Agent Framework 速成课", "catId": "course", "emoji": "🧑‍🏫", "cn": "Google ADK 速成课", "en": "Google ADK Crash Course", "desc": "从零学 Google ADK（已更新到 Gemini 3 Flash）：入门 Agent → 模型无关（接 OpenAI/Claude）→ 结构化输出（Pydantic）→ 工具（内置/函数/三方 LangChain·CrewAI/MCP）→ 记忆与会话（内存/SQLite）→ 回调 → 插件 → 多 Agent 编排。模型无关、部署无关。", "tech": ["Google ADK", "Gemini 3 Flash", "多 Agent"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/ai_agent_framework_crash_course/google_adk_crash_course/", "external": false}, {"cat": "框架速成课", "catFull": "Agent Framework 速成课", "catId": "course", "emoji": "🧑‍🏫", "cn": "OpenAI Agents SDK 速成课", "en": "OpenAI Agents SDK Crash Course", "desc": "系统学 OpenAI Agents SDK：入门 Agent、函数调用、结构化输出、工具、记忆、评测、handoff、swarm 编排与路由逻辑。", "tech": ["OpenAI Agents SDK"], "url": "https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/ai_agent_framework_crash_course/openai_sdk_crash_course/", "external": false}];
+const CATS = [{"id": "skills", "cn": "Agent 技能"}, {"id": "starter", "cn": "入门 Agent"}, {"id": "advanced", "cn": "生产级 Agent"}, {"id": "alwayson", "cn": "常驻 Agent"}, {"id": "teams", "cn": "多 Agent 团队"}, {"id": "voice", "cn": "语音 Agent"}, {"id": "genui", "cn": "生成式 UI"}, {"id": "game", "cn": "玩游戏 Agent"}, {"id": "mcp", "cn": "MCP Agent"}, {"id": "rag", "cn": "RAG 检索增强"}, {"id": "memory", "cn": "带记忆的应用"}, {"id": "chatx", "cn": "万物皆可聊"}, {"id": "opt", "cn": "成本优化"}, {"id": "finetune", "cn": "模型微调"}, {"id": "course", "cn": "框架速成课"}];
+
+// counts derived from DATA (avoids drift)
+const catCount = {};
+DATA.forEach(d => { catCount[d.catId] = (catCount[d.catId] || 0) + 1; });
+const catFullOf = {};
+DATA.forEach(d => { if(!catFullOf[d.catId]) catFullOf[d.catId] = d.catFull; });
+
+let activeCat = "all", keyword = "";
+const rail = document.getElementById("rail");
+const list = document.getElementById("list");
+const empty = document.getElementById("empty");
+const readout = document.getElementById("readout");
+const search = document.getElementById("search");
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+// ---------- rail ----------
+function buildRail(){
+  const railTitle = document.createElement("div");
+  railTitle.className = "rail-title";
+  railTitle.textContent = "分类索引";
+  rail.appendChild(railTitle);
+
+  const ul = document.createElement("ul");
+  const items = [{id:"all", cn:"全部", count:DATA.length}]
+    .concat(CATS.map(c => ({id:c.id, cn:c.cn, count:catCount[c.id]||0})));
+  items.forEach(it => {
+    const li = document.createElement("li");
+    li.tabIndex = 0;
+    li.dataset.cat = it.id;
+    if(it.id === activeCat) li.classList.add("active");
+    li.innerHTML = `<span class="rail-name">${esc(it.cn)}</span><span class="rail-count">${it.count}</span>`;
+    const activate = () => {
+      activeCat = it.id;
+      [...ul.children].forEach(x => x.classList.remove("active"));
+      li.classList.add("active");
+      render();
+      document.querySelector(".catalogue").scrollIntoView({behavior:"smooth", block:"start"});
+    };
+    li.addEventListener("click", activate);
+    li.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){e.preventDefault();activate();} });
+    ul.appendChild(li);
+  });
+  rail.appendChild(ul);
+}
+
+// ---------- catalogue ----------
+function entryNode(d, n){
+  const a = document.createElement("a");
+  a.className = "entry";
+  a.href = d.url; a.target = "_blank"; a.rel = "noopener";
+  a.title = d.en;
+  const tags = d.tech.map(t => `<span>${esc(t)}</span>`).join("");
+  const ext = d.external ? `<span class="tag-ext">外部仓库</span>` : "";
+  a.innerHTML = `
+    <div class="entry-num">${String(n).padStart(3,"0")}</div>
+    <div class="entry-main">
+      <div class="entry-head">
+        <h3 class="entry-title">${esc(d.cn)}</h3>
+        <span class="entry-en">${esc(d.en)}</span>
+        ${ext}
+      </div>
+      <p class="entry-desc">${esc(d.desc)}</p>
+      <div class="entry-tags">${tags}</div>
+    </div>
+    <div class="entry-go">GitHub&nbsp;↗</div>`;
+  return a;
+}
+
+function render(){
+  const kw = keyword;
+  const matches = DATA.filter(d => {
+    if(activeCat !== "all" && d.catId !== activeCat) return false;
+    if(!kw) return true;
+    const hay = (d.cn + " " + d.en + " " + d.desc + " " + d.tech.join(" ") + " " + d.cat).toLowerCase();
+    return hay.includes(kw);
+  });
+
+  list.innerHTML = "";
+  empty.style.display = matches.length ? "none" : "block";
+  readout.innerHTML = `共 <b>${matches.length}</b> / ${DATA.length} 个项目`;
+
+  const catsToShow = activeCat === "all" ? CATS : CATS.filter(c => c.id === activeCat);
+  let n = 0;
+  catsToShow.forEach(c => {
+    const items = matches.filter(d => d.catId === c.id);
+    if(!items.length) return;
+    const block = document.createElement("section");
+    block.className = "cat-block fade-in";
+    const head = document.createElement("header");
+    head.className = "cat-head";
+    head.innerHTML = `<h2>${esc(c.cn)}</h2><span class="cat-full">${esc(catFullOf[c.id]||"")}</span><span class="cat-count">${items.length} 项</span>`;
+    block.appendChild(head);
+    const wrap = document.createElement("div");
+    wrap.className = "entries";
+    items.forEach(d => { n++; wrap.appendChild(entryNode(d, n)); });
+    block.appendChild(wrap);
+    list.appendChild(block);
+  });
+}
+
+search.addEventListener("input", e => { keyword = e.target.value.trim().toLowerCase(); render(); });
+
+buildRail();
+render();
+</script>
+</body>
+</html>
