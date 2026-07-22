@@ -112,6 +112,21 @@
   }
   @keyframes fadeIn{to{opacity:1}}
   .brand-logo{width:36px;height:36px;border-radius:50%;object-fit:cover}
+
+  @media(max-width:1000px){
+    html,body{align-items:flex-start}
+    .stage{width:100%;max-width:560px;aspect-ratio:auto;padding:30px 20px 34px}
+  }
+  @media(max-width:560px){
+    .title{font-size:28px}
+    .header{display:none}
+    .item{grid-template-columns:1fr;gap:6px;padding:14px 16px;flex:none}
+    .name-cell{gap:10px}
+    .project-name{white-space:normal;overflow:visible;text-overflow:clip}
+    .tag-badge{justify-self:start}
+    .desc{white-space:normal;overflow:visible;text-overflow:clip;padding-right:0}
+    .score{text-align:left}
+  }
 </style>
 </head>
 <body>
