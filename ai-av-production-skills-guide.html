@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI音视频制作Skill大全</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: linear-gradient(180deg, #0a0e1a 0%, #0f1529 40%, #131b35 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: #e0e6f0;
+  min-height: 100vh;
+  padding: 60px 40px 80px;
+}
+
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffd700 0%, #00e676 50%, #00bcd4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #8892a8;
+  margin-bottom: 48px;
+  font-style: italic;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 240px 160px 1fr 120px;
+  padding: 18px 24px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.table-header span {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.table-header span:nth-child(1) { color: #ff6b6b; text-align: left; }
+.table-header span:nth-child(2) { color: #8892a8; }
+.table-header span:nth-child(3) { color: #64b5f6; }
+.table-header span:nth-child(4) { color: #ffd700; text-align: left; }
+
+.row {
+  display: grid;
+  grid-template-columns: 240px 160px 1fr 120px;
+  align-items: center;
+  justify-items: center;
+  padding: 18px 24px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  transition: background 0.2s;
+}
+
+.row > :first-child { justify-self: start; }
+.row > :last-child { justify-self: start; }
+
+.row:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.skill-name {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.name-text {
+  font-weight: 700;
+  font-size: 15px;
+  color: #f0f4ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #b8c4d8;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+.description {
+  font-size: 14px;
+  color: #a0aec0;
+  padding: 0 12px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.stars {
+  text-align: left;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.stars .bolt {
+  color: #ffd700;
+  font-size: 14px;
+}
+
+.stars .num {
+  color: #ffd700;
+}
+
+/* Star color tiers */
+.stars.tier-1 .num { color: #00e676; }
+.stars.tier-2 .num { color: #00bcd4; }
+.stars.tier-3 .num { color: #64b5f6; }
+.stars.tier-4 .num { color: #ab47bc; }
+.stars.tier-5 .num { color: #ffa726; }
+.stars.tier-6 .num { color: #ef5350; }
+
+/* Avatar colors */
+.av-red { background: linear-gradient(135deg, #ff4757, #ff6b81); }
+.av-blue { background: linear-gradient(135deg, #3742fa, #5352ed); }
+.av-green { background: linear-gradient(135deg, #2ed573, #7bed9f); }
+.av-orange { background: linear-gradient(135deg, #ff6348, #ffa502); }
+.av-purple { background: linear-gradient(135deg, #8854d0, #a55eea); }
+.av-cyan { background: linear-gradient(135deg, #0097e6, #00d2d3); }
+.av-pink { background: linear-gradient(135deg, #e84393, #fd79a8); }
+.av-teal { background: linear-gradient(135deg, #00b894, #55efc4); }
+.av-indigo { background: linear-gradient(135deg, #5f27cd, #341f97); }
+.av-amber { background: linear-gradient(135deg, #f0932b, #ffbe76); }
+
+.footer {
+  text-align: center;
+  margin-top: 48px;
+  font-size: 13px;
+  color: #5a6478;
+}
+
+.footer .brand {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.footer .date {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #3d4659;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="title">AI音视频制作Skill大全</h1>
+  <p class="subtitle">Claude Code / Codex 全平台适用</p>
+
+  <div class="table-header">
+    <span>Skill 名称</span>
+    <span>标签</span>
+    <span>适用场景</span>
+    <span>⚡ 热度</span>
+  </div>
+
+  <!-- 1. MoneyPrinterTurbo - 96.1K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-orange">M</div>
+      <span class="name-text">MoneyPrinterTurbo</span>
+    </div>
+    <span class="tag">AI短视频生成</span>
+    <span class="description">一键生成高清短视频（文案+素材+配音+字幕）</span>
+    <div class="stars tier-1"><span class="bolt">⚡</span><span class="num">96.1K</span></div>
+  </div>
+
+  <!-- 2. Remotion - 52.4K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-blue">R</div>
+      <span class="name-text">Remotion</span>
+    </div>
+    <span class="tag">React视频框架</span>
+    <span class="description">用React程序化创建视频</span>
+    <div class="stars tier-2"><span class="bolt">⚡</span><span class="num">52.4K</span></div>
+  </div>
+
+  <!-- 3. ChatTTS - 39.6K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-cyan">C</div>
+      <span class="name-text">ChatTTS</span>
+    </div>
+    <span class="tag">AI语音合成</span>
+    <span class="description">面向日常对话的高质量语音生成模型</span>
+    <div class="stars tier-3"><span class="bolt">⚡</span><span class="num">39.6K</span></div>
+  </div>
+
+  <!-- 4. voicebox - 38.3K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-purple">V</div>
+      <span class="name-text">voicebox</span>
+    </div>
+    <span class="tag">AI语音工作室</span>
+    <span class="description">开源AI语音工作室：克隆、听写、创作</span>
+    <div class="stars tier-3"><span class="bolt">⚡</span><span class="num">38.3K</span></div>
+  </div>
+
+  <!-- 5. open-notebook - 35.1K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-green">O</div>
+      <span class="name-text">open-notebook</span>
+    </div>
+    <span class="tag">播客音频生成</span>
+    <span class="description">NotebookLM开源替代，文档一键转播客</span>
+    <div class="stars tier-3"><span class="bolt">⚡</span><span class="num">35.1K</span></div>
+  </div>
+
+  <!-- 6. OpenMontage - 34.5K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-red">O</div>
+      <span class="name-text">OpenMontage</span>
+    </div>
+    <span class="tag">Agent视频制作</span>
+    <span class="description">首个开源Agent视频制作系统，12管线52工具</span>
+    <div class="stars tier-3"><span class="bolt">⚡</span><span class="num">34.5K</span></div>
+  </div>
+
+  <!-- 7. openhuman - 34.3K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-teal">O</div>
+      <span class="name-text">openhuman</span>
+    </div>
+    <span class="tag">AI数字人平台</span>
+    <span class="description">个人AI超级智能体与Agent编排引擎</span>
+    <div class="stars tier-3"><span class="bolt">⚡</span><span class="num">34.3K</span></div>
+  </div>
+
+  <!-- 8. VoxCPM2 - 32.7K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-indigo">V</div>
+      <span class="name-text">VoxCPM2</span>
+    </div>
+    <span class="tag">多语言TTS</span>
+    <span class="description">无分词器多语言语音生成与真实克隆</span>
+    <div class="stars tier-3"><span class="bolt">⚡</span><span class="num">32.7K</span></div>
+  </div>
+
+  <!-- 9. Pixelle-Video - 24.2K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-pink">P</div>
+      <span class="name-text">Pixelle-Video</span>
+    </div>
+    <span class="tag">全自动短视频</span>
+    <span class="description">AI全自动短视频引擎，零人工干预</span>
+    <div class="stars tier-4"><span class="bolt">⚡</span><span class="num">24.2K</span></div>
+  </div>
+
+  <!-- 10. CosyVoice - 22K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-amber">C</div>
+      <span class="name-text">CosyVoice</span>
+    </div>
+    <span class="tag">语音克隆合成</span>
+    <span class="description">多语言语音生成大模型，推理训练部署全栈</span>
+    <div class="stars tier-4"><span class="bolt">⚡</span><span class="num">22K</span></div>
+  </div>
+
+  <!-- 11. FunASR - 19K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-blue">F</div>
+      <span class="name-text">FunASR</span>
+    </div>
+    <span class="tag">语音识别引擎</span>
+    <span class="description">工业级语音识别，170x实时+50语种</span>
+    <div class="stars tier-5"><span class="bolt">⚡</span><span class="num">19K</span></div>
+  </div>
+
+  <!-- 12. video-use - 15.6K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-cyan">V</div>
+      <span class="name-text">video-use</span>
+    </div>
+    <span class="tag">AI视频编辑</span>
+    <span class="description">用Coding Agent编辑视频</span>
+    <div class="stars tier-5"><span class="bolt">⚡</span><span class="num">15.6K</span></div>
+  </div>
+
+  <!-- 13. Open-LLM-VTuber - 12.4K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-green">O</div>
+      <span class="name-text">Open-LLM-VTuber</span>
+    </div>
+    <span class="tag">AI虚拟主播</span>
+    <span class="description">免提语音交互+Live2D本地跨平台</span>
+    <div class="stars tier-5"><span class="bolt">⚡</span><span class="num">12.4K</span></div>
+  </div>
+
+  <!-- 14. LTX-Video - 10.6K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-orange">L</div>
+      <span class="name-text">LTX-Video</span>
+    </div>
+    <span class="tag">视频生成模型</span>
+    <span class="description">首个DiT音画同步视频基础模型</span>
+    <div class="stars tier-5"><span class="bolt">⚡</span><span class="num">10.6K</span></div>
+  </div>
+
+  <!-- 15. NarratoAI - 10.2K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-purple">N</div>
+      <span class="name-text">NarratoAI</span>
+    </div>
+    <span class="tag">视频解说剪辑</span>
+    <span class="description">AI一键解说并剪辑视频</span>
+    <div class="stars tier-5"><span class="bolt">⚡</span><span class="num">10.2K</span></div>
+  </div>
+
+  <!-- 16. dograh - 4.8K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-red">D</div>
+      <span class="name-text">dograh</span>
+    </div>
+    <span class="tag">语音AI平台</span>
+    <span class="description">开源Vapi/Retell替代，可视化工作流+电话</span>
+    <div class="stars tier-6"><span class="bolt">⚡</span><span class="num">4.8K</span></div>
+  </div>
+
+  <!-- 17. AI-Youtube-Shorts - 4.1K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-teal">A</div>
+      <span class="name-text">AI-Youtube-Shorts</span>
+    </div>
+    <span class="tag">短视频裁剪</span>
+    <span class="description">长视频自动转9:16 Shorts开源方案</span>
+    <div class="stars tier-6"><span class="bolt">⚡</span><span class="num">4.1K</span></div>
+  </div>
+
+  <!-- 18. short-video-maker - 1.2K -->
+  <div class="row">
+    <div class="skill-name">
+      <div class="avatar av-indigo">S</div>
+      <span class="name-text">short-video-maker</span>
+    </div>
+    <span class="tag">MCP视频制作</span>
+    <span class="description">MCP协议+REST API创建TikTok/Reels短视频</span>
+    <div class="stars tier-6"><span class="bolt">⚡</span><span class="num">1.2K</span></div>
+  </div>
+
+  <div class="footer">
+    <span>数据截止 2026-07-07 12:46 · GitHub Stars</span>
+    <span class="date"><span class="brand">产品老A</span></span>
+  </div>
+</div>
+</body>
+</html>
