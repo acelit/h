@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI投资Skills大全</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif; background: #0a0a1a; }
+.slide {
+  width: 720px;
+  height: 1080px;
+  margin: 20px auto;
+  background: linear-gradient(180deg, #0d0d2b 0%, #0a0a1a 100%);
+  padding: 28px 32px 44px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(100, 60, 200, 0.15) 0%, transparent 100%);
+  pointer-events: none;
+}
+.slide-header {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+.slide-title {
+  font-size: 34px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #00d4ff, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.slide-subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+}
+.table-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  background: rgba(99, 102, 241, 0.15);
+  border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+.table-header .col-name {
+  width: 170px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #22d3ee;
+}
+.table-header .col-tag {
+  width: 110px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #22d3ee;
+  text-align: center;
+}
+.table-header .col-func {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #22d3ee;
+  text-align: center;
+}
+.table-header .col-star {
+  width: 72px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fbbf24;
+  text-align: right;
+}
+.item-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  margin-bottom: 4px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.item-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.item-info {
+  width: 130px;
+  min-width: 0;
+}
+.item-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+.item-tag {
+  width: 110px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.item-tag span {
+  display: inline-block;
+  font-size: 10px;
+  color: rgba(255,255,255,0.8);
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+.item-func {
+  flex: 1;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.4;
+  text-align: center;
+  padding: 0 6px;
+}
+.item-star {
+  width: 72px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fbbf24;
+  flex-shrink: 0;
+}
+.item-star::before {
+  content: '⚡';
+  margin-right: 2px;
+}
+.footer {
+  position: absolute;
+  bottom: 16px;
+  left: 32px;
+  right: 32px;
+  text-align: center;
+}
+.footer-text {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* Color palette for icons */
+.bg-1 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.bg-2 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.bg-3 { background: linear-gradient(135deg, #ec4899, #be185d); }
+.bg-4 { background: linear-gradient(135deg, #10b981, #047857); }
+.bg-5 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-6 { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.bg-7 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.bg-8 { background: linear-gradient(135deg, #6366f1, #4338ca); }
+</style>
+</head>
+<body>
+
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-title">AI投资Skills大全</div>
+    <div class="slide-subtitle">Claude Code / Codex 全平台适用</div>
+  </div>
+
+  <div class="table-header">
+    <div class="col-name">Skill 名称</div>
+    <div class="col-tag">标签</div>
+    <div class="col-func">适用场景</div>
+    <div class="col-star">⚡ 热度</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-1">O</div>
+    <div class="item-info"><div class="item-name">OpenBB</div></div>
+    <div class="item-tag"><span>开源金融数据平台</span></div>
+    <div class="item-func">多源金融数据统一接入与消费</div>
+    <div class="item-star">70K+</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-2">D</div>
+    <div class="item-info"><div class="item-name">daily_stock_analysis</div></div>
+    <div class="item-tag"><span>AI股票分析系统</span></div>
+    <div class="item-func">每日多市场AI分析报告自动推送</div>
+    <div class="item-star">54.8K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-3">A</div>
+    <div class="item-info"><div class="item-name">ai-hedge-fund</div></div>
+    <div class="item-tag"><span>AI多Agent投研</span></div>
+    <div class="item-func">多Agent协作模拟对冲基金决策</div>
+    <div class="item-star">49.6K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-4">Q</div>
+    <div class="item-info"><div class="item-name">Qlib</div></div>
+    <div class="item-tag"><span>微软量化投资平台</span></div>
+    <div class="item-func">因子挖掘到组合优化全链路量化</div>
+    <div class="item-star">45.7K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-5">V</div>
+    <div class="item-info"><div class="item-name">vnpy</div></div>
+    <div class="item-tag"><span>Python量化交易平台</span></div>
+    <div class="item-func">国内期货股票策略开发与实盘</div>
+    <div class="item-star">42.7K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-6">F</div>
+    <div class="item-info"><div class="item-name">FinceptTerminal</div></div>
+    <div class="item-tag"><span>C++金融智能终端</span></div>
+    <div class="item-func">个人投资者替代Bloomberg终端</div>
+    <div class="item-star">28K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-7">B</div>
+    <div class="item-info"><div class="item-name">backtrader</div></div>
+    <div class="item-tag"><span>轻量回测框架</span></div>
+    <div class="item-func">策略快速原型验证与量化教学</div>
+    <div class="item-star">22.3K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-8">L</div>
+    <div class="item-info"><div class="item-name">Lean</div></div>
+    <div class="item-tag"><span>算法交易引擎</span></div>
+    <div class="item-func">机构级多资产算法交易系统</div>
+    <div class="item-star">20.4K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-2">V</div>
+    <div class="item-info"><div class="item-name">Vibe-Trading</div></div>
+    <div class="item-tag"><span>个人交易Agent平台</span></div>
+    <div class="item-func">散户零代码AI辅助多市场交易</div>
+    <div class="item-star">18K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-3">G</div>
+    <div class="item-info"><div class="item-name">FinGPT</div></div>
+    <div class="item-tag"><span>金融大语言模型</span></div>
+    <div class="item-func">金融情感分析与股价预测微调</div>
+    <div class="item-star">14K+</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-4">N</div>
+    <div class="item-info"><div class="item-name">nofx</div></div>
+    <div class="item-tag"><span>AI安全交易终端</span></div>
+    <div class="item-func">加密货币安全优先自动交易</div>
+    <div class="item-star">12.5K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-5">B</div>
+    <div class="item-info"><div class="item-name">ai-berkshire</div></div>
+    <div class="item-tag"><span>价值投资研究框架</span></div>
+    <div class="item-func">价值投资者深度研究与决策</div>
+    <div class="item-star">10.5K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-6">T</div>
+    <div class="item-info"><div class="item-name">TradingAgents</div></div>
+    <div class="item-tag"><span>多Agent交易决策</span></div>
+    <div class="item-func">多空辩论式AI交易信号研究</div>
+    <div class="item-star">9.3K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-7">R</div>
+    <div class="item-info"><div class="item-name">FinRobot</div></div>
+    <div class="item-tag"><span>AI Agent金融分析</span></div>
+    <div class="item-func">自动化投研研报与财务分析</div>
+    <div class="item-star">7.5K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-1">G</div>
+    <div class="item-info"><div class="item-name">go-stock</div></div>
+    <div class="item-tag"><span>Go桌面分析工具</span></div>
+    <div class="item-func">注重隐私的本地AI盯盘工具</div>
+    <div class="item-star">6.7K</div>
+  </div>
+
+  <div class="item-row">
+    <div class="item-icon bg-8">M</div>
+    <div class="item-info"><div class="item-name">MarS</div></div>
+    <div class="item-tag"><span>微软市场模拟引擎</span></div>
+    <div class="item-func">策略市场影响模拟与压力测试</div>
+    <div class="item-star">~1K</div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">产品老A</div>
+  </div>
+</div>
+
+</body>
+</html>
