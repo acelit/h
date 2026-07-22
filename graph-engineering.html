@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Graph Engineering — 从循环到图的范式跃迁</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Noto+Serif+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Editorial Feature · theme: Newsprint · tone: broadsheet-essay · accent hue: warm-sepia */
+/* Hallmark · critique: P5 H4 E5 S5 R4 V5 */
+
+:root {
+  /* paper & ink — newsprint band */
+  --paper: oklch(96% 0.015 85);
+  --paper-deep: oklch(93% 0.018 85);
+  --ink: oklch(18% 0.02 60);
+  --ink-soft: oklch(38% 0.02 60);
+  --ink-mute: oklch(55% 0.015 60);
+  --rule: oklch(78% 0.015 70);
+  --rule-strong: oklch(55% 0.02 60);
+
+  /* accent — warm sepia + one spot */
+  --accent: oklch(42% 0.06 45);
+  --accent-soft: oklch(72% 0.08 55);
+  --spot: oklch(52% 0.16 30);
+
+  /* type */
+  --font-display: "Fraunces", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  --font-body: "Noto Serif SC", "Source Han Serif SC", "Fraunces", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* space — 4pt scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 72px;
+  --space-3xl: 120px;
+
+  /* easings */
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --ease-in-out: cubic-bezier(.4,0,.2,1);
+}
+
+html, body { overflow-x: clip; }
+html { background: var(--paper); }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.62;
+  font-feature-settings: "kern" 1, "onum" 1, "pnum" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* newsprint texture — a very faint tint band, not a gradient orb */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 800px at 90% -10%, oklch(90% 0.025 80 / .35), transparent 60%),
+    repeating-linear-gradient(0deg, transparent 0 3px, oklch(85% 0.02 80 / .06) 3px 4px);
+  mix-blend-mode: multiply;
+  z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1180px; padding: 0 var(--space-lg); margin: 0 auto; }
+
+/* ------- Masthead ------- */
+.masthead {
+  border-bottom: 3px double var(--rule-strong);
+  padding: var(--space-lg) 0 var(--space-md);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--space-md);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+}
+.masthead .flag {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.masthead .kicker { text-align: center; font-variant: small-caps; }
+.masthead .kicker span { color: var(--accent); font-variant: normal; font-weight: 700; }
+.masthead .issue { text-align: right; font-variant: tabular-nums; }
+
+/* ------- Hero ------- */
+.hero {
+  padding: var(--space-2xl) 0 var(--space-xl);
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--space-2xl);
+  align-items: end;
+}
+.hero .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: .02em;
+  margin-bottom: var(--space-md);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 900;
+  font-size: clamp(48px, 8.4vw, 128px);
+  line-height: .92;
+  letter-spacing: -.03em;
+  margin: 0 0 var(--space-md);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.hero .sub {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(20px, 2.2vw, 30px);
+  line-height: 1.28;
+  color: var(--ink-soft);
+  max-width: 32ch;
+  margin: 0;
+}
+.hero aside {
+  border-left: 1px solid var(--rule);
+  padding: var(--space-md) 0 var(--space-md) var(--space-lg);
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.hero aside b { color: var(--ink); font-weight: 700; }
+.hero aside .row { display: flex; justify-content: space-between; gap: var(--space-md); padding: 6px 0; border-bottom: 1px dotted var(--rule); }
+.hero aside .row:last-child { border-bottom: 0; }
+.hero aside .row span:first-child { color: var(--ink-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ------- Lede — drop cap ------- */
+.lede {
+  padding: var(--space-xl) 0 var(--space-lg);
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: var(--space-2xl);
+}
+.lede p {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--ink);
+}
+.lede p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 5.2em;
+  float: left;
+  line-height: .85;
+  padding: 6px 10px 0 0;
+  color: var(--accent);
+}
+.lede .byline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  align-self: end;
+  text-align: right;
+}
+
+/* ------- Section shells ------- */
+section.piece {
+  padding: var(--space-2xl) 0;
+  border-bottom: 1px solid var(--rule);
+}
+section.piece h2 {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 900;
+  font-size: clamp(32px, 4.2vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -.02em;
+  margin: 0 0 var(--space-lg);
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+section.piece h2 .num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: .32em;
+  vertical-align: 22%;
+  color: var(--accent);
+  margin-right: var(--space-md);
+  letter-spacing: .04em;
+}
+section.piece p { max-width: 68ch; margin: 0 0 var(--space-md); }
+section.piece p b { color: var(--accent); font-weight: 700; }
+
+/* two-column body prose */
+.cols-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2xl); }
+.cols-2 > * { max-width: none; }
+
+/* pull quote */
+.pull {
+  margin: var(--space-xl) 0;
+  padding: var(--space-lg) 0;
+  border-top: 3px double var(--rule-strong);
+  border-bottom: 3px double var(--rule-strong);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.28;
+  color: var(--ink);
+  max-width: 32ch;
+  animation: rise .6s var(--ease-out) both;
+}
+.pull cite { display: block; margin-top: var(--space-md); font-size: 13px; font-family: var(--font-mono); font-style: normal; color: var(--ink-mute); letter-spacing: .04em; text-transform: uppercase; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ------- Diagram ------- */
+.diagram {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-xl);
+  margin: var(--space-xl) 0;
+}
+.diagram figure { margin: 0; border: 1px solid var(--rule); padding: var(--space-lg); background: var(--paper-deep); }
+.diagram figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: var(--space-md);
+  border-top: 1px solid var(--rule);
+  padding-top: var(--space-sm);
+}
+.diagram figcaption b { color: var(--accent); font-weight: 700; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+/* ------- Comparison table ------- */
+.compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin: var(--space-lg) 0;
+  font-variant-numeric: tabular-nums;
+}
+.compare caption {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+.compare thead th {
+  text-align: left;
+  padding: var(--space-md) var(--space-md) var(--space-md) 0;
+  border-bottom: 2px solid var(--rule-strong);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  vertical-align: bottom;
+}
+.compare thead th:nth-child(2) { color: var(--ink-soft); }
+.compare thead th:nth-child(3) { color: var(--accent); }
+.compare thead th .tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  margin-right: var(--space-sm);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.compare tbody th {
+  text-align: left;
+  padding: var(--space-md) var(--space-md) var(--space-md) 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  vertical-align: top;
+  width: 16%;
+}
+.compare tbody td {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.compare tbody td:first-of-type { padding-left: 0; }
+.compare tbody tr:hover td, .compare tbody tr:hover th { background: oklch(94% 0.02 85 / .5); }
+
+/* ------- Callout boxes ------- */
+.callouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.callout {
+  padding: var(--space-lg);
+  border-top: 3px solid var(--ink);
+}
+.callout.spot { border-top-color: var(--accent); }
+.callout h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1.15;
+  margin: 0 0 var(--space-sm);
+}
+.callout p { font-size: 15px; margin: 0; color: var(--ink-soft); }
+
+/* ------- Colophon ------- */
+footer.colophon {
+  padding: var(--space-xl) 0 var(--space-2xl);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: .04em;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border-top: 3px double var(--rule-strong);
+  margin-top: var(--space-lg);
+  flex-wrap: wrap;
+}
+footer.colophon a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+  padding-bottom: 1px;
+}
+footer.colophon a:hover { color: var(--spot); border-bottom-color: var(--spot); }
+footer.colophon a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ------- Mobile ------- */
+@media (max-width: 900px) {
+  .hero, .lede, .cols-2, .diagram { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .hero aside { border-left: 0; border-top: 1px solid var(--rule); padding: var(--space-md) 0 0; }
+  .lede .byline { text-align: left; }
+  .masthead { grid-template-columns: 1fr; text-align: left; gap: 4px; }
+  .masthead .kicker, .masthead .issue { text-align: left; }
+  section.piece { padding: var(--space-xl) 0; }
+  .compare { display: block; overflow-x: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pull { animation: none; opacity: 1; transform: none; }
+  * { transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead" role="banner">
+    <div class="flag">The Agent Broadsheet</div>
+    <div class="kicker">范式观察 · <span>Vol. 07 / Issue 22</span></div>
+    <div class="issue">2026·07·22 · 产品老A</div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">AGENT ARCHITECTURE · 深度梳理</div>
+      <h1>Graph Engineering</h1>
+      <p class="sub">当 Agent 不再是一个"自己转圈的循环"，而是一张"你先画好的图"。</p>
+    </div>
+    <aside>
+      <div class="row"><span>Field</span><b>Agent 系统架构</b></div>
+      <div class="row"><span>Foil</span><b>Loop Engineering</b></div>
+      <div class="row"><span>State</span><b>2026 上半年由框架侧推动为共识</b></div>
+      <div class="row"><span>Read time</span><b>~8 分钟</b></div>
+    </aside>
+  </section>
+
+  <section class="lede" aria-label="导读">
+    <div>
+      <p>过去两年，做 AI Agent 的默认写法是——把模型丢进一个 while 循环里，让它自己看状态、自己选工具、自己判断"是不是完成了"。这套东西被叫做 Loop Engineering，也是 ChatGPT tool-use、ReAct、AutoGPT、Claude Code、Cursor Agent 的共同骨架。</p>
+      <p style="margin-top:var(--space-md);font-size:17px;line-height:1.62;font-family:var(--font-body);color:var(--ink-soft);">但从 2026 年初开始，一个更工程化的说法在框架侧站稳脚跟：<b style="color:var(--accent)">Graph Engineering</b>——把 Agent 写成一张显式的计算图，节点是模型调用/工具/检索，边是控制流和数据流，工程师负责画图，模型负责填空。这不是给循环换皮，而是控制权的一次搬家。</p>
+    </div>
+    <div class="byline">Filed by · 产品老A<br>Broadsheet · Editorial</div>
+  </section>
+
+  <section class="piece">
+    <h2><span class="num">§01</span>什么是 Graph Engineering</h2>
+    <div class="cols-2">
+      <div>
+        <p>一句话：<b>把 Agent 的控制流从模型手里拿出来，交回给工程师，用一张有向图显式表达。</b></p>
+        <p>图上的每个节点是一个明确职责的原子——"起草回复"、"调检索"、"跑一段 Python"、"叫审核"；边是"这个节点跑完之后去哪个"，可以是硬编码的顺序、条件分支、并行 fan-out、循环回退，也可以是模型基于状态输出的路由决定。整张图有一个共享的、可 checkpoint 的 State 对象，节点读写它、图引擎推进它。</p>
+        <p>这套形状最早在 LangGraph、Pocketflow、Burr、Google ADK、Semantic Kernel Process 这些框架里被抽象出来，但真正让它变成一个"名字"、能被 CTO 挂在嘴边说的，是 2026 年上半年一系列生产事故的反思——大家发现纯循环 Agent 在长任务里，失败模式几乎不可复现，也几乎不可回归测试。</p>
+      </div>
+      <div>
+        <p>Graph Engineering 的核心动作有四条：</p>
+        <p><b>①拆节点。</b>把原本塞进一个大 prompt 的活儿，拆成职责单一、可单测的节点；每个节点自己就是一个可以离线跑的函数。</p>
+        <p><b>②画边。</b>确定的顺序就写硬边，模棱两可的分支才交给"路由节点"让模型二选一——不是让模型决定"下一步做什么"，而是"从这几条已列好的路里挑一条"。</p>
+        <p><b>③管状态。</b>一个显式的 State schema，谁读谁写写得明明白白；每一步都能 checkpoint，出错能从任意节点续跑。</p>
+        <p><b>④插人类。</b>Human-in-the-loop 成为一等公民——图可以在任意节点暂停等审批，而不是"把循环打断"这种脏活。</p>
+      </div>
+    </div>
+
+    <div class="diagram" aria-label="Loop vs Graph 示意">
+      <figure>
+        <svg viewBox="0 0 320 220" role="img" aria-labelledby="loop-t">
+          <title id="loop-t">Loop Engineering：模型在闭环里自我决策</title>
+          <defs>
+            <marker id="ah1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="oklch(38% 0.02 60)"/>
+            </marker>
+          </defs>
+          <circle cx="160" cy="110" r="78" fill="none" stroke="oklch(38% 0.02 60)" stroke-width="1" stroke-dasharray="3 4"/>
+          <g font-family="Fraunces, serif" font-size="13" fill="oklch(18% 0.02 60)" text-anchor="middle">
+            <g><circle cx="160" cy="32" r="22" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="160" y="36">Think</text></g>
+            <g><circle cx="238" cy="110" r="22" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="238" y="114">Act</text></g>
+            <g><circle cx="160" cy="188" r="22" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="160" y="192">Observe</text></g>
+            <g><circle cx="82" cy="110" r="22" fill="oklch(93% 0.018 85)" stroke="oklch(42% 0.06 45)" stroke-width="1.8"/><text x="82" y="114" fill="oklch(42% 0.06 45)">LLM</text></g>
+          </g>
+          <g stroke="oklch(38% 0.02 60)" stroke-width="1.2" fill="none" marker-end="url(#ah1)">
+            <path d="M104,96 Q135,50 140,42"/>
+            <path d="M180,42 Q215,68 222,90"/>
+            <path d="M222,132 Q210,175 178,182"/>
+            <path d="M138,182 Q100,168 88,132"/>
+          </g>
+        </svg>
+        <figcaption>Loop Engineering — <b>模型在闭环里自己决定下一步</b>；结构简单，但失败点无处不在。</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="0 0 320 220" role="img" aria-labelledby="graph-t">
+          <title id="graph-t">Graph Engineering：工程师画图，模型填空</title>
+          <defs>
+            <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="oklch(38% 0.02 60)"/>
+            </marker>
+          </defs>
+          <g font-family="Fraunces, serif" font-size="12" fill="oklch(18% 0.02 60)" text-anchor="middle">
+            <g><rect x="14" y="94" width="66" height="32" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="47" y="114">Intake</text></g>
+            <g><rect x="112" y="40" width="66" height="32" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="145" y="60">Retrieve</text></g>
+            <g><rect x="112" y="148" width="66" height="32" fill="oklch(93% 0.018 85)" stroke="oklch(42% 0.06 45)" stroke-width="1.8"/><text x="145" y="168" fill="oklch(42% 0.06 45)">Route</text></g>
+            <g><rect x="210" y="20" width="70" height="30" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="245" y="39">Draft</text></g>
+            <g><rect x="210" y="70" width="70" height="30" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="245" y="89">Tool</text></g>
+            <g><rect x="210" y="140" width="70" height="30" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="245" y="159">Human</text></g>
+            <g><rect x="210" y="190" width="70" height="26" fill="oklch(93% 0.018 85)" stroke="oklch(18% 0.02 60)" stroke-width="1.5"/><text x="245" y="207">Emit</text></g>
+          </g>
+          <g stroke="oklch(38% 0.02 60)" stroke-width="1.2" fill="none" marker-end="url(#ah2)">
+            <path d="M80,105 Q95,80 110,60"/>
+            <path d="M80,115 Q95,140 110,158"/>
+            <path d="M178,55 Q195,42 208,36"/>
+            <path d="M178,60 Q195,75 208,82"/>
+            <path d="M178,160 Q195,155 208,152"/>
+            <path d="M178,168 Q195,190 208,200"/>
+            <path d="M245,100 Q265,120 265,138" stroke-dasharray="3 3"/>
+          </g>
+        </svg>
+        <figcaption>Graph Engineering — <b>工程师画图，模型只在节点内填空</b>；边是显式的，路径可回放。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="piece">
+    <h2><span class="num">§02</span>Loop Engineering 是怎么回事</h2>
+    <div class="cols-2">
+      <div>
+        <p>Loop Engineering 不是一个坏词，它就是我们过去两年默认在做的事——ReAct 论文之后一路演化下来的主流范式：给模型一个 system prompt、一堆工具描述、一段用户任务，然后进入一个 while 循环，每一轮模型输出"我要调哪个工具、参数是什么"，宿主执行、把结果塞回上下文，再问一次，直到模型说"done"。</p>
+        <p>它的力量在于<b>极致的灵活</b>——面对任何没见过的任务形状，它都能"想办法"；不需要提前建图，不需要写编排代码。Claude Code、Cursor Agent、Cline、Devin 都是这个骨架的极致优化版，靠的是超大上下文、系统提示词的手艺、以及模型自己的规划能力。</p>
+      </div>
+      <div>
+        <p>但它也带来了那种熟悉的痛：</p>
+        <p>长任务会漂——模型走着走着就忘了自己在干什么，或者把已经完成的事情又做一遍。失败不可复现——同一个输入，两次跑出两条不同的路径，日志翻半天找不到"为什么在第 7 步选了这个工具"。回归测试几乎无法建立——你没法给一条"未来会出现"的执行轨迹写单元测试。产线的稳定性靠 prompt 手艺撑着，人一走 prompt 就没人敢改。</p>
+        <p>这些痛不是循环范式的 bug，是它的 feature 的另一面——你选择了"让模型自由"，就同时选择了"让工程性让位"。</p>
+      </div>
+    </div>
+
+    <blockquote class="pull">
+      "Loop 是把方向盘交给模型；Graph 是把地图交给模型，方向盘还在工程师手里。"
+      <cite>— 编者按</cite>
+    </blockquote>
+  </section>
+
+  <section class="piece">
+    <h2><span class="num">§03</span>十项对比：Loop vs Graph</h2>
+    <p>下面这张表只对比两者的<b>工程属性</b>，不评价谁更"聪明"——同一个模型，装在两种骨架里，工程体验截然不同。</p>
+
+    <table class="compare">
+      <caption>Table 01 · Loop Engineering vs Graph Engineering — 十项工程侧对比</caption>
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th><span class="tag">A</span>Loop Engineering</th>
+          <th><span class="tag">B</span>Graph Engineering</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>控制流</th><td>模型每步自己决定下一步做什么。</td><td>工程师画好节点与边，模型只在节点内做局部决策，或从预设路径里挑一条。</td></tr>
+        <tr><th>状态管理</th><td>状态藏在上下文窗口里，随对话滚动。</td><td>显式的 State schema，可读可写、可 checkpoint、可回滚。</td></tr>
+        <tr><th>可预测性</th><td>低——同输入两次可能走两条路。</td><td>高——图形状固定，路径可枚举、可回放。</td></tr>
+        <tr><th>可调试性</th><td>看整段 trace，靠人眼找漂移点。</td><td>逐节点看输入输出，State diff 一目了然。</td></tr>
+        <tr><th>并行能力</th><td>顺序执行为主，靠模型自己想到"能并行"很难。</td><td>fan-out 是图原语，独立子图可以天然并发。</td></tr>
+        <tr><th>版本化</th><td>版本 = prompt 文本 + 工具集。</td><td>版本 = 图拓扑 + 每个节点的 prompt + State schema。</td></tr>
+        <tr><th>Human-in-the-loop</th><td>需要"打断循环"这种脏 hack。</td><td>一等公民——任何节点都能暂停等审批。</td></tr>
+        <tr><th>回归测试</th><td>难——路径无法枚举。</td><td>可以给每个节点单独写测试，也能对完整图做端到端 replay。</td></tr>
+        <tr><th>失败模式</th><td>漂移、死循环、无限重试、忘记目标。</td><td>节点级失败，边界清晰，重试语义明确。</td></tr>
+        <tr><th>擅长场景</th><td>探索性任务、编码副驾、开放问答、任务形状事先未知。</td><td>已知形状的生产工作流、审批链、多方协作、合规敏感场景。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="piece">
+    <h2><span class="num">§04</span>为什么是<br>现在火起来</h2>
+    <div class="callouts">
+      <div class="callout spot">
+        <h3>产线在还债</h3>
+        <p>2024–2025 一轮 Agent 上线潮后，2026 年是"回头修 bug"的一年——SRE 拿着日志问"为什么这个 case 模型走了这条路"，Loop 给不出答案，Graph 至少能给出 State diff。</p>
+      </div>
+      <div class="callout">
+        <h3>模型不再是稀缺资源</h3>
+        <p>推理成本从"每次调用心疼一下"降到"随便打"，一个节点里塞两次 LLM 校验也不心疼；这才让"细粒度节点"成为可能，之前 Loop 是被成本逼出来的粗粒度。</p>
+      </div>
+      <div class="callout">
+        <h3>合规接入</h3>
+        <p>金融/医疗/政府场景要求"每一步为什么这么做"可追溯；Loop 的"模型自己决定"根本进不去这些门，Graph 的显式路径是准入的必要条件。</p>
+      </div>
+      <div class="callout">
+        <h3>框架就位</h3>
+        <p>LangGraph、Google ADK、Semantic Kernel Process、Pocketflow、Burr 在 2025 年下半年到 2026 年初集中成熟，让画图的工程成本从"自己造轮子"降到"import 一下"。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="piece">
+    <h2><span class="num">§05</span>什么时候用哪个</h2>
+    <div class="cols-2">
+      <div>
+        <p><b>选 Loop</b>——当你面对的任务形状每次都不一样，或者根本还不知道会遇到什么。写代码副驾、开放问答、研究型探索、一次性脚本、还在做需求 discovery 的 MVP。这时候你要的是模型的<b>自主性</b>，不是可预测性。硬去建图只会把不确定性提前锁死在错的地方。</p>
+        <p>Claude Code / Cursor Agent 这类工具选 Loop 是对的——它们服务的场景本身就没有"标准形状"，用户明天想要什么谁都不知道。</p>
+      </div>
+      <div>
+        <p><b>选 Graph</b>——当任务形状已经清楚，你要的是可靠地跑一万次，而不是灵光乍现地跑一次。客服工单分诊、合同审查流水线、财报解读、发票核销、多方审批、有回滚需求的操作型 Agent。这时候你要的是<b>可预测</b>与<b>可审计</b>，牺牲一点"随机应变"是划算的。</p>
+        <p>更实际的做法是<b>组合</b>：外层是 Graph 定骨架，某个节点内部塞一个小 Loop 允许模型自由发挥——这样既有边界又有余地。2026 年下半年主流架构会长这个样子。</p>
+      </div>
+    </div>
+    <blockquote class="pull">
+      不是 Loop 输了，是 Loop 该退回它本来擅长的地方——探索；而生产线上，Graph 是把"能跑"变成"能维护"的关键动作。
+      <cite>— 结语</cite>
+    </blockquote>
+  </section>
+
+  <footer class="colophon" role="contentinfo">
+    <div>The Agent Broadsheet · Vol.07 Iss.22 · Set in Fraunces &amp; Noto Serif SC · Printed on newsprint-cream</div>
+    <div>Filed 2026·07·22 · 产品老A · <a href="#top">↑ Back to top</a></div>
+  </footer>
+
+</div>
+
+</body>
+</html>
