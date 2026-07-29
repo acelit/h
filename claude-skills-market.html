@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 技能市场 · Skill Market</title>
+<style>
+  :root{
+    --paper: oklch(96.5% 0.018 95);
+    --paper-raised: oklch(93.5% 0.022 95);
+    --paper-inset: oklch(98% 0.012 95);
+    --ink: oklch(27% 0.02 70);
+    --ink-soft: oklch(46% 0.02 70);
+    --ink-faint: oklch(60% 0.016 75);
+    --rule: oklch(84% 0.02 88);
+    --rule-strong: oklch(72% 0.025 85);
+    --accent: oklch(46% 0.1 148);
+    --accent-deep: oklch(38% 0.09 150);
+    --accent-wash: oklch(92% 0.04 142);
+    --ext: oklch(52% 0.13 46);
+    --ext-wash: oklch(93% 0.045 55);
+    --shell: 1220px;
+    --2xs:4px; --xs:8px; --sm:12px; --md:20px; --lg:32px; --xl:52px; --2xl:80px;
+    --font-display:"Fraunces","Songti SC","STSong","Noto Serif SC",Georgia,serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.62;
+    font-feature-settings:"tnum" 1;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ===== masthead ===== */
+  .masthead{border-bottom:1.5px solid var(--rule-strong);}
+  .masthead-in{max-width:var(--shell);margin:0 auto;padding:var(--lg) var(--lg) var(--md);}
+  .kicker{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;
+    letter-spacing:.28em;color:var(--accent);margin:0 0 var(--sm);
+  }
+  h1.title{
+    font-family:var(--font-display);font-weight:900;
+    font-size:clamp(28px,5.2vw,46px);line-height:1.04;letter-spacing:-.01em;
+    margin:0 0 var(--sm);overflow-wrap:anywhere;
+  }
+  .lede{font-size:15px;max-width:66ch;color:var(--ink-soft);margin:0 0 var(--md);}
+  .lede a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash);transition:border-color .18s;}
+  .lede a:hover{border-color:var(--accent-deep);}
+  .toolbar{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--md);}
+  .search{
+    flex:1;min-width:min(100%,320px);border:none;border-bottom:1.5px solid var(--rule-strong);
+    background:transparent;font-size:17px;font-family:var(--font-body);color:var(--ink);
+    padding:6px 2px;transition:border-color .18s cubic-bezier(.22,.61,.36,1),box-shadow .18s;
+  }
+  .search::placeholder{color:var(--ink-faint);}
+  .search:focus{outline:none;border-color:var(--accent);box-shadow:0 1.5px 0 0 var(--accent);}
+  .readout{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);white-space:nowrap;}
+  .readout b{color:var(--accent-deep);}
+  .langtoggle{
+    display:inline-flex;border:1px solid var(--rule-strong);border-radius:999px;overflow:hidden;
+    font-family:var(--font-mono);font-size:12px;
+  }
+  .langtoggle button{
+    border:none;background:transparent;cursor:pointer;padding:6px 14px;color:var(--ink-faint);
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;transition:all .16s;
+  }
+  .langtoggle button.on{background:var(--accent-wash);color:var(--accent-deep);font-weight:600;}
+  .langtoggle button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+
+  /* ===== shell ===== */
+  .shell{display:grid;grid-template-columns:236px 1fr;max-width:var(--shell);margin:0 auto;}
+  .shell>*{min-width:0;}
+  .rail{position:sticky;top:0;align-self:start;border-right:1px solid var(--rule);padding:var(--lg) var(--md) var(--2xl);max-height:100vh;overflow-y:auto;}
+  .rail-title{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.24em;
+    color:var(--ink-faint);padding-bottom:var(--sm);border-bottom:1px solid var(--rule);margin:0 0 var(--xs);
+  }
+  .rail ul{list-style:none;margin:0;padding:0;}
+  .rail li{
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    padding:7px 10px 7px 12px;border-radius:2px;color:var(--ink-soft);cursor:pointer;position:relative;
+    transition:color .16s,background .16s;
+  }
+  .rail li::before{
+    content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;background:var(--accent);
+    transform:scaleY(0);transform-origin:top;transition:transform .18s;
+  }
+  .rail li:hover{color:var(--ink);background:var(--paper-inset);}
+  .rail li.active{color:var(--accent-deep);background:var(--accent-wash);}
+  .rail li.active::before{transform:scaleY(1);}
+  .rail li:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .rail .cname{font-size:14px;}
+  .rail .ccount{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums;}
+  .rail li.active .ccount{color:var(--accent-deep);}
+
+  /* ===== catalogue ===== */
+  .catalogue{padding:var(--lg) var(--md) var(--2xl) var(--xl);}
+  .cat-block{margin-bottom:var(--xl);}
+  .cat-head{display:flex;align-items:baseline;gap:var(--sm);border-bottom:1.5px solid var(--rule-strong);padding-bottom:var(--xs);margin-bottom:var(--2xs);}
+  .cat-head h2{font-family:var(--font-display);font-weight:600;font-size:clamp(20px,2.6vw,26px);margin:0;}
+  .cat-full{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+  .cat-count{margin-left:auto;font-family:var(--font-mono);font-size:13px;color:var(--accent-deep);font-variant-numeric:tabular-nums;}
+
+  .entry{
+    display:grid;grid-template-columns:52px 1fr auto;column-gap:var(--md);align-items:baseline;
+    padding:var(--md) var(--sm) var(--md) 0;border-bottom:1px solid var(--rule);transition:background .16s;
+  }
+  .entry:hover{background:var(--paper-inset);}
+  .entry:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .entry-num{font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);font-variant-numeric:tabular-nums;padding-left:var(--sm);transition:color .16s;}
+  .entry:hover .entry-num{color:var(--accent);}
+  .entry-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;}
+  .entry-title{font-family:var(--font-display);font-weight:600;font-size:18px;line-height:1.3;margin:0;transition:color .16s;}
+  .entry:hover .entry-title{color:var(--accent-deep);}
+  .entry-en{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+  .badge{font-family:var(--font-mono);font-size:10.5px;border-radius:2px;padding:2px 7px;letter-spacing:.02em;}
+  .badge.official{color:var(--accent-deep);background:var(--accent-wash);}
+  .badge.community{color:var(--ext);background:var(--ext-wash);}
+  .entry-desc{font-size:14px;color:var(--ink-soft);line-height:1.66;max-width:74ch;margin:6px 0 0;}
+  .entry-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .entry-tags span{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);border:1px solid var(--rule-strong);border-radius:2px;padding:2px 8px;}
+  .entry-go{font-family:var(--font-mono);font-size:12px;color:var(--accent-deep);white-space:nowrap;transition:transform .16s ease-out,color .16s;}
+  .entry:hover .entry-go{transform:translateX(3px);color:var(--accent);}
+
+  .empty{padding:var(--2xl) 0;text-align:center;}
+  .empty h3{font-family:var(--font-display);font-size:20px;color:var(--ink-soft);margin:0 0 8px;font-weight:600;}
+  .empty p{font-size:14px;color:var(--ink-faint);margin:0;}
+
+
+  .fade-in{animation:fade .32s ease-out;}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+  @media (max-width:860px){
+    .shell{grid-template-columns:1fr;}
+    .rail{position:sticky;top:0;z-index:5;border-right:none;border-bottom:1px solid var(--rule);max-height:none;background:var(--paper);
+      display:flex;gap:8px;overflow-x:auto;padding:var(--sm) var(--md);white-space:nowrap;}
+    .rail-title{display:none;}
+    .rail ul{display:flex;gap:8px;}
+    .rail li{border:1px solid var(--rule-strong);border-radius:999px;padding:6px 14px;flex:0 0 auto;}
+    .rail li::before{display:none;}
+    .catalogue{padding:var(--md);}
+  }
+  @media (max-width:560px){
+    .entry{grid-template-columns:1fr;row-gap:4px;}
+    .entry-num{padding-left:0;}
+    .entry-go{margin-top:6px;}
+    .masthead-in{padding:var(--md) var(--md) var(--md);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.12s!important;}
+    .fade-in{animation:none;}
+    .entry:hover .entry-go{transform:none;}
+  }
+</style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-in">
+      <p class="kicker">开源技能索引 · Claude Agent Skills</p>
+      <h1 class="title">Claude 技能市场</h1>
+      <p class="lede">汇集 <a href="https://github.com/anthropics/skills/tree/main/skills" target="_blank" rel="noopener">anthropics/skills</a>（官方）与 <a href="https://github.com/ComposioHQ/awesome-claude-skills" target="_blank" rel="noopener">ComposioHQ/awesome-claude-skills</a>（社区精选）两大来源的 Agent 技能。支持中英双语查询、分类浏览，点击任意条目直达对应 GitHub 仓库。</p>
+      <div class="toolbar">
+        <input class="search" id="search" type="search" placeholder="搜索技能名称、描述或标签…（如 pdf、notion、测试）" aria-label="搜索技能">
+        <div class="langtoggle" role="group" aria-label="语言切换">
+          <button id="btn-cn" class="on" type="button">中文</button>
+          <button id="btn-en" type="button">EN</button>
+        </div>
+        <span class="readout" id="readout"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="rail" id="rail">
+      <p class="rail-title">分类 / Categories</p>
+      <ul id="rail-list"></ul>
+    </nav>
+    <main class="catalogue" id="catalogue"></main>
+  </div>
+
+
+<script>
+const CATS = [
+  {id:"official", cn:"官方核心", full:"Anthropic Official"},
+  {id:"doc",      cn:"文档处理", full:"Documents & Files"},
+  {id:"dev",      cn:"开发与代码", full:"Development & Code"},
+  {id:"data",     cn:"数据与分析", full:"Data & Analysis"},
+  {id:"biz",      cn:"商业与营销", full:"Business & Marketing"},
+  {id:"write",    cn:"沟通与写作", full:"Communication & Writing"},
+  {id:"media",    cn:"创意与媒体", full:"Creative & Media"},
+  {id:"prod",     cn:"效率与组织", full:"Productivity"},
+  {id:"pm",       cn:"协作与项目", full:"Collaboration & PM"},
+  {id:"sec",      cn:"安全与系统", full:"Security & Systems"},
+  {id:"app",      cn:"应用自动化", full:"App Automation · Composio"},
+];
+
+// src: "official" = anthropics/skills, "community" = awesome-claude-skills
+const DATA = [
+  // ===== 官方核心 (anthropics/skills) =====
+  {cat:"official", cn:"算法艺术", en:"algorithmic-art", src:"official",
+    dcn:"用代码进行生成式创作，产出算法艺术作品。", den:"Create generative art through code and algorithms.",
+    tags:["生成艺术","创意编程"], url:"https://github.com/anthropics/skills/tree/main/skills/algorithmic-art"},
+  {cat:"official", cn:"品牌规范", en:"brand-guidelines", src:"official",
+    dcn:"应用 Anthropic 的品牌色彩与排版规范。", den:"Applies Anthropic's brand colors and typography.",
+    tags:["品牌","设计规范"], url:"https://github.com/anthropics/skills/tree/main/skills/brand-guidelines"},
+  {cat:"official", cn:"Claude API", en:"claude-api", src:"official",
+    dcn:"使用 Claude API 进行开发的最佳实践指南。", den:"Best practices for building with the Claude API.",
+    tags:["API","开发"], url:"https://github.com/anthropics/skills/tree/main/skills/claude-api"},
+  {cat:"official", cn:"文档协作", en:"doc-coauthoring", src:"official",
+    dcn:"协作式撰写与迭代编辑长文档。", den:"Collaborative authoring and iterative document editing.",
+    tags:["写作","协作"], url:"https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring"},
+  {cat:"official", cn:"前端设计", en:"frontend-design", src:"official",
+    dcn:"高质量前端界面设计，规避 AI 套路化审美。", den:"Frontend UI design with anti-AI-slop rules.",
+    tags:["前端","UI"], url:"https://github.com/anthropics/skills/tree/main/skills/frontend-design"},
+  {cat:"official", cn:"技能创建器", en:"skill-creator", src:"official",
+    dcn:"指导你创建结构良好、高效的 Claude Skill。", den:"Guidance for creating effective Claude Skills.",
+    tags:["元技能","脚手架"], url:"https://github.com/anthropics/skills/tree/main/skills/skill-creator"},
+  {cat:"official", cn:"MCP 构建器", en:"mcp-builder", src:"official",
+    dcn:"指导用 Python 或 TypeScript 构建 MCP 服务器。", den:"Guides creation of MCP servers in Python or TypeScript.",
+    tags:["MCP","服务器"], url:"https://github.com/anthropics/skills/tree/main/skills/mcp-builder"},
+  {cat:"official", cn:"Web Artifact 构建器", en:"web-artifacts-builder", src:"official",
+    dcn:"构建复杂多组件的 HTML Artifact（React / Tailwind / shadcn/ui）。", den:"Build elaborate multi-component HTML artifacts (React, Tailwind, shadcn/ui).",
+    tags:["React","Artifact"], url:"https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder"},
+  {cat:"official", cn:"Web 应用测试", en:"webapp-testing", src:"official",
+    dcn:"使用 Playwright 测试本地 Web 应用。", den:"Tests local web apps using Playwright.",
+    tags:["测试","Playwright"], url:"https://github.com/anthropics/skills/tree/main/skills/webapp-testing"},
+
+  // ===== 文档处理 =====
+  {cat:"doc", cn:"Word 文档", en:"docx", src:"official",
+    dcn:"创建、读取、编辑 Word 文档，支持修订与格式处理。", den:"Create, read, edit Word docs with tracked changes and formatting.",
+    tags:["Word","文档"], url:"https://github.com/anthropics/skills/tree/main/skills/docx"},
+  {cat:"doc", cn:"PDF 处理", en:"pdf", src:"official",
+    dcn:"提取文本、表格与元数据，合并与批注 PDF。", den:"Extract text, tables, metadata; merge & annotate PDFs.",
+    tags:["PDF","提取"], url:"https://github.com/anthropics/skills/tree/main/skills/pdf"},
+  {cat:"doc", cn:"PPT 演示", en:"pptx", src:"official",
+    dcn:"读取、生成、调整幻灯片、版式与模板。", den:"Read, generate, and adjust slides, layouts, templates.",
+    tags:["PPT","幻灯片"], url:"https://github.com/anthropics/skills/tree/main/skills/pptx"},
+  {cat:"doc", cn:"Excel 表格", en:"xlsx", src:"official",
+    dcn:"电子表格操作：公式、图表与数据变换。", den:"Spreadsheet manipulation: formulas, charts, transformations.",
+    tags:["Excel","表格"], url:"https://github.com/anthropics/skills/tree/main/skills/xlsx"},
+  {cat:"doc", cn:"Markdown 转 EPUB", en:"Markdown to EPUB Converter", src:"community",
+    dcn:"将 Markdown / 对话摘要转换为 EPUB 电子书。", den:"Converts markdown/chat summaries into EPUB ebooks.",
+    tags:["EPUB","电子书"], url:"https://github.com/smerchek/claude-epub-skill"},
+  {cat:"doc", cn:"法律团队技能包", en:"Master Claude for Legal", src:"community",
+    dcn:"面向法务团队：NDA 初审、版本对比、引用核验。", den:"Skill pack for legal teams: NDA triage, version diff, citation verifier.",
+    tags:["法律","合同"], url:"https://github.com/sboghossian/master-claude-for-legal"},
+  {cat:"doc", cn:"文章提取", en:"article-extractor", src:"community",
+    dcn:"从网页中提取完整正文与元数据。", den:"Extract full article text and metadata from web pages.",
+    tags:["抓取","正文"], url:"https://github.com/michalparkola/tapestry-skills-for-claude-code/tree/main/article-extractor"},
+
+  // ===== 开发与代码 =====
+  {cat:"dev", cn:"AWS 开发技能", en:"aws-skills", src:"community",
+    dcn:"遵循 CDK 最佳实践与成本优化的 AWS 开发。", den:"AWS development with CDK best practices and cost optimization.",
+    tags:["AWS","云"], url:"https://github.com/zxkane/aws-skills"},
+  {cat:"dev", cn:"Next.js 博客搭建", en:"building-blog", src:"community",
+    dcn:"为 Next.js + Sanity 添加 SEO 优先、支持多语言的博客。", den:"Adds SEO-first, i18n-ready blog to Next.js + Sanity.",
+    tags:["Next.js","博客"], url:"https://github.com/BuildShipGrowRepeat/nextjs-sanity-blog-skill"},
+  {cat:"dev", cn:"更新日志生成", en:"Changelog Generator", src:"community",
+    dcn:"从 git 提交自动生成面向用户的更新日志。", den:"Creates user-facing changelogs from git commits.",
+    tags:["Git","日志"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/changelog-generator"},
+  {cat:"dev", cn:"Chrome 中继", en:"Chrome Relay", src:"community",
+    dcn:"通过本地 CLI 桥接驱动你已打开的 Chrome 会话。", den:"Drives your open Chrome session via a local CLI bridge.",
+    tags:["浏览器","CLI"], url:"https://chrome-relay.kushalsm.com/"},
+  {cat:"dev", cn:"终端标题命名", en:"Claude Code Terminal Title", src:"community",
+    dcn:"为每个终端窗口生成描述当前工作的动态标题。", den:"Gives each terminal window a dynamic title describing its work.",
+    tags:["终端","CLI"], url:"https://github.com/bluzername/claude-code-terminal-title"},
+  {cat:"dev", cn:"D3.js 可视化", en:"D3.js Visualization", src:"community",
+    dcn:"生成 D3 图表与交互式数据可视化。", den:"Produce D3 charts and interactive visualizations.",
+    tags:["D3","可视化"], url:"https://github.com/chrisvoncsefalvay/claude-d3js-skill"},
+  {cat:"dev", cn:"FFUF Web 模糊测试", en:"FFUF Web Fuzzing", src:"community",
+    dcn:"集成 ffuf Web 模糊测试工具。", den:"Integrates the ffuf web fuzzer.",
+    tags:["安全","Fuzz"], url:"https://github.com/jthack/ffuf_claude_skill"},
+  {cat:"dev", cn:"完成开发分支", en:"finishing-a-development-branch", src:"community",
+    dcn:"引导开发工作收尾与分支合并流程。", den:"Guides completion of development work.",
+    tags:["Git","流程"], url:"https://github.com/obra/superpowers/tree/main/skills/finishing-a-development-branch"},
+  {cat:"dev", cn:"全页截图", en:"Full-Page Screenshot", src:"community",
+    dcn:"通过 Chrome DevTools 协议捕获整页截图。", den:"Captures full-page screenshots via Chrome DevTools Protocol.",
+    tags:["截图","CDP"], url:"https://github.com/LewisLiu007/full-page-screenshot"},
+  {cat:"dev", cn:"CTO 智能体套件", en:"great_cto", src:"community",
+    dcn:"7 个子智能体编排完整 SDLC 流水线的插件。", den:"Plugin with 7 subagents orchestrating a full SDLC pipeline.",
+    tags:["多智能体","SDLC"], url:"https://github.com/avelikiy/great_cto"},
+  {cat:"dev", cn:"iOS 模拟器", en:"iOS Simulator", src:"community",
+    dcn:"与 iOS 模拟器交互进行测试与调试。", den:"Interact with iOS Simulator for testing/debugging.",
+    tags:["iOS","调试"], url:"https://github.com/conorluddy/ios-simulator-skill"},
+  {cat:"dev", cn:"Jules 任务委派", en:"jules", src:"community",
+    dcn:"将编码任务委派给 Google Jules AI 智能体。", den:"Delegate coding tasks to Google Jules AI agent.",
+    tags:["委派","智能体"], url:"https://github.com/sanjay3290/ai-skills/tree/main/skills/jules"},
+  {cat:"dev", cn:"精简上下文运行时", en:"lean-ctx", src:"community",
+    dcn:"MCP 服务器 / 上下文运行时，降低 token 消耗。", den:"MCP server/context runtime to reduce token usage.",
+    tags:["MCP","Token"], url:"https://github.com/yvgude/lean-ctx"},
+  {cat:"dev", cn:"MCP 构建器（社区）", en:"MCP Builder", src:"community",
+    dcn:"指导用 Python 或 TypeScript 创建 MCP 服务器。", den:"Guides creation of MCP servers in Python or TypeScript.",
+    tags:["MCP","服务器"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/mcp-builder"},
+  {cat:"dev", cn:"Move 代码质量", en:"move-code-quality-skill", src:"community",
+    dcn:"依据质量清单分析 Move 语言包。", den:"Analyzes Move language packages against quality checklist.",
+    tags:["Move","质量"], url:"https://github.com/1NickPappas/move-code-quality-skill"},
+  {cat:"dev", cn:"OpenWeb 网站访问", en:"OpenWeb", src:"community",
+    dcn:"以智能体原生方式通过 API 访问任意网站。", den:"Agent-native way to access any website via APIs.",
+    tags:["Web","API"], url:"https://github.com/openweb-org/openweb"},
+  {cat:"dev", cn:"Overkill 极致方案", en:"overkill", src:"community",
+    dcn:"针对当前讨论的方案给出最大化 / 极致替代方案。", den:"Surfaces maximalist alternatives to solutions being discussed.",
+    tags:["脑暴","方案"], url:"https://github.com/santiago-vargas-de-kruijf/claude-overkill"},
+  {cat:"dev", cn:"Playwright 浏览器自动化", en:"Playwright Browser Automation", src:"community",
+    dcn:"模型调用式的 Playwright 浏览器自动化。", den:"Model-invoked Playwright automation.",
+    tags:["Playwright","自动化"], url:"https://github.com/lackeyjb/playwright-skill"},
+  {cat:"dev", cn:"提示工程", en:"prompt-engineering", src:"community",
+    dcn:"教授提示工程的技巧与模式。", den:"Teaches prompt engineering techniques and patterns.",
+    tags:["提示词","模式"], url:"https://github.com/NeoLabHQ/context-engineering-kit/tree/master/plugins/customaize-agent/skills/prompt-engineering"},
+  {cat:"dev", cn:"PICT 配对测试", en:"pypict-claude-skill", src:"community",
+    dcn:"使用 PICT 进行配对法测试用例设计。", den:"Design test cases using PICT pairwise testing.",
+    tags:["测试","用例"], url:"https://github.com/omkamal/pypict-claude-skill"},
+  {cat:"dev", cn:"Reddit 抓取", en:"reddit-fetch", src:"community",
+    dcn:"当 WebFetch 受阻时用 Gemini CLI 抓取 Reddit 内容。", den:"Fetches Reddit content via Gemini CLI when WebFetch is blocked.",
+    tags:["抓取","Reddit"], url:"https://github.com/ykdojo/claude-code-tips/tree/main/skills/reddit-fetch"},
+  {cat:"dev", cn:"技能创建器（社区）", en:"Skill Creator", src:"community",
+    dcn:"创建高效 Claude Skill 的指导。", den:"Guidance for creating effective Claude Skills.",
+    tags:["元技能","脚手架"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/skill-creator"},
+  {cat:"dev", cn:"Skill Seekers 文档转技能", en:"Skill Seekers", src:"community",
+    dcn:"将文档网站转换为 Claude 技能。", den:"Converts documentation websites into Claude skills.",
+    tags:["文档","转换"], url:"https://github.com/yusufkaraaslan/Skill_Seekers"},
+  {cat:"dev", cn:"软件架构", en:"software-architecture", src:"community",
+    dcn:"实践整洁架构与 SOLID 原则。", den:"Implements Clean Architecture, SOLID principles.",
+    tags:["架构","SOLID"], url:"https://github.com/NeoLabHQ/context-engineering-kit/tree/master/plugins/ddd/skills/software-architecture"},
+  {cat:"dev", cn:"子智能体驱动开发", en:"subagent-driven-development", src:"community",
+    dcn:"分派子智能体执行任务并设置评审检查点。", den:"Dispatches subagents for tasks with review checkpoints.",
+    tags:["子智能体","开发"], url:"https://github.com/NeoLabHQ/context-engineering-kit/tree/master/plugins/sadd/skills/subagent-driven-development"},
+  {cat:"dev", cn:"测试驱动开发", en:"test-driven-development", src:"community",
+    dcn:"在编写实现代码前先行使用的 TDD 技能。", den:"Use before writing implementation code (TDD).",
+    tags:["TDD","测试"], url:"https://github.com/obra/superpowers/tree/main/skills/test-driven-development"},
+  {cat:"dev", cn:"Git Worktree 隔离", en:"using-git-worktrees", src:"community",
+    dcn:"创建带安全校验的隔离 git worktree。", den:"Creates isolated git worktrees with safety verification.",
+    tags:["Git","隔离"], url:"https://github.com/obra/superpowers/blob/main/skills/using-git-worktrees/"},
+  {cat:"dev", cn:"Web 应用测试（社区）", en:"Webapp Testing", src:"community",
+    dcn:"使用 Playwright 测试本地 Web 应用。", den:"Tests local web apps using Playwright.",
+    tags:["测试","Playwright"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/webapp-testing"},
+
+  // ===== 数据与分析 =====
+  {cat:"data", cn:"CSV 数据摘要", en:"CSV Data Summarizer", src:"community",
+    dcn:"分析 CSV 文件并生成洞察。", den:"Analyzes CSV files and generates insights.",
+    tags:["CSV","分析"], url:"https://github.com/coffeefuelbump/csv-data-summarizer-claude-skill"},
+  {cat:"data", cn:"深度研究", en:"deep-research", src:"community",
+    dcn:"通过 Gemini 进行自主多步深度研究。", den:"Autonomous multi-step research via Gemini.",
+    tags:["研究","自主"], url:"https://github.com/sanjay3290/ai-skills/tree/main/skills/deep-research"},
+  {cat:"data", cn:"PostgreSQL 只读查询", en:"postgres", src:"community",
+    dcn:"对 PostgreSQL 执行安全的只读 SQL 查询。", den:"Safe read-only SQL queries against PostgreSQL.",
+    tags:["SQL","数据库"], url:"https://github.com/sanjay3290/ai-skills/tree/main/skills/postgres"},
+  {cat:"data", cn:"递归研究", en:"recursive-research", src:"community",
+    dcn:"跨领域递归研究，直至博士级深度。", den:"Recursive research up to PhD level across domains.",
+    tags:["研究","递归"], url:"https://github.com/Anjos2/recursive-research"},
+  {cat:"data", cn:"根因追溯", en:"root-cause-tracing", src:"community",
+    dcn:"将错误追溯回最初的触发源头。", den:"Trace errors back to the original trigger.",
+    tags:["调试","根因"], url:"https://github.com/obra/superpowers/tree/main/skills/root-cause-tracing"},
+
+  // ===== 商业与营销 =====
+  {cat:"biz", cn:"品牌构建技能库", en:"Brand Build Skills", src:"community",
+    dcn:"覆盖网站全生命周期的 59 项技能库。", den:"59-skill library covering full website lifecycle.",
+    tags:["品牌","网站"], url:"https://github.com/rampstackco/claude-skills"},
+  {cat:"biz", cn:"品牌规范（社区）", en:"Brand Guidelines", src:"community",
+    dcn:"应用 Anthropic 品牌色彩与排版。", den:"Applies Anthropic's brand colors and typography.",
+    tags:["品牌","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/brand-guidelines"},
+  {cat:"biz", cn:"竞品广告提取", en:"Competitive Ads Extractor", src:"community",
+    dcn:"提取并分析竞争对手的广告投放。", den:"Extracts and analyzes competitors' ads.",
+    tags:["竞品","广告"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/competitive-ads-extractor"},
+  {cat:"biz", cn:"域名头脑风暴", en:"Domain Name Brainstormer", src:"community",
+    dcn:"生成域名创意并跨 TLD 检查可用性。", den:"Generates domain ideas, checks availability across TLDs.",
+    tags:["域名","脑暴"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/domain-name-brainstormer"},
+  {cat:"biz", cn:"内部通讯", en:"Internal Comms", src:"community",
+    dcn:"协助撰写公司内部通讯与新闻通讯。", den:"Helps write internal communications and newsletters.",
+    tags:["内部","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/internal-comms"},
+  {cat:"biz", cn:"线索研究助手", en:"Lead Research Assistant", src:"community",
+    dcn:"识别并甄别高质量销售线索。", den:"Identifies and qualifies high-quality leads.",
+    tags:["销售","线索"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/lead-research-assistant"},
+  {cat:"biz", cn:"内部沟通（官方）", en:"internal-comms", src:"official",
+    dcn:"撰写内部通讯与公司内部信息。", den:"Helps write internal communications and newsletters.",
+    tags:["内部","沟通"], url:"https://github.com/anthropics/skills/tree/main/skills/internal-comms"},
+  {cat:"biz", cn:"定制简历生成", en:"Tailored Resume Generator", src:"community",
+    dcn:"根据职位描述生成量身定制的简历。", den:"Generates resumes tailored to job descriptions.",
+    tags:["简历","求职"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/tailored-resume-generator"},
+
+  // ===== 沟通与写作 =====
+  {cat:"write", cn:"头脑风暴", en:"brainstorming", src:"community",
+    dcn:"将粗略想法转化为成型的设计方案。", den:"Transform rough ideas into fully-formed designs.",
+    tags:["脑暴","构思"], url:"https://github.com/obra/superpowers/tree/main/skills/brainstorming"},
+  {cat:"write", cn:"内容研究写作", en:"Content Research Writer", src:"community",
+    dcn:"辅助写作：研究、引用与反馈。", den:"Assists writing with research, citations, feedback.",
+    tags:["写作","研究"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/content-research-writer"},
+  {cat:"write", cn:"家族史研究", en:"family-history-research", src:"community",
+    dcn:"协助规划家谱 / 家族史研究项目。", den:"Assistance planning genealogy research projects.",
+    tags:["家谱","研究"], url:"https://github.com/emaynard/claude-family-history-research-skill"},
+  {cat:"write", cn:"会议洞察分析", en:"Meeting Insights Analyzer", src:"community",
+    dcn:"分析会议转录，识别行为模式。", den:"Analyzes meeting transcripts for behavioral patterns.",
+    tags:["会议","转录"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/meeting-insights-analyzer"},
+  {cat:"write", cn:"NotebookLM 集成", en:"NotebookLM Integration", src:"community",
+    dcn:"与 NotebookLM 对话，获取有来源支撑的答案。", den:"Chat with NotebookLM for source-grounded answers.",
+    tags:["NotebookLM","问答"], url:"https://github.com/PleasePrompto/notebooklm-skill"},
+  {cat:"write", cn:"Twitter 算法优化", en:"Twitter Algorithm Optimizer", src:"community",
+    dcn:"借助推特开源算法洞察优化推文。", den:"Optimize tweets using Twitter's open-source algorithm insights.",
+    tags:["Twitter","增长"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/twitter-algorithm-optimizer"},
+  {cat:"write", cn:"YouTube 字幕", en:"youtube-transcript", src:"community",
+    dcn:"抓取 YouTube 视频字幕并进行摘要。", den:"Fetch transcripts from YouTube videos and summarize.",
+    tags:["YouTube","字幕"], url:"https://github.com/michalparkola/tapestry-skills-for-claude-code/tree/main/youtube-transcript"},
+
+  // ===== 创意与媒体 =====
+  {cat:"media", cn:"画布设计", en:"canvas-design", src:"official",
+    dcn:"以 PNG 与 PDF 形式创作视觉艺术作品。", den:"Creates visual art in PNG and PDF documents.",
+    tags:["设计","视觉"], url:"https://github.com/anthropics/skills/tree/main/skills/canvas-design"},
+  {cat:"media", cn:"主题工厂", en:"theme-factory", src:"official",
+    dcn:"为 Artifact 应用字体与配色主题（10 套预设）。", den:"Applies font and color themes to artifacts (10 presets).",
+    tags:["主题","配色"], url:"https://github.com/anthropics/skills/tree/main/skills/theme-factory"},
+  {cat:"media", cn:"Slack GIF 生成", en:"slack-gif-creator", src:"official",
+    dcn:"生成适配 Slack 的动态 GIF。", den:"Creates animated GIFs optimized for Slack.",
+    tags:["GIF","Slack"], url:"https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator"},
+  {cat:"media", cn:"AnyDesign 设计分析", en:"anydesign", src:"community",
+    dcn:"分析图片 / URL / Figma 并生成 design.md。", den:"Analyzes image/URL/Figma and generates a design.md.",
+    tags:["设计","Figma"], url:"https://github.com/uxKero/anydesign"},
+  {cat:"media", cn:"Imagen 图像生成", en:"imagen", src:"community",
+    dcn:"使用 Google Gemini API 生成图像。", den:"Generate images using Google Gemini's API.",
+    tags:["图像","Gemini"], url:"https://github.com/sanjay3290/ai-skills/tree/main/skills/imagen"},
+  {cat:"media", cn:"图像增强", en:"Image Enhancer", src:"community",
+    dcn:"提升图片 / 截图的分辨率与清晰度。", den:"Improves image/screenshot resolution and clarity.",
+    tags:["图像","增强"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/image-enhancer"},
+  {cat:"media", cn:"视频下载", en:"Video Downloader", src:"community",
+    dcn:"从 YouTube 等平台下载视频。", den:"Downloads videos from YouTube and other platforms.",
+    tags:["视频","下载"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/video-downloader"},
+  {cat:"media", cn:"SwiftUI 设计", en:"swiftui-design-skill", src:"community",
+    dcn:"SwiftUI 前端设计技能，含反 AI 套路化规则。", den:"SwiftUI frontend design skill; anti-AI-slop rules.",
+    tags:["SwiftUI","设计"], url:"https://github.com/wholiver/swiftui-design-skill"},
+  {cat:"media", cn:"Pixelbin 媒体生成", en:"Pixelbin-Media-Generation", src:"community",
+    dcn:"用 85+ API 组合生成 / 编辑图片与视频。", den:"Generate/edit images & videos with 85+ API portfolio.",
+    tags:["图像","视频"], url:"https://github.com/anandpareek-hub/pixelbin-claude-skill"},
+
+  // ===== 效率与组织 =====
+  {cat:"prod", cn:"文件整理", en:"File Organizer", src:"community",
+    dcn:"按上下文整理文件并查找重复项。", den:"Organizes files by context, finds duplicates.",
+    tags:["文件","整理"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/file-organizer"},
+  {cat:"prod", cn:"发票整理", en:"Invoice Organizer", src:"community",
+    dcn:"整理发票 / 收据以备报税。", den:"Organizes invoices/receipts for tax preparation.",
+    tags:["发票","报税"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/invoice-organizer"},
+  {cat:"prod", cn:"Kaizen 持续改进", en:"kaizen", src:"community",
+    dcn:"基于 Kaizen / 精益的持续改进方法论。", den:"Continuous improvement methodology based on Kaizen/Lean.",
+    tags:["精益","改进"], url:"https://github.com/NeoLabHQ/context-engineering-kit/tree/master/plugins/kaizen/skills/kaizen"},
+  {cat:"prod", cn:"n8n 工作流", en:"n8n-skills", src:"community",
+    dcn:"让 AI 理解并操作 n8n 工作流。", den:"Enables AI to understand and operate n8n workflows.",
+    tags:["n8n","工作流"], url:"https://github.com/haunchen/n8n-skills"},
+  {cat:"prod", cn:"抽奖开奖器", en:"Raffle Winner Picker", src:"community",
+    dcn:"以安全随机数随机抽取中奖者。", den:"Randomly selects winners with secure randomness.",
+    tags:["抽奖","随机"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/raffle-winner-picker"},
+  {cat:"prod", cn:"独立开发者技能", en:"solo-skills", src:"community",
+    dcn:"面向独立开发者与个人创业者的 7 项双语技能。", den:"7 bilingual skills for solo founders and indie devs.",
+    tags:["独立开发","双语"], url:"https://github.com/rockscy/solo-skills"},
+  {cat:"prod", cn:"迭代下一步", en:"ship-learn-next", src:"community",
+    dcn:"通过反馈循环决定下一步做什么 / 学什么。", den:"Iterate on what to build/learn next via feedback loops.",
+    tags:["迭代","反馈"], url:"https://github.com/michalparkola/tapestry-skills-for-claude-code/tree/main/ship-learn-next"},
+  {cat:"prod", cn:"Tapestry 知识网络", en:"tapestry", src:"community",
+    dcn:"互联并摘要文档，织成知识网络。", den:"Interlink and summarize documents into knowledge networks.",
+    tags:["知识库","关联"], url:"https://github.com/michalparkola/tapestry-skills-for-claude-code/tree/main/tapestry"},
+  {cat:"prod", cn:"PDA 任务重构", en:"ASD-AuDHD-PAI-Skills", src:"community",
+    dcn:"辅助技术合集，首个技能重构请求以帮助启动任务。", den:"Assistive collection; pda-reframing helps with task initiation.",
+    tags:["无障碍","辅助"], url:"https://github.com/emory/ASD-AuDHD-PAI-Skills"},
+
+  // ===== 协作与项目管理 =====
+  {cat:"pm", cn:"Git 推送自动化", en:"git-pushing", src:"community",
+    dcn:"自动化 git 操作与仓库交互。", den:"Automate git operations and repository interactions.",
+    tags:["Git","自动化"], url:"https://github.com/mhattingpete/claude-skills-marketplace/tree/main/engineering-workflow-plugin/skills/git-pushing"},
+  {cat:"pm", cn:"Google Workspace 集成", en:"google-workspace-skills", src:"community",
+    dcn:"带 OAuth 的 Google Workspace 集成。", den:"Google Workspace integrations with OAuth.",
+    tags:["Google","集成"], url:"https://github.com/sanjay3290/ai-skills/tree/main/skills"},
+  {cat:"pm", cn:"Mercury MCP 速查", en:"mercury-mcp", src:"community",
+    dcn:"Mercury（Proton）MCP 工具速查表。", den:"Cheatsheet for Mercury (Proton) MCP tools.",
+    tags:["MCP","速查"], url:"https://www.teamoffsite.ai/proton/docs/skill"},
+  {cat:"pm", cn:"Outline 文档管理", en:"outline", src:"community",
+    dcn:"管理 Outline wiki 实例中的文档。", den:"Manage documents in Outline wiki instances.",
+    tags:["Wiki","文档"], url:"https://github.com/sanjay3290/ai-skills/tree/main/skills/outline"},
+  {cat:"pm", cn:"实现方案评审", en:"review-implementing", src:"community",
+    dcn:"对照规格评估代码实现计划。", den:"Evaluate code implementation plans against specs.",
+    tags:["评审","规格"], url:"https://github.com/mhattingpete/claude-skills-marketplace/tree/main/engineering-workflow-plugin/skills/review-implementing"},
+  {cat:"pm", cn:"测试修复", en:"test-fixing", src:"community",
+    dcn:"检测失败测试并提出补丁。", den:"Detect failing tests and propose patches.",
+    tags:["测试","修复"], url:"https://github.com/mhattingpete/claude-skills-marketplace/tree/main/engineering-workflow-plugin/skills/test-fixing"},
+
+  // ===== 安全与系统 =====
+  {cat:"sec", cn:"计算机取证", en:"computer-forensics", src:"community",
+    dcn:"数字取证分析与调查。", den:"Digital forensics analysis and investigation.",
+    tags:["取证","安全"], url:"https://github.com/mhattingpete/claude-skills-marketplace/tree/main/computer-forensics-skills/skills/computer-forensics"},
+  {cat:"sec", cn:"安全文件删除", en:"file-deletion", src:"community",
+    dcn:"安全文件删除与数据擦除。", den:"Secure file deletion and data sanitization.",
+    tags:["删除","擦除"], url:"https://github.com/mhattingpete/claude-skills-marketplace/tree/main/computer-forensics-skills/skills/file-deletion"},
+  {cat:"sec", cn:"元数据提取", en:"metadata-extraction", src:"community",
+    dcn:"为取证提取并分析文件元数据。", den:"Extract and analyze file metadata for forensics.",
+    tags:["元数据","取证"], url:"https://github.com/mhattingpete/claude-skills-marketplace/tree/main/computer-forensics-skills/skills/metadata-extraction"},
+  {cat:"sec", cn:"Sigma 规则威胁狩猎", en:"threat-hunting-with-sigma-rules", src:"community",
+    dcn:"使用 Sigma 检测规则进行威胁狩猎。", den:"Use Sigma detection rules to hunt threats.",
+    tags:["威胁","Sigma"], url:"https://github.com/jthack/threat-hunting-with-sigma-rules-skill"},
+
+  // ===== 应用自动化 (Composio · Rube MCP) =====
+  {cat:"app", cn:"Close 自动化", en:"Close Automation", src:"community",
+    dcn:"线索、联系人、商机、活动、管道。", den:"Close CRM: leads, contacts, opportunities, activities, and pipelines.",
+    tags:["Close","CRM"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/close-automation"},
+  {cat:"app", cn:"HubSpot 自动化", en:"HubSpot Automation", src:"community",
+    dcn:"联系人、交易、公司、工单、邮件互动。", den:"HubSpot CRM: contacts, deals, companies, tickets, and email engagement.",
+    tags:["HubSpot","CRM"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/hubspot-automation"},
+  {cat:"app", cn:"Pipedrive 自动化", en:"Pipedrive Automation", src:"community",
+    dcn:"交易、联系人、组织、活动、管道。", den:"Pipedrive: deals, contacts, organizations, activities, and pipelines.",
+    tags:["Pipedrive","CRM"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/pipedrive-automation"},
+  {cat:"app", cn:"Salesforce 自动化", en:"Salesforce Automation", src:"community",
+    dcn:"对象、记录、SOQL 查询、批量操作。", den:"Salesforce: objects, records, SOQL queries, and bulk operations.",
+    tags:["Salesforce","CRM"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/salesforce-automation"},
+  {cat:"app", cn:"Zoho CRM 自动化", en:"Zoho CRM Automation", src:"community",
+    dcn:"线索、联系人、交易、客户、模块。", den:"Zoho CRM: leads, contacts, deals, accounts, and modules.",
+    tags:["Zoho CRM","CRM"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/zoho-crm-automation"},
+  {cat:"app", cn:"Asana 自动化", en:"Asana Automation", src:"community",
+    dcn:"任务、项目、分区、分配、工作区。", den:"Asana: tasks, projects, sections, assignments, and workspaces.",
+    tags:["Asana","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/asana-automation"},
+  {cat:"app", cn:"Basecamp 自动化", en:"Basecamp Automation", src:"community",
+    dcn:"待办清单、消息、人员、群组、项目。", den:"Basecamp: to-do lists, messages, people, groups, and projects.",
+    tags:["Basecamp","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/basecamp-automation"},
+  {cat:"app", cn:"ClickUp 自动化", en:"ClickUp Automation", src:"community",
+    dcn:"任务、列表、空间、目标、工时。", den:"ClickUp: tasks, lists, spaces, goals, and time tracking.",
+    tags:["ClickUp","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/clickup-automation"},
+  {cat:"app", cn:"Jira 自动化", en:"Jira Automation", src:"community",
+    dcn:"Issue、项目、看板、Sprint、JQL 查询。", den:"Jira: issues, projects, boards, sprints, and JQL queries.",
+    tags:["Jira","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/jira-automation"},
+  {cat:"app", cn:"Linear 自动化", en:"Linear Automation", src:"community",
+    dcn:"Issue、项目、周期、团队、工作流。", den:"Linear: issues, projects, cycles, teams, and workflows.",
+    tags:["Linear","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/linear-automation"},
+  {cat:"app", cn:"Monday 自动化", en:"Monday Automation", src:"community",
+    dcn:"看板、条目、字段、群组、工作区。", den:"Monday.com: boards, items, columns, groups, and workspaces.",
+    tags:["Monday","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/monday-automation"},
+  {cat:"app", cn:"Notion 自动化", en:"Notion Automation", src:"community",
+    dcn:"页面、数据库、块、评论、搜索。", den:"Notion: pages, databases, blocks, comments, and search.",
+    tags:["Notion","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/notion-automation"},
+  {cat:"app", cn:"Todoist 自动化", en:"Todoist Automation", src:"community",
+    dcn:"任务、项目、分区、标签、过滤器。", den:"Todoist: tasks, projects, sections, labels, and filters.",
+    tags:["Todoist","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/todoist-automation"},
+  {cat:"app", cn:"Trello 自动化", en:"Trello Automation", src:"community",
+    dcn:"看板、卡片、列表、成员、清单。", den:"Trello: boards, cards, lists, members, and checklists.",
+    tags:["Trello","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/trello-automation"},
+  {cat:"app", cn:"Wrike 自动化", en:"Wrike Automation", src:"community",
+    dcn:"任务、文件夹、项目、评论、工作流。", den:"Wrike: tasks, folders, projects, comments, and workflows.",
+    tags:["Wrike","项目"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/wrike-automation"},
+  {cat:"app", cn:"Discord 自动化", en:"Discord Automation", src:"community",
+    dcn:"消息、频道、服务器、角色、表情反应。", den:"Discord: messages, channels, servers, roles, and reactions.",
+    tags:["Discord","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/discord-automation"},
+  {cat:"app", cn:"Intercom 自动化", en:"Intercom Automation", src:"community",
+    dcn:"会话、联系人、公司、工单、文章。", den:"Intercom: conversations, contacts, companies, tickets, and articles.",
+    tags:["Intercom","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/intercom-automation"},
+  {cat:"app", cn:"Microsoft Teams 自动化", en:"Microsoft Teams Automation", src:"community",
+    dcn:"消息、频道、团队、聊天、会议。", den:"Teams: messages, channels, teams, chats, and meetings.",
+    tags:["Microsoft Team","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/microsoft-teams-automation"},
+  {cat:"app", cn:"Slack 自动化", en:"Slack Automation", src:"community",
+    dcn:"消息、频道、搜索、表情反应、话题、定时。", den:"Slack: messages, channels, search, reactions, threads, and scheduling.",
+    tags:["Slack","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/slack-automation"},
+  {cat:"app", cn:"Telegram 自动化", en:"Telegram Automation", src:"community",
+    dcn:"消息、聊天、媒体、群组、机器人。", den:"Telegram: messages, chats, media, groups, and bots.",
+    tags:["Telegram","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/telegram-automation"},
+  {cat:"app", cn:"WhatsApp 自动化", en:"WhatsApp Automation", src:"community",
+    dcn:"消息、媒体、模板、群组、商业资料。", den:"WhatsApp: messages, media, templates, groups, and business profiles.",
+    tags:["WhatsApp","沟通"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/whatsapp-automation"},
+  {cat:"app", cn:"Gmail 自动化", en:"Gmail Automation", src:"community",
+    dcn:"收发回复、搜索、标签、草稿、附件。", den:"Gmail: send/reply, search, labels, drafts, and attachments.",
+    tags:["Gmail","邮件"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/gmail-automation"},
+  {cat:"app", cn:"Outlook 自动化", en:"Outlook Automation", src:"community",
+    dcn:"邮件、文件夹、联系人、日历集成。", den:"Outlook: emails, folders, contacts, and calendar integration.",
+    tags:["Outlook","邮件"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/outlook-automation"},
+  {cat:"app", cn:"Postmark 自动化", en:"Postmark Automation", src:"community",
+    dcn:"事务邮件、模板、服务器、发送统计。", den:"Postmark: transactional emails, templates, servers, and delivery stats.",
+    tags:["Postmark","邮件"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/postmark-automation"},
+  {cat:"app", cn:"SendGrid 自动化", en:"SendGrid Automation", src:"community",
+    dcn:"邮件、模板、联系人、列表、活动统计。", den:"SendGrid: emails, templates, contacts, lists, and campaign stats.",
+    tags:["SendGrid","邮件"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/sendgrid-automation"},
+  {cat:"app", cn:"Bitbucket 自动化", en:"Bitbucket Automation", src:"community",
+    dcn:"仓库、PR、分支、Issue、工作区。", den:"Bitbucket: repos, PRs, branches, issues, and workspaces.",
+    tags:["Bitbucket","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/bitbucket-automation"},
+  {cat:"app", cn:"CircleCI 自动化", en:"CircleCI Automation", src:"community",
+    dcn:"管道、工作流、任务、项目配置。", den:"CircleCI: pipelines, workflows, jobs, and project configuration.",
+    tags:["CircleCI","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/circleci-automation"},
+  {cat:"app", cn:"Datadog 自动化", en:"Datadog Automation", src:"community",
+    dcn:"监控、仪表盘、指标、事件、告警。", den:"Datadog: monitors, dashboards, metrics, incidents, and alerts.",
+    tags:["Datadog","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/datadog-automation"},
+  {cat:"app", cn:"GitHub 自动化", en:"GitHub Automation", src:"community",
+    dcn:"Issue、PR、仓库、分支、Actions、代码搜索。", den:"GitHub: issues, PRs, repos, branches, actions, and code search.",
+    tags:["GitHub","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/github-automation"},
+  {cat:"app", cn:"GitLab 自动化", en:"GitLab Automation", src:"community",
+    dcn:"Issue、MR、项目、管道、分支。", den:"GitLab: issues, MRs, projects, pipelines, and branches.",
+    tags:["GitLab","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/gitlab-automation"},
+  {cat:"app", cn:"PagerDuty 自动化", en:"PagerDuty Automation", src:"community",
+    dcn:"事件、服务、排期、升级策略、值班。", den:"PagerDuty: incidents, services, schedules, escalation policies, and on-call.",
+    tags:["PagerDuty","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/pagerduty-automation"},
+  {cat:"app", cn:"Render 自动化", en:"Render Automation", src:"community",
+    dcn:"服务、部署、项目管理。", den:"Render: services, deploys, and project management.",
+    tags:["Render","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/render-automation"},
+  {cat:"app", cn:"Sentry 自动化", en:"Sentry Automation", src:"community",
+    dcn:"Issue、事件、项目、发布、告警。", den:"Sentry: issues, events, projects, releases, and alerts.",
+    tags:["Sentry","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/sentry-automation"},
+  {cat:"app", cn:"Supabase 自动化", en:"Supabase Automation", src:"community",
+    dcn:"SQL 查询、表结构、边缘函数、存储。", den:"Supabase: SQL queries, table schemas, edge functions, and storage.",
+    tags:["Supabase","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/supabase-automation"},
+  {cat:"app", cn:"Vercel 自动化", en:"Vercel Automation", src:"community",
+    dcn:"部署、项目、域名、环境变量、日志。", den:"Vercel: deployments, projects, domains, environment variables, and logs.",
+    tags:["Vercel","DevOps"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/vercel-automation"},
+  {cat:"app", cn:"Box 自动化", en:"Box Automation", src:"community",
+    dcn:"文件、文件夹、搜索、共享、协作、签署请求。", den:"Box: files, folders, search, sharing, collaborations, and sign requests.",
+    tags:["Box","存储"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/box-automation"},
+  {cat:"app", cn:"Dropbox 自动化", en:"Dropbox Automation", src:"community",
+    dcn:"文件、文件夹、搜索、共享、批量操作。", den:"Dropbox: files, folders, search, sharing, and batch operations.",
+    tags:["Dropbox","存储"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/dropbox-automation"},
+  {cat:"app", cn:"Google Drive 自动化", en:"Google Drive Automation", src:"community",
+    dcn:"上传、下载、搜索、共享、整理文件。", den:"Google Drive: upload, download, search, share, and organize files.",
+    tags:["Google Drive","存储"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/google-drive-automation"},
+  {cat:"app", cn:"OneDrive 自动化", en:"OneDrive Automation", src:"community",
+    dcn:"文件、文件夹、搜索、共享、权限、版本。", den:"OneDrive: files, folders, search, sharing, permissions, and versioning.",
+    tags:["OneDrive","存储"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/one-drive-automation"},
+  {cat:"app", cn:"Airtable 自动化", en:"Airtable Automation", src:"community",
+    dcn:"记录、表、Base、视图、字段管理。", den:"Airtable: records, tables, bases, views, and field management.",
+    tags:["Airtable","数据库"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/airtable-automation"},
+  {cat:"app", cn:"Coda 自动化", en:"Coda Automation", src:"community",
+    dcn:"文档、表、行、公式、自动化。", den:"Coda: docs, tables, rows, formulas, and automations.",
+    tags:["Coda","数据库"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/coda-automation"},
+  {cat:"app", cn:"Google Sheets 自动化", en:"Google Sheets Automation", src:"community",
+    dcn:"单元格读写、格式、公式、批量操作。", den:"Google Sheets: read/write cells, formatting, formulas, and batch operations.",
+    tags:["Google Sheets","数据库"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/googlesheets-automation"},
+  {cat:"app", cn:"Cal.com 自动化", en:"Cal.com Automation", src:"community",
+    dcn:"事件类型、预约、可用时段、定时。", den:"Cal.com: event types, bookings, availability, and scheduling.",
+    tags:["Cal.com","日程"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/cal-com-automation"},
+  {cat:"app", cn:"Calendly 自动化", en:"Calendly Automation", src:"community",
+    dcn:"事件、受邀者、事件类型、预约链接、可用时段。", den:"Calendly: events, invitees, event types, scheduling links, and availability.",
+    tags:["Calendly","日程"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/calendly-automation"},
+  {cat:"app", cn:"Google Calendar 自动化", en:"Google Calendar Automation", src:"community",
+    dcn:"事件、参与者、忙闲状态、周期排期。", den:"Google Calendar: events, attendees, free/busy, and recurring schedules.",
+    tags:["Google Calenda","日程"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/google-calendar-automation"},
+  {cat:"app", cn:"Outlook Calendar 自动化", en:"Outlook Calendar Automation", src:"community",
+    dcn:"事件、参与者、提醒、周期排期。", den:"Outlook Calendar: events, attendees, reminders, and recurring schedules.",
+    tags:["Outlook Calend","日程"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/outlook-calendar-automation"},
+  {cat:"app", cn:"Instagram 自动化", en:"Instagram Automation", src:"community",
+    dcn:"帖子、故事、评论、媒体、商业洞察。", den:"Instagram: posts, stories, comments, media, and business insights.",
+    tags:["Instagram","社媒"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/instagram-automation"},
+  {cat:"app", cn:"LinkedIn 自动化", en:"LinkedIn Automation", src:"community",
+    dcn:"帖子、资料、公司、图片、评论。", den:"LinkedIn: posts, profiles, companies, images, and comments.",
+    tags:["LinkedIn","社媒"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/linkedin-automation"},
+  {cat:"app", cn:"Reddit 自动化", en:"Reddit Automation", src:"community",
+    dcn:"帖子、评论、子版块、投票、审核。", den:"Reddit: posts, comments, subreddits, voting, and moderation.",
+    tags:["Reddit","社媒"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/reddit-automation"},
+  {cat:"app", cn:"TikTok 自动化", en:"TikTok Automation", src:"community",
+    dcn:"视频上传、查询、创作者管理。", den:"TikTok: video uploads, queries, and creator management.",
+    tags:["TikTok","社媒"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/tiktok-automation"},
+  {cat:"app", cn:"Twitter 自动化", en:"Twitter Automation", src:"community",
+    dcn:"推文、搜索、用户、列表、互动。", den:"Twitter/X: tweets, search, users, lists, and engagement.",
+    tags:["Twitter","社媒"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/twitter-automation"},
+  {cat:"app", cn:"YouTube 自动化", en:"YouTube Automation", src:"community",
+    dcn:"视频、频道、播放列表、评论、订阅。", den:"YouTube: videos, channels, playlists, comments, and subscriptions.",
+    tags:["YouTube","社媒"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/youtube-automation"},
+  {cat:"app", cn:"ActiveCampaign 自动化", en:"ActiveCampaign Automation", src:"community",
+    dcn:"联系人、交易、营销活动、列表、自动化。", den:"ActiveCampaign: contacts, deals, campaigns, lists, and automations.",
+    tags:["ActiveCampaign","营销"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/activecampaign-automation"},
+  {cat:"app", cn:"Brevo 自动化", en:"Brevo Automation", src:"community",
+    dcn:"联系人、邮件营销、事务邮件、列表。", den:"Brevo: contacts, email campaigns, transactional emails, and lists.",
+    tags:["Brevo","营销"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/brevo-automation"},
+  {cat:"app", cn:"ConvertKit 自动化", en:"ConvertKit Automation", src:"community",
+    dcn:"订阅者、标签、序列、群发、表单。", den:"ConvertKit (Kit): subscribers, tags, sequences, broadcasts, and forms.",
+    tags:["ConvertKit","营销"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/convertkit-automation"},
+  {cat:"app", cn:"Klaviyo 自动化", en:"Klaviyo Automation", src:"community",
+    dcn:"资料、列表、分群、营销活动、事件。", den:"Klaviyo: profiles, lists, segments, campaigns, and events.",
+    tags:["Klaviyo","营销"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/klaviyo-automation"},
+  {cat:"app", cn:"Mailchimp 自动化", en:"Mailchimp Automation", src:"community",
+    dcn:"受众、营销活动、模板、分群、报表。", den:"Mailchimp: audiences, campaigns, templates, segments, and reports.",
+    tags:["Mailchimp","营销"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/mailchimp-automation"},
+  {cat:"app", cn:"Freshdesk 自动化", en:"Freshdesk Automation", src:"community",
+    dcn:"工单、联系人、客服坐席、群组、预设回复。", den:"Freshdesk: tickets, contacts, agents, groups, and canned responses.",
+    tags:["Freshdesk","客服"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/freshdesk-automation"},
+  {cat:"app", cn:"Freshservice 自动化", en:"Freshservice Automation", src:"community",
+    dcn:"工单、素材、变更、问题、服务目录。", den:"Freshservice: tickets, assets, changes, problems, and service catalog.",
+    tags:["Freshservice","客服"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/freshservice-automation"},
+  {cat:"app", cn:"Help Scout 自动化", en:"Help Scout Automation", src:"community",
+    dcn:"会话、客户、邮箱、标签。", den:"Help Scout: conversations, customers, mailboxes, and tags.",
+    tags:["Help Scout","客服"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/helpdesk-automation"},
+  {cat:"app", cn:"Zendesk 自动化", en:"Zendesk Automation", src:"community",
+    dcn:"工单、用户、组织、搜索、宏。", den:"Zendesk: tickets, users, organizations, search, and macros.",
+    tags:["Zendesk","客服"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/zendesk-automation"},
+  {cat:"app", cn:"Shopify 自动化", en:"Shopify Automation", src:"community",
+    dcn:"商品、订单、客户、库存、GraphQL 查询。", den:"Shopify: products, orders, customers, inventory, and GraphQL queries.",
+    tags:["Shopify","电商"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/shopify-automation"},
+  {cat:"app", cn:"Square 自动化", en:"Square Automation", src:"community",
+    dcn:"支付、客户、目录、订单、门店。", den:"Square: payments, customers, catalog, orders, and locations.",
+    tags:["Square","电商"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/square-automation"},
+  {cat:"app", cn:"Stripe 自动化", en:"Stripe Automation", src:"community",
+    dcn:"扣款、客户、商品、订阅、退款。", den:"Stripe: charges, customers, products, subscriptions, and refunds.",
+    tags:["Stripe","电商"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/stripe-automation"},
+  {cat:"app", cn:"Canva 自动化", en:"Canva Automation", src:"community",
+    dcn:"设计稿、模板、素材、文件夹、品牌套件。", den:"Canva: designs, templates, assets, folders, and brand kits.",
+    tags:["Canva","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/canva-automation"},
+  {cat:"app", cn:"Confluence 自动化", en:"Confluence Automation", src:"community",
+    dcn:"页面、空间、搜索、CQL、标签、版本。", den:"Confluence: pages, spaces, search, CQL, labels, and versions.",
+    tags:["Confluence","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/confluence-automation"},
+  {cat:"app", cn:"DocuSign 自动化", en:"DocuSign Automation", src:"community",
+    dcn:"信封、模板、电子签、文档管理。", den:"DocuSign: envelopes, templates, signing, and document management.",
+    tags:["DocuSign","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/docusign-automation"},
+  {cat:"app", cn:"Figma 自动化", en:"Figma Automation", src:"community",
+    dcn:"文件、组件、评论、项目、团队管理。", den:"Figma: files, components, comments, projects, and team management.",
+    tags:["Figma","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/figma-automation"},
+  {cat:"app", cn:"Miro 自动化", en:"Miro Automation", src:"community",
+    dcn:"看板、便签、图形、连接器、条目。", den:"Miro: boards, sticky notes, shapes, connectors, and items.",
+    tags:["Miro","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/miro-automation"},
+  {cat:"app", cn:"Webflow 自动化", en:"Webflow Automation", src:"community",
+    dcn:"CMS 集合、条目、站点、发布、素材。", den:"Webflow: CMS collections, items, sites, publishing, and assets.",
+    tags:["Webflow","设计"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/webflow-automation"},
+  {cat:"app", cn:"Amplitude 自动化", en:"Amplitude Automation", src:"community",
+    dcn:"事件、用户群组、用户属性、分析查询。", den:"Amplitude: events, cohorts, user properties, and analytics queries.",
+    tags:["Amplitude","数据"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/amplitude-automation"},
+  {cat:"app", cn:"Google Analytics 自动化", en:"Google Analytics Automation", src:"community",
+    dcn:"报表、维度、指标、属性管理。", den:"Google Analytics: reports, dimensions, metrics, and property management.",
+    tags:["Google Analyti","数据"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/google-analytics-automation"},
+  {cat:"app", cn:"Mixpanel 自动化", en:"Mixpanel Automation", src:"community",
+    dcn:"事件、漏斗、用户群组、标注、JQL 查询。", den:"Mixpanel: events, funnels, cohorts, annotations, and JQL queries.",
+    tags:["Mixpanel","数据"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/mixpanel-automation"},
+  {cat:"app", cn:"PostHog 自动化", en:"PostHog Automation", src:"community",
+    dcn:"事件、人员、功能开关、洞察、标注。", den:"PostHog: events, persons, feature flags, insights, and annotations.",
+    tags:["PostHog","数据"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/posthog-automation"},
+  {cat:"app", cn:"Segment 自动化", en:"Segment Automation", src:"community",
+    dcn:"数据源、目的地、事件追踪、数仓连接。", den:"Segment: sources, destinations, tracking, and warehouse connections.",
+    tags:["Segment","数据"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/segment-automation"},
+  {cat:"app", cn:"BambooHR 自动化", en:"BambooHR Automation", src:"community",
+    dcn:"员工、休假、报表、通讯录管理。", den:"BambooHR: employees, time off, reports, and directory management.",
+    tags:["BambooHR","人力"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/bamboohr-automation"},
+  {cat:"app", cn:"Make 自动化", en:"Make Automation", src:"community",
+    dcn:"场景、连接、执行管理。", den:"Make (Integromat): scenarios, connections, and execution management.",
+    tags:["Make","自动化"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/make-automation"},
+  {cat:"app", cn:"Zoom 自动化", en:"Zoom Automation", src:"community",
+    dcn:"会议、录制、参与者、网络研讨会、报表。", den:"Zoom: meetings, recordings, participants, webinars, and reports.",
+    tags:["Zoom","会议"], url:"https://github.com/ComposioHQ/awesome-claude-skills/blob/master/zoom-automation"},
+];
+
+// ---- state ----
+let activeCat = "all";
+let lang = "cn";
+const railList = document.getElementById("rail-list");
+const catalogue = document.getElementById("catalogue");
+const readout = document.getElementById("readout");
+const searchEl = document.getElementById("search");
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function catCount(id){return DATA.filter(d=>d.cat===id).length;}
+
+function buildRail(){
+  const total = DATA.length;
+  let html = `<li data-cat="all" class="${activeCat==="all"?"active":""}" tabindex="0">
+      <span class="cname">${lang==="cn"?"全部":"All"}</span><span class="ccount">${total}</span></li>`;
+  CATS.forEach(c=>{
+    const n = catCount(c.id);
+    if(!n) return;
+    html += `<li data-cat="${c.id}" class="${activeCat===c.id?"active":""}" tabindex="0">
+      <span class="cname">${lang==="cn"?esc(c.cn):esc(c.full)}</span><span class="ccount">${n}</span></li>`;
+  });
+  railList.innerHTML = html;
+  railList.querySelectorAll("li").forEach(li=>{
+    const set=()=>{activeCat=li.dataset.cat;buildRail();render();catalogue.scrollIntoView({behavior:"smooth",block:"start"});};
+    li.addEventListener("click",set);
+    li.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();set();}});
+  });
+}
+
+function matches(d,q){
+  if(!q) return true;
+  const hay = (d.cn+" "+d.en+" "+d.dcn+" "+d.den+" "+d.tags.join(" ")+" "+
+    (CATS.find(c=>c.id===d.cat)?.cn||"")).toLowerCase();
+  return q.split(/\s+/).every(t=>hay.includes(t));
+}
+
+function render(){
+  const q = searchEl.value.trim().toLowerCase();
+  const cats = activeCat==="all" ? CATS.map(c=>c.id) : [activeCat];
+  let num = 0, shown = 0, html = "";
+  cats.forEach(cid=>{
+    const c = CATS.find(x=>x.id===cid);
+    const items = DATA.filter(d=>d.cat===cid && matches(d,q));
+    if(!items.length) return;
+    html += `<section class="cat-block"><header class="cat-head">
+      <h2>${lang==="cn"?esc(c.cn):esc(c.full)}</h2>
+      <span class="cat-full">${lang==="cn"?esc(c.full):esc(c.cn)}</span>
+      <span class="cat-count">${items.length}</span></header>`;
+    items.forEach(d=>{
+      num++; shown++;
+      const title = lang==="cn"?esc(d.cn):esc(d.en);
+      const sub   = lang==="cn"?esc(d.en):esc(d.cn);
+      const desc  = lang==="cn"?esc(d.dcn):esc(d.den);
+      const badge = d.src==="official"
+        ? `<span class="badge official">${lang==="cn"?"官方":"Official"}</span>`
+        : `<span class="badge community">${lang==="cn"?"社区":"Community"}</span>`;
+      const tags = d.tags.map(t=>`<span>${esc(t)}</span>`).join("");
+      html += `<a class="entry" href="${esc(d.url)}" target="_blank" rel="noopener" title="${esc(d.en)}">
+        <span class="entry-num">${String(num).padStart(3,"0")}</span>
+        <span class="entry-main">
+          <span class="entry-head">
+            <h3 class="entry-title">${title}</h3>
+            <span class="entry-en">${sub}</span>
+            ${badge}
+          </span>
+          <p class="entry-desc">${desc}</p>
+          <span class="entry-tags">${tags}</span>
+        </span>
+        <span class="entry-go">GitHub ↗</span>
+      </a>`;
+    });
+    html += `</section>`;
+  });
+  if(!shown){
+    html = `<div class="empty"><h3>${lang==="cn"?"没有匹配的技能":"No matching skills"}</h3>
+      <p>${lang==="cn"?"换个关键词或切换分类试试":"Try another keyword or category"}</p></div>`;
+  }
+  catalogue.innerHTML = html;
+  catalogue.classList.remove("fade-in"); void catalogue.offsetWidth; catalogue.classList.add("fade-in");
+  readout.innerHTML = lang==="cn"
+    ? `共 <b>${shown}</b> / 全部 ${DATA.length} 个技能`
+    : `<b>${shown}</b> / ${DATA.length} skills`;
+}
+
+searchEl.addEventListener("input",render);
+document.getElementById("btn-cn").addEventListener("click",()=>setLang("cn"));
+document.getElementById("btn-en").addEventListener("click",()=>setLang("en"));
+function setLang(l){
+  if(lang===l) return;
+  lang=l;
+  document.getElementById("btn-cn").classList.toggle("on",l==="cn");
+  document.getElementById("btn-en").classList.toggle("on",l==="en");
+  searchEl.placeholder = l==="cn"
+    ? "搜索技能名称、描述或标签…（如 pdf、notion、测试）"
+    : "Search skills by name, description or tag…";
+  buildRail(); render();
+}
+
+buildRail();
+render();
+</script>
+</body>
+</html>
