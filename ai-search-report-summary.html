@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI搜索的现状、困境与出路 — 研究报告</title>
+<style>
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #1a1a26;
+  --bg-elevated: #222233;
+  --accent: #ff3b3b;
+  --accent-soft: #ff6b6b;
+  --accent-glow: rgba(255, 59, 59, 0.15);
+  --text-primary: #f0f0f5;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: #2a2a3a;
+  --border-accent: #3a2a2a;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', Consolas, monospace;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLL ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease-out) forwards;
+}
+.animate-scale { animation: scaleIn 0.6s var(--ease-out) forwards; }
+.animate-slide { animation: slideLeft 0.7s var(--ease-out) forwards; }
+
+/* ===== HERO SECTION — DATA DRIVEN ===== */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 80px 48px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 32px;
+  animation: fadeUp 0.6s var(--ease-out) 0.2s both;
+}
+.hero-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-title {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.7s var(--ease-out) 0.3s both;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.8;
+  animation: fadeUp 0.7s var(--ease-out) 0.4s both;
+}
+
+/* ===== METRICS BAR ===== */
+.metrics-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 64px;
+  animation: fadeUp 0.7s var(--ease-out) 0.6s both;
+}
+.metric-item {
+  background: var(--bg-card);
+  padding: 28px 24px;
+  text-align: center;
+}
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.metric-value .accent { color: var(--accent); }
+.metric-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* ===== NAVIGATION ===== */
+.nav-strip {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 56px;
+  overflow-x: auto;
+}
+.nav-item {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+.nav-item:hover, .nav-item.active { color: var(--accent); }
+.nav-item .num {
+  color: var(--accent);
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+/* ===== SECTION LAYOUTS ===== */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 96px 48px;
+}
+.section-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 48px;
+}
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--bg-elevated);
+  line-height: 1;
+  -webkit-text-stroke: 1px var(--border);
+}
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  padding-top: 12px;
+}
+.section-title .tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.prose {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  max-width: 720px;
+}
+.prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.prose + .prose { margin-top: 20px; }
+
+/* ===== INSIGHT CARDS — ASYMMETRIC GRID ===== */
+.insight-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+  margin-top: 40px;
+}
+.insight-grid.reverse {
+  grid-template-columns: 0.8fr 1.2fr;
+}
+.insight-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.insight-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.insight-card.featured {
+  border-color: var(--border-accent);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255,59,59,0.03) 100%);
+}
+.insight-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.insight-card h4 .icon {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.insight-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  padding-left: 48px;
+  margin-top: 40px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), var(--border));
+}
+.timeline-item {
+  position: relative;
+  padding-bottom: 36px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -40px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.timeline-item .year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.timeline-item h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.timeline-item p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ===== COMPARISON TABLE ===== */
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.compare-table th {
+  background: var(--bg-elevated);
+  padding: 14px 20px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  font-weight: 600;
+}
+.compare-table td {
+  padding: 14px 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+}
+.compare-table tr:hover td { background: var(--bg-elevated); }
+.compare-table .highlight { color: var(--accent); font-weight: 600; }
+
+/* ===== QUOTE BLOCK ===== */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  padding: 24px 32px;
+  margin: 40px 0;
+  background: var(--accent-glow);
+  border-radius: 0 8px 8px 0;
+}
+.quote-block p {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-style: italic;
+}
+.quote-block .source {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  font-style: normal;
+}
+
+/* ===== DATA PANELS ===== */
+.data-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.data-cell {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.data-cell::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.data-cell:hover::after { opacity: 1; }
+.data-cell .value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.data-cell .label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.data-cell .delta {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ===== FLOW DIAGRAM ===== */
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.flow-node {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.flow-node.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+.flow-arrow {
+  color: var(--text-muted);
+  font-size: 18px;
+}
+
+/* ===== CONCLUSION ===== */
+.conclusion {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(255,59,59,0.04) 100%);
+  border-top: 1px solid var(--border);
+  padding: 96px 48px;
+}
+.conclusion-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.conclusion h2 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+}
+.conclusion-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.conclusion-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.conclusion-points li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 1px;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero { padding: 48px 24px 32px; }
+  .metrics-bar { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 64px 24px; }
+  .insight-grid, .insight-grid.reverse { grid-template-columns: 1fr; }
+  .data-panel { grid-template-columns: 1fr; }
+  .conclusion-inner { grid-template-columns: 1fr; gap: 40px; }
+  .nav-strip { padding: 0 24px; }
+  .compare-table { font-size: 12px; }
+  .compare-table th, .compare-table td { padding: 10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Deep Research Report · 2026.07</div>
+    <h1 class="hero-title">AI搜索的现状、困境<br>与<span>出路</span></h1>
+    <p class="hero-subtitle">以百度/Google为主线，解构AI搜索产品形态变迁、与Chatbot的错位竞争、核心护城河、商业化困局与终局推演。覆盖20+数据源、6大分析维度。</p>
+    <div class="metrics-bar">
+      <div class="metric-item">
+        <div class="metric-value"><span class="accent">10</span>亿+</div>
+        <div class="metric-label">ChatGPT 月活用户</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><span class="accent">93</span>%</div>
+        <div class="metric-label">AI Mode 零点击率</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><span class="accent">4.5</span>亿$</div>
+        <div class="metric-label">Perplexity ARR</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><span class="accent">-18</span>%</div>
+        <div class="metric-label">百度广告收入下滑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav-strip">
+  <div class="nav-inner">
+    <a class="nav-item" href="#s1"><span class="num">01</span>产品形态变迁</a>
+    <a class="nav-item" href="#s2"><span class="num">02</span>错位竞争</a>
+    <a class="nav-item" href="#s3"><span class="num">03</span>护城河</a>
+    <a class="nav-item" href="#s4"><span class="num">04</span>商业化路径</a>
+    <a class="nav-item" href="#s5"><span class="num">05</span>迭代方向</a>
+    <a class="nav-item" href="#s6"><span class="num">06</span>融合终局</a>
+    <a class="nav-item" href="#s7"><span class="num">∞</span>结论</a>
+  </div>
+</nav>
+
+<!-- ===== SECTION 01: 产品形态变迁 ===== -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div>
+      <div class="section-title">
+        <span class="tag">PRODUCT EVOLUTION</span><br>
+        AI搜索的产品形态变迁
+      </div>
+    </div>
+  </div>
+  
+  <p class="prose">从"十条蓝色链接"到"答案引擎"，AI搜索在三年内经历了三个阶段的剧烈演进——传统搜索的"AI化妆"、独立AI搜索产品崛起、传统搜索的全面AI重构。</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="year">2023 — 2024H1</div>
+      <h4>第一阶段：传统搜索的"AI化妆"</h4>
+      <p>Google SGE实验 + 百度"文心一言"接入搜索。在蓝色链接顶部加AI摘要——安全改良但暴露致命矛盾：CTR从1.76%暴跌至0.61%，降幅61%。</p>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2024H2 — 2025</div>
+      <h4>第二阶段：独立AI搜索产品崛起</h4>
+      <p>Perplexity取消蓝色链接，重构为带引用的自然语言回答。月活从1000万→3000万，月查询7.8亿次。ChatGPT 2024.10上线搜索功能。</p>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2025H2 — 2026</div>
+      <h4>第三阶段：传统搜索全面AI重构</h4>
+      <p>Google三级火箭（AI Overviews→AI Mode→Deep Research）；百度"智能框"革命——支持千字长文本、MCP调度、Agent工具。搜索从"找到"升格为"做到"。</p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <p>「当前搜索生态呈现"三族鼎立"：传统搜索（百度/Google）、社交搜索（小红书6亿次/日、抖音53亿次/日）、AI原生搜索（ChatGPT/Perplexity/DeepSeek）。」</p>
+    <div class="source">— 21经济网 2025.02</div>
+  </div>
+</section>
+
+<!-- ===== SECTION 02: 错位竞争 ===== -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div>
+      <div class="section-title">
+        <span class="tag">COMPETITION</span><br>
+        与Chatbot的错位竞争
+      </div>
+    </div>
+  </div>
+
+  <p class="prose">AI搜索和Chatbot并非简单替代关系，而是呈现清晰的<strong>"意图分层"错位</strong>。ChatGPT在创意性查询中占64%远超Google的29%，但在交易类查询中仅占5%。边界正在快速消融。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>意图类型</th>
+        <th>Google 份额</th>
+        <th>ChatGPT 份额</th>
+        <th>判断</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>导航类（"淘宝登录"）</td>
+        <td class="highlight">93%</td>
+        <td>3%</td>
+        <td>Google 绝对统治</td>
+      </tr>
+      <tr>
+        <td>信息类（"XX怎么回事"）</td>
+        <td>71%</td>
+        <td class="highlight">23%</td>
+        <td>ChatGPT 快速侵蚀</td>
+      </tr>
+      <tr>
+        <td>交易类（"买机票"）</td>
+        <td class="highlight">90%</td>
+        <td>5%</td>
+        <td>生态闭环壁垒</td>
+      </tr>
+      <tr>
+        <td>生成/创意类（"写计划书"）</td>
+        <td>29%</td>
+        <td class="highlight">64%</td>
+        <td>ChatGPT 压倒性优势</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight-grid" style="margin-top:40px;">
+    <div class="insight-card featured">
+      <h4><span class="icon"></span>豆包：国内Chatbot搜索化典型</h4>
+      <p>月活1.72亿（远超百度文小言531万），背靠抖音53亿次/日搜索生态，推理成本0.0008元/千tokens（行业最低99.3%）。搜索嵌入对话流，体验是"和博学朋友聊天"。</p>
+    </div>
+    <div class="insight-card">
+      <h4><span class="icon"></span>关键判断</h4>
+      <p>2026年竞争核心不再是"谁是搜索引擎"，而是"谁能在统一交互界面中覆盖最多用户意图"。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 03: 护城河 ===== -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div>
+      <div class="section-title">
+        <span class="tag">MOAT ANALYSIS</span><br>
+        核心护城河与差异点
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-grid">
+    <div class="insight-card">
+      <h4><span class="icon"></span>第一道：实时索引能力</h4>
+      <p>Google每天爬取数千亿网页，20+年积累的分布式索引系统。百度开放平台已收录1.8万+优质MCP——"连接基础设施"新入局者无法复制。</p>
+    </div>
+    <div class="insight-card">
+      <h4><span class="icon"></span>第二道：交易闭环生态</h4>
+      <p>Maps+Shopping+Flights构成完整闭环。Google在交易类查询保持90%份额，ChatGPT仅5%——用户需要价格比较、出票入口，不只是文字答案。</p>
+    </div>
+  </div>
+  <div class="insight-grid reverse" style="margin-top:16px;">
+    <div class="insight-card">
+      <h4><span class="icon"></span>第三道：用户习惯与规模</h4>
+      <p>Google月活50亿。45-64岁用户中Google占86%、ChatGPT仅8%。习惯深入人口结构骨髓，新品可快速获取年轻人但撬动主流需漫长时间。</p>
+    </div>
+    <div class="insight-card featured">
+      <h4><span class="icon"></span>AI搜索的新差异点</h4>
+      <p>多源综合（帮你读完10个来源）、对话式深度探索（上下文记忆+多轮追问）、个性化推理（基于当前对话上下文的定制答案）。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 04: 商业化 ===== -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div>
+      <div class="section-title">
+        <span class="tag">MONETIZATION</span><br>
+        商业化路径：广告模式正在失灵
+      </div>
+    </div>
+  </div>
+
+  <p class="prose">核心矛盾一句话：<strong>广告模式依赖点击，但AI搜索的价值恰恰在于减少点击。</strong>零点击率从50%→69%→AI Mode下93%，传统搜索广告的底层逻辑正在瓦解。</p>
+
+  <div class="data-panel">
+    <div class="data-cell">
+      <div class="delta">↑17% YoY</div>
+      <div class="value">$630亿</div>
+      <div class="label">Google Q4 2025 搜索广告</div>
+    </div>
+    <div class="data-cell">
+      <div class="delta">↓18% YoY</div>
+      <div class="value">-6季</div>
+      <div class="label">百度在线营销连续下滑</div>
+    </div>
+    <div class="data-cell">
+      <div class="delta">↑600%</div>
+      <div class="value">$4.5亿</div>
+      <div class="label">Perplexity ARR 2026.03</div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <p>「Perplexity的商业化三阶段：纯订阅（年收3400万/烧6500万）→ 引入广告（CPM $50+但广告主冷淡）→ 转向Agent模式（ARR飙升至4.5亿）。广告救不了AI搜索。」</p>
+  </div>
+
+  <p class="prose" style="margin-top:32px;">四种商业化模型正在分化：</p>
+  <div class="flow-row">
+    <div class="flow-node">答案旁广告</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">订阅/用量付费</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node active">企业服务/API</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">交易抽佣</div>
+  </div>
+
+  <div class="data-panel" style="margin-top:40px;">
+    <div class="data-cell">
+      <div class="value">400亿</div>
+      <div class="label">百度2025 AI业务全年营收</div>
+    </div>
+    <div class="data-cell">
+      <div class="value">43%</div>
+      <div class="label">Q4 AI占一般性业务比例</div>
+    </div>
+    <div class="data-cell">
+      <div class="value">301%</div>
+      <div class="label">AI原生营销同比增长</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 05: 迭代方向 ===== -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div>
+      <div class="section-title">
+        <span class="tag">FUTURE DIRECTIONS</span><br>
+        后续迭代方向
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-grid">
+    <div class="insight-card featured">
+      <h4><span class="icon"></span>Answer Engine → Action Engine</h4>
+      <p>从"给你答案"到"帮你办事"。百度"搜索页直接下单"、Google AI Mode多步骤任务、Agent自主调用OTA完成比价选座下单全流程。</p>
+    </div>
+    <div class="insight-card">
+      <h4><span class="icon"></span>Agent化搜索</h4>
+      <p>Deep Research成为各家共同方向。AI自主规划研究路径、多步检索、产出完整报告。BrightEdge预测2026年底"大多数在线客户将是AI Agent"。</p>
+    </div>
+  </div>
+  <div class="insight-grid reverse" style="margin-top:16px;">
+    <div class="insight-card">
+      <h4><span class="icon"></span>多模态搜索</h4>
+      <p>Google Lens"圈圈搜"、百度"一句话生成三分钟创意视频"——从文字查询到"所见即搜、所需即答"。</p>
+    </div>
+    <div class="insight-card">
+      <h4><span class="icon"></span>个性化 + 知识管理</h4>
+      <p>建立"用户记忆"成为越用越懂你的私人顾问。终极形态：AI主动发现你可能感兴趣的信息，从"被动响应"变为"主动推送"。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 06: 融合终局 ===== -->
+<section class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div>
+      <div class="section-title">
+        <span class="tag">ENDGAME</span><br>
+        搜索与Chatbot的融合终局
+      </div>
+    </div>
+  </div>
+
+  <p class="prose">融合已经在发生——ChatGPT加入搜索，Google加入对话，Perplexity从诞生就是混合体。<strong>ChatGPT用户平均会话时长13分58秒，远超Google搜索的6分12秒。</strong></p>
+
+  <p class="prose">但完全融合面临三重障碍：</p>
+
+  <div class="data-panel" style="margin-top:24px;">
+    <div class="data-cell">
+      <div class="value" style="font-size:18px;">商业模式冲突</div>
+      <div class="label">搜索广告需要点击，AI的价值在于消灭点击</div>
+    </div>
+    <div class="data-cell">
+      <div class="value" style="font-size:18px;">幻觉问题</div>
+      <div class="label">医疗/法律/金融场景容错率为零</div>
+    </div>
+    <div class="data-cell">
+      <div class="value" style="font-size:18px;">生态循环断裂</div>
+      <div class="label">Google推荐流量全球已下降1/3</div>
+    </div>
+  </div>
+
+  <p class="prose" style="margin-top:40px;"><strong>终局推演——三种可能的未来：</strong></p>
+
+  <div class="flow-row" style="margin-top:24px;">
+    <div class="flow-node">情景一：大一统入口</div>
+    <div class="flow-arrow">|</div>
+    <div class="flow-node active">情景二：场景化分裂</div>
+    <div class="flow-arrow">|</div>
+    <div class="flow-node">情景三：Agent中间件化</div>
+  </div>
+
+  <div class="quote-block" style="margin-top:32px;">
+    <p>「最可能的终局是情景二和三的混合——C端场景保持差异化形态但边界越来越模糊；B端搜索完全退化为底层能力接口，不再以独立产品形态存在。」</p>
+  </div>
+</section>
+
+<!-- ===== CONCLUSION ===== -->
+<section class="conclusion" id="s7">
+  <div class="conclusion-inner">
+    <div>
+      <h2>搜索没有死<br>但搜索引擎必须进化</h2>
+      <p class="prose">AI搜索的终极体验是"让用户不需要搜索"——但要实现这个终极体验，需要搜索引擎的一切底层能力。搜索能力将永远存在，只是它将变成一种<strong>"不可见的基础设施"</strong>。</p>
+      <div class="data-panel" style="margin-top:32px;grid-template-columns:1fr 1fr;">
+        <div class="data-cell">
+          <div class="delta">Gartner</div>
+          <div class="value">-25%</div>
+          <div class="label">传统搜索量2026年预计降幅</div>
+        </div>
+        <div class="data-cell">
+          <div class="delta">全球</div>
+          <div class="value">+26%</div>
+          <div class="label">搜索+AI查询总量同比增长</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <ul class="conclusion-points">
+        <li>搜索的总需求在增长，萎缩的只是"传统搜索引擎"这一产品形态</li>
+        <li>核心矛盾：AI搜索越成功，"搜索引擎"概念越没必要存在</li>
+        <li>底层能力构建才是关键：实时索引、多模态理解、交易闭环、Agent调度</li>
+        <li>Google凭Android+Chrome+Gemini全栈可做"默认入口"；百度需在文心/智能云/自动驾驶找支撑</li>
+        <li>对从业者：与其纠结"谁会赢"，不如投资底层能力——无论终局如何，这些都是基石</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+// Intersection Observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+      entry.target.classList.add('animate-on-scroll');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.section, .insight-card, .data-cell, .timeline-item, .quote-block').forEach(el => {
+  el.style.opacity = '0';
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+
+// Smooth scroll for nav
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('.section, .conclusion');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+  });
+  navItems.forEach(item => {
+    item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
