@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拼多多投资价值研究 · 四大师并行分析</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #F5F0EB;
+  --bg-box: #FFFFFF;
+  --bg-box-2: #FBF7F3;
+  --accent: #1A1A1A;
+  --accent-soft: #333333;
+  --hl: #d4380d;
+  --hl-soft: rgba(212,56,13,0.08);
+  --text: #2B2B2B;
+  --text-sec: #666666;
+  --text-mute: #999999;
+  --border: #E0D8D0;
+  --border-strong: #C8BEB4;
+  --slide-w: 720px;
+  --slide-h: 960px;
+  --pad: 56px;
+  --font-title: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-body: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+body {
+  background: #EDE7E0;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(212,56,13,0.03), transparent 40%),
+    radial-gradient(circle at 80% 100%, rgba(0,0,0,0.02), transparent 40%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 12px;
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.slide {
+  width: var(--slide-w);
+  height: var(--slide-h);
+  background: var(--bg);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px);
+  background-size: 40px 40px;
+  padding: var(--pad);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 0 0 1px var(--border);
+  border-radius: 4px;
+}
+.slide::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--hl) 0%, #1A1A1A 30%, transparent 70%);
+  opacity: 0.85;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-sec);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+.slide-header .topic { font-weight: 500; text-transform: uppercase; }
+.slide-header .topic .sep { color: var(--text-mute); margin: 0 8px; }
+.slide-header .page-num {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 17px;
+  font-family: var(--font-mono);
+}
+.slide-header .page-num .total { color: var(--text-mute); }
+
+.section-label {
+  font-size: 18px;
+  color: var(--hl);
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background: var(--hl);
+  display: inline-block;
+}
+
+.slide-title {
+  font-family: var(--font-title);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.slide-title .hl {
+  color: var(--hl);
+  position: relative;
+}
+.slide-title .hl::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: var(--hl);
+  opacity: 0.4;
+}
+
+.cover-title {
+  font-family: var(--font-title);
+  font-size: 60px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: center;
+  margin: 14px 0;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.cover-title .hl { color: var(--hl); }
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.body-text {
+  font-size: 19px;
+  line-height: 1.75;
+  color: var(--accent-soft);
+  font-weight: 400;
+}
+.body-text .hl { color: var(--hl); font-weight: 600; }
+.body-text strong { font-weight: 600; color: var(--accent); }
+
+.quote-block {
+  position: relative;
+  padding: 28px 28px 24px 40px;
+  border-left: 3px solid var(--hl);
+  background: var(--hl-soft);
+  margin: 8px 0;
+  border-radius: 0 4px 4px 0;
+}
+.quote-block::before {
+  content: "\201C";
+  position: absolute;
+  top: -6px;
+  left: 12px;
+  font-size: 72px;
+  color: var(--hl);
+  opacity: 0.3;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.quote-text {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--accent);
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-title);
+  font-weight: 500;
+}
+.quote-attr {
+  font-size: 16px;
+  color: var(--text-sec);
+  text-align: right;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+}
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin: 14px 0;
+}
+.stat-card {
+  flex: 1;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-box);
+  border-radius: 6px;
+  padding: 22px 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hl), transparent);
+  opacity: 0.6;
+}
+.stat-num {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--hl);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.stat-label {
+  font-size: 15px;
+  color: var(--text-sec);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+.callout {
+  background: linear-gradient(135deg, #2B2B2B 0%, #1A1A1A 100%);
+  color: #F5F0EB;
+  padding: 22px 28px;
+  border-radius: 4px;
+  font-size: 18px;
+  line-height: 1.65;
+  font-weight: 500;
+  margin: 8px 0;
+  position: relative;
+}
+.callout-label {
+  display: inline-block;
+  background: var(--hl);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 3px;
+  margin-right: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.callout-light {
+  background: var(--bg-box);
+  border-left: 3px solid var(--hl);
+  padding: 18px 24px;
+  border-radius: 0 4px 4px 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--accent-soft);
+  margin: 6px 0;
+}
+
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 8px 0;
+}
+.grid-item {
+  background: var(--bg-box);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 18px 20px;
+  position: relative;
+}
+.grid-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: var(--hl);
+  color: #FFFFFF;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+}
+.grid-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+.grid-desc {
+  font-size: 15px;
+  color: var(--text-sec);
+  line-height: 1.5;
+}
+
+.num-list { margin: 4px 0; }
+.num-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+}
+.num-list-item:last-child { border-bottom: none; }
+.num-bullet {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--hl);
+  color: var(--hl);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  font-family: var(--font-mono);
+}
+
+.two-col {
+  display: flex;
+  gap: 24px;
+  margin: 8px 0;
+}
+.two-col .col { flex: 1; }
+.col-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+.col-title.bull { color: #2f7c2f; }
+.col-title.bear { color: var(--hl); }
+.col-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-sec);
+}
+.col-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.col-list li {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--accent-soft);
+  padding: 6px 0;
+  padding-left: 16px;
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+}
+.col-list li:last-child { border-bottom: none; }
+.col-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  color: var(--hl);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.tag {
+  display: inline-block;
+  background: var(--hl);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.cover-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.cover-desc {
+  font-size: 18px;
+  line-height: 1.75;
+  text-align: center;
+  color: var(--text-sec);
+  margin: 10px 0;
+  max-width: 540px;
+  align-self: center;
+}
+
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-mute);
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.price-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 6px 0;
+}
+.price-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 180px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-box);
+  font-size: 15px;
+}
+.price-row .lvl {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  text-align: center;
+}
+.price-row .lvl.buy   { background: var(--hl); color: #fff; }
+.price-row .lvl.add   { background: rgba(212,56,13,0.85); color: #fff; }
+.price-row .lvl.hold  { background: #E7DFD6; color: #333; }
+.price-row .lvl.trim  { background: #C8BEB4; color: #333; }
+.price-row .lvl.sell  { background: #1A1A1A; color: #F5F0EB; }
+.price-row .desc { color: var(--accent-soft); font-size: 15px; line-height: 1.4; }
+.price-row .rng { text-align: right; font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 15px; }
+
+.score-row {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0;
+}
+.score-card {
+  flex: 1;
+  background: var(--bg-box);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 12px;
+  text-align: center;
+}
+.score-card .name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.score-card .frame {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.score-card .stars {
+  font-size: 20px;
+  color: var(--hl);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.score-card .num {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: var(--hl);
+  font-size: 20px;
+  margin-top: 6px;
+}
+
+@media (max-width: 800px) {
+  body { padding: 16px 8px; gap: 20px; }
+  .slide {
+    width: 100%;
+    max-width: var(--slide-w);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    padding: 6%;
+  }
+}
+
+@media print {
+  body { background: none; gap: 0; padding: 0; }
+  .slide {
+    box-shadow: none;
+    page-break-after: always;
+    page-break-inside: avoid;
+    border-radius: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SLIDE 1: COVER ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">PINDUODUO <span class="sep">|</span> PDD · 深度研究</span>
+    <span class="page-num">01<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="justify-content:center; align-items:center; text-align:center;">
+    <div class="cover-title">拼多多<br>投资价值<span class="hl">研究</span></div>
+    <div class="cover-visual">
+      <svg width="100%" height="60" viewBox="0 0 624 60" fill="none">
+        <line x1="0" y1="30" x2="200" y2="30" stroke="#C8BEB4" stroke-width="1.5"/>
+        <polyline points="200,30 240,14 270,44 300,20 340,38 380,30 624,30"
+          stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="200" cy="30" r="4" fill="#d4380d"/>
+        <circle cx="380" cy="30" r="4" fill="#d4380d"/>
+        <line x1="380" y1="30" x2="624" y2="30" stroke="#d4380d" stroke-width="2.5"/>
+      </svg>
+    </div>
+    <p class="cover-desc" style="font-size:24px; color:var(--accent-soft); font-weight:500; letter-spacing:1px;">极端便宜与极端不透明<span style="color:#d4380d; font-weight:700;">并存的价值陷阱</span></p>
+    <div class="stats-row" style="width:100%;">
+      <div class="stat-card">
+        <div class="stat-num">4.08x</div>
+        <div class="stat-label">扣现 PE<br>历史第 0 百分位</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">53%</div>
+        <div class="stat-label">净现金/市值<br>$59.5B 净现金</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6<span style="font-size:22px;">/8</span></div>
+        <div class="stat-label">李录硬红线触发<br>治理透明度 D 级</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>PDD · DEEP READ</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: 研究方法论 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">研究方法论 <span class="sep">|</span> 四大师并行投研管线</span>
+    <span class="page-num">02<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">METHOD · 01</div>
+    <div class="slide-title">研究方法论：<span class="hl">四大师并行</span>投研管线</div>
+    <p class="body-text">用<strong>巴菲特、芒格、段永平、李录</strong>四位大师的投资思想来进行价值投资。</p>
+    <div class="grid-2x2">
+      <div class="grid-item">
+        <div class="grid-num">👨</div>
+        <div class="grid-title">段永平 · 商业模式</div>
+        <div class="grid-desc">生意本质 / 差异化 / 定价权 / 可持续竞争优势</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-num">💰</div>
+        <div class="grid-title">巴菲特 · 财务估值</div>
+        <div class="grid-desc">ROE / FCF / 护城河式盈利 / 安全边际 / 三情景</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-num">🔍</div>
+        <div class="grid-title">芒格 · 行业竞争</div>
+        <div class="grid-desc">逆向思考 / 5 种"会死"情景 / 反共识判断</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-num">🏛️</div>
+        <div class="grid-title">李录 · 长期风险</div>
+        <div class="grid-desc">10 年确定性 / 8 条硬红线 / 管理层评估</div>
+      </div>
+    </div>
+    <div class="callout-light" style="margin-top:8px; margin-bottom:100px;">
+      <strong>⚠️ 免责声明</strong>：股市有风险，投资需谨慎；本内容仅供科普，<span class="hl">不构成任何投资建议</span>。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>方法 · 四视角</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: 一句话结论 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">开篇 <span class="sep">|</span> 结论前置</span>
+    <span class="page-num">03<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">VERDICT · 02</div>
+    <div class="slide-title">"账面白送"的<br><span class="hl">高不确定性怪物</span></div>
+    <p class="body-text">拼多多是<strong>「财务模型的极端便宜」与「治理框架的极端不透明」</strong>并存的怪物——四大师明确冲突：巴菲特 5 星、李录仅 2 星，从未出现过如此分裂的评分。</p>
+    <div class="quote-block">
+      <div class="quote-text">扣现 PE 仅 <strong>4.08x</strong>、账上 $59.5B 净现金占市值 <strong>53%</strong>，但同时 <strong>6/8 硬红线触发</strong>、创始人 5 年零公开言论、4200 亿现金不分红不回购——<strong>结论：⚠️ 灰色地带</strong>。</div>
+      <div class="quote-attr">—— 四大师并行研判 · 结论前置</div>
+    </div>
+    <div class="callout">
+      <span class="callout-label">CORE</span>
+      巴菲特 Checklist <strong>6/10 不合格</strong>；李录 8 条硬红线 <strong>3 强烈触发 + 3 部分触发</strong>；财务模型说"极度低估"，李录框架说"不确定太高不要碰"。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>结论 · 前置</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: 四大师评分 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">评分 <span class="sep">|</span> 四大师并行</span>
+    <span class="page-num">04<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">SCORECARD · 03</div>
+    <div class="slide-title">四大师<span class="hl">评分明确分裂</span></div>
+    <p class="body-text">段永平商业模式 + 巴菲特财务估值 + 芒格行业竞争 + 李录长期风险；巴菲特给 <span class="hl">5.0 满分</span>，其他三位仅 2-3 星——<strong>价值 vs 确定性</strong>的经典冲突。</p>
+    <div class="score-row">
+      <div class="score-card">
+        <div class="name">段永平</div>
+        <div class="frame">MOAT</div>
+        <div class="stars">★★★☆☆</div>
+        <div class="num">3.0</div>
+      </div>
+      <div class="score-card">
+        <div class="name">巴菲特</div>
+        <div class="frame">VALUE</div>
+        <div class="stars">★★★★★</div>
+        <div class="num">5.0</div>
+      </div>
+      <div class="score-card">
+        <div class="name">芒格</div>
+        <div class="frame">COMP</div>
+        <div class="stars">★★☆☆☆</div>
+        <div class="num">2.0</div>
+      </div>
+      <div class="score-card">
+        <div class="name">李录</div>
+        <div class="frame">RISK</div>
+        <div class="stars">★★☆☆☆</div>
+        <div class="num">2.0</div>
+      </div>
+    </div>
+    <div class="callout-light">
+      <strong>综合评分 3.0 / 5.0</strong>——四大师首次出现<span class="hl">明确对抗式分裂</span>：巴菲特给满分，李录+芒格仅 2 星——这种冲突本身就是投资决策的关键信号。
+    </div>
+    <div class="callout">
+      <span class="callout-label">KEY</span>
+      黄峥自 2021 年退隐后 5 年零公开言论；2025 Q4 主站广告增速首次跌至 +5%（利润奶牛货币化触顶）；Temu 遭美国 De Minimis 取消，DAU -52%。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>评分 · 分裂</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 5: 财务基本盘 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">财务 <span class="sep">|</span> 全球电商顶级</span>
+    <span class="page-num">05<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">FINANCIALS · 04</div>
+    <div class="slide-title">全球电商中<span class="hl">唯一</span>三高组合</div>
+    <p class="body-text">拼多多是全球电商中唯一同时具备"<span class="hl">55%+ 毛利率 + 22% 经营利润率 + 25% ROE</span>"三高组合的公司——纯财务视角是"账面白送"的现金奶牛。</p>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">55.98%</div>
+        <div class="stat-label">毛利率<br>亚马逊级水平</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">21.83%</div>
+        <div class="stat-label">经营利润率<br>行业顶级水平</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">25.40%</div>
+        <div class="stat-label">ROE<br>匹敌亚马逊 24%</div>
+      </div>
+    </div>
+    <div class="two-col" style="gap:20px;">
+      <div class="col">
+        <div class="col-title">✅ 全球顶级质量</div>
+        <ul class="col-list">
+          <li>FCF / 营收 <strong>24-38%</strong>（行业顶级水平）</li>
+          <li>零长期有息负债（净现金公司）</li>
+          <li>CapEx 仅营收 <strong>&lt;0.3%</strong>（超轻资产）</li>
+          <li>2025 FCF ≈ 1058 亿人民币</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-title">⚠️ 首次警报信号</div>
+        <ul class="col-list">
+          <li>营收 YoY 骤降至 <strong>+9.7%</strong>（曾 +90%）</li>
+          <li>净利润 <strong>首次下滑 -13%</strong></li>
+          <li>Q4 广告收入 <strong>+5%</strong>（曾 +17%）</li>
+          <li>主站货币化触顶信号 🚨</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>财务 · 三高</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: 估值全景 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">估值 <span class="sep">|</span> 极端便宜</span>
+    <span class="page-num">06<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">VALUATION · 05</div>
+    <div class="slide-title">扣现 PE 仅 <span class="hl">4.08x</span> 历史第 0 百分位</div>
+    <p class="body-text">当前 <strong>$82.52 USD</strong> 对应 PE 8.82x（远低于 5 年中位 15.3x），扣除账上 $63.22B 现金后核心业务倍数仅 <strong>4.08x</strong>——全球主流电商史上罕见的估值。</p>
+    <div class="stats-row" style="margin:6px 0;">
+      <div class="stat-card">
+        <div class="stat-num">8.82x</div>
+        <div class="stat-label">PE (TTM)<br>历史第 0 百分位</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">7.46x</div>
+        <div class="stat-label">Forward PE<br>已隐含"业务归零"</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="font-size:38px;">4.08x</div>
+        <div class="stat-label">扣现 PE<br>全球电商史上罕见 ⭐⭐</div>
+      </div>
+    </div>
+    <div class="callout-light" style="margin:2px 0;">
+      <strong>三情景估值</strong>（3 年后目标价，@ $82.52 起点）：乐观 EPS 20%×PE 20x → <span class="hl">$323 (+292%)</span>；中性 10%×12x → <span class="hl">$149 (+81%)</span>；<strong>悲观 2%×8x → $79.5 (-3.7%)</strong>——当前价已接近悲观情景底部。
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <span class="callout-label">VS</span>
+      对比 BABA 15.4x / JD 19.9x / AMZN 28.9x / MSFT 22.9x——PDD 是"利润率全球顶级、估值全球最低"的<strong>极端错定价</strong>。但便宜 ≠ 好，看第 10 页 Checklist。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>估值 · 极便宜</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 7: 现金堡垒 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">现金堡垒 <span class="sep">|</span> 4200 亿谜团</span>
+    <span class="page-num">07<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">CASH FORTRESS · 06</div>
+    <div class="slide-title">4200 亿现金<span class="hl">不分红不回购</span></div>
+    <p class="body-text">账上现金 + 短投 <strong>4223 亿人民币</strong>（≈ $59.5B），占市值 <strong>53%</strong>——但对比 Meta / Alphabet 都启动千亿美元回购，拼多多至今<span class="hl">零分红 + 零回购 + 零解释</span>。</p>
+    <div class="grid-2x2" style="gap:12px; margin:2px 0;">
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">01</div>
+        <div class="grid-title">现金 + 短投</div>
+        <div class="grid-desc"><strong>4223 亿 RMB</strong>（≈ $59.5B，占市值 53%）</div>
+      </div>
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">02</div>
+        <div class="grid-title">分红/回购</div>
+        <div class="grid-desc"><strong>零</strong>（IPO 至今无任何股东回报）</div>
+      </div>
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">03</div>
+        <div class="grid-title">长期负债</div>
+        <div class="grid-desc"><strong>0</strong>（FY2023 后清零，堡垒资产表）</div>
+      </div>
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">04</div>
+        <div class="grid-title">流动比率</div>
+        <div class="grid-desc"><strong>2.43x</strong>（短期偿付能力极强）</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <span class="callout-label">李录视角</span>
+      现金 4200 亿 vs 市值 1.4 万亿 RMB，<strong>30% 市值躺在存款账户不动</strong>——这在美式治理下不可接受，是李录框架下评估中<strong>最刺眼的一项</strong>。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>现金 · 谜团</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: 治理红线 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">治理红线 <span class="sep">|</span> 6/8 触发</span>
+    <span class="page-num">08<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">GOVERNANCE · 07</div>
+    <div class="slide-title">李录 8 条硬红线：<span class="hl">6 项触发</span></div>
+    <p class="body-text">李录清单里"触发 1 条硬红线就足够不碰"，拼多多同时触发 <strong>6 项</strong>（3 强烈 + 3 部分）——这是"不确定太高"的直接量化证据，也是李录框架下最重要的负面因子。</p>
+    <div class="num-list" style="margin:2px 0;">
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">🔥</span>
+        <span><strong>分红/回购（强烈触发）：</strong>4200 亿现金 + 零分红 + 零回购 + 零解释。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">🔥</span>
+        <span><strong>监管硬伤（强烈触发）：</strong>De Minimis 取消 + UFLPA 调查 + 仅退款被市监总局约束。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">🔥</span>
+        <span><strong>治理透明度（强烈触发）：</strong>VIE + 双重投票权 + <strong>创始人 5 年隐身</strong> + 无国际独董。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">⚠️</span>
+        <span><strong>管理层诚信（部分触发）：</strong>业绩会 CEO 极少发言，"stop giving guidance"。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">⚠️</span>
+        <span><strong>商业模式伦理（部分触发）：</strong>仅退款 / 白牌 / 假货 / 强迫劳动指控。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">⚠️</span>
+        <span><strong>增长可持续性（部分触发）：</strong>主站广告增速首次跌到 +5%（触顶信号）。</span>
+      </div>
+    </div>
+    <div class="callout" style="margin-bottom:24px; padding:16px 22px; font-size:16px;">
+      <span class="callout-label">总结</span>
+      <strong>3 项强烈触发 + 3 项部分触发 = 6/8</strong>——治理透明度是李录框架下最刺眼的负面因子，也是与"极便宜财务模型"形成对抗性冲突的根源。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>治理 · 红线</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: Bull vs Bear ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">论点 <span class="sep">|</span> 多空辩证</span>
+    <span class="page-num">09<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">BULL VS BEAR · 08</div>
+    <div class="slide-title">看多的锚 & 看空的<span class="hl">最锋利一刀</span></div>
+    <div class="two-col" style="gap:18px;">
+      <div class="col">
+        <div class="col-title bull">🟢 看多逻辑</div>
+        <ul class="col-list">
+          <li>扣现 PE 4.08x，全球电商史上罕见</li>
+          <li>净现金 $59.5B = <strong>53% 市值硬支撑</strong></li>
+          <li>FCF/营收 24-38% 顶级现金流</li>
+          <li>ROE 25% / 毛利 56% / 净利 22%</li>
+          <li>Forward PE 7.46x 已隐含"业务归零"</li>
+          <li>4200 亿若启动回购 → PE 立即 +30-50%</li>
+          <li>市场共识极度悲观 → 逆向机会</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-title bear">🔴 看空逻辑</div>
+        <ul class="col-list">
+          <li><strong>主站广告 +5% YoY</strong>（利润奶牛熄火）</li>
+          <li>Temu 三连击：De Minimis + 欧盟 + 巴西</li>
+          <li>抖音结构性夹击，用户重叠 75%+</li>
+          <li>仅退款反噬（商家维权+市监介入）</li>
+          <li>治理透明度 D 级（李录框架排除）</li>
+          <li>地缘尾部：Temu TikTok 化 / UFLPA</li>
+          <li>30% 净利率均值回归压力大</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-label">TAKE</span>
+      看空最锋利一刀：<strong>"30% 净利率 + 30% 增长 + 12x PE"的组合，在电商行业史上从未有平台维持超过 3 年</strong>——要么利润率均值回归，要么估值倍数崩塌，二者必居其一。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>论点 · 多空</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: 巴菲特 Checklist ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">检验 <span class="sep">|</span> 巴菲特清单</span>
+    <span class="page-num">10<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:12px;">
+    <div class="section-label">BUFFETT CHECKLIST · 09</div>
+    <div class="slide-title" style="font-size:32px; margin-bottom:6px;">10 项 Checklist 通过<span class="hl">6/10</span> 不合格</div>
+    <p class="body-text" style="font-size:16px; line-height:1.55;">6 通过 + 2 有条件 + 2 失败——<strong>Checklist 通过率 &lt; 7 即不合格，当前落在"灰色地带"</strong>。资本配置 & 20 年可持续两项直接 ❌。</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; margin:2px 0;">
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">01</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">能力圈 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">广告+抽佣模式清晰</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">02</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">护城河 <span style="color:#e0a800;">⚠️</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">"低价"作为护城河脆弱</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">03</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">管理层能力 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">陈磊+赵佳臻执行力顶级</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">04</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">管理层诚信 <span style="color:#e0a800;">⚠️</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">创始人 5 年零公开言论</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">05</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">财务安全 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">净现金 $59.5B 零负债</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">06</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">盈利能力 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">ROE 25% + 毛利 56%</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">07</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">自由现金流 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">FCF/营收 24-38%</div>
+      </div>
+      <div style="background:var(--hl-soft); border:1.5px solid var(--hl); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--hl); font-family:var(--font-mono); font-weight:700;">08 ⭐</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">安全边际 <span style="color:var(--hl);">✅</span></div>
+        <div style="font-size:13px; color:var(--accent-soft); line-height:1.4;"><strong>扣现 PE 4x 极便宜</strong></div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">09</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">可持续 20 年 <span style="color:#d43a3a;">❌</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">Temu 逆全球化 + 商业伦理灰区</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">10</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">资本配置 <span style="color:#d43a3a;">❌</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">4200 亿零回购零分红</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-bottom:24px; padding:16px 22px; font-size:16px;">
+      <span class="callout-label">RESULT</span>
+      <strong>6 ✅ + 2 ⚠️ + 2 ❌ = 6/10</strong>——低于合格线 7/10，落在<strong>灰色地带</strong>。启动大规模回购 + 主站广告增速回暖是升到 8/10 的最快路径。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>检验 · 不合格</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: 芒格逆向 5 种死法 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">逆向 <span class="sep">|</span> 芒格式追问</span>
+    <span class="page-num">11<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">INVERT · 10</div>
+    <div class="slide-title">"什么情况下拼多多<span class="hl">会死</span>？"</div>
+    <p class="body-text">芒格式逆向永远反过来想。列出所有可能的失败路径，加权得出<span class="hl">结构性衰退联合概率 55-65%</span>——<strong>远超</strong>芒格 1/3 阈值，属于"不能忽视"的量级。</p>
+    <div class="num-list">
+      <div class="num-list-item">
+        <span class="num-bullet">1</span>
+        <span><strong>地缘政治毁灭 Temu</strong>（实体清单/禁令） <span class="tag">M · 20-25%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">2</span>
+        <span><strong>消费升级反转，白牌被抛弃</strong> <span class="tag">L-M · 10-15%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">3</span>
+        <span><strong>抖淘双重夹击致主站萎缩</strong>（已在演绎） <span class="tag">H · 40-50%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">4</span>
+        <span><strong>仅退款反噬</strong>（商家集体出走+法律诉讼） <span class="tag">M · 15-20%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">5</span>
+        <span><strong>财务/治理黑天鹅</strong>（VIE 爆雷 / 创始团队被查） <span class="tag">L · 5-10%</span></span>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-label">CORE</span>
+      结构性衰退联合概率 <strong>55-65%</strong>——远超芒格 1/3 阈值，是<strong>不能忽视的量级</strong>。这不是"会不会遭遇危机"，而是<strong>"哪个先来"</strong>。#3 抖淘双重夹击已在演绎中。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>逆向 · 追问</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: 分层操作建议 + 催化剂 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">行动 <span class="sep">|</span> 5 档定价</span>
+    <span class="page-num">12<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">ACTION · 11</div>
+    <div class="slide-title">5 档定价 & <span class="hl">催化剂等待</span></div>
+    <div class="price-ladder">
+      <div class="price-row">
+        <div class="lvl buy">FAT PITCH</div>
+        <div class="desc">Fat Pitch 强烈买入（需要催化剂）</div>
+        <div class="rng">&le; $65 USD</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl add">GRAY</div>
+        <div class="desc">灰色地带小仓位试错（≤ 5% 总资产）· ⭐ <strong>当前 $82.52</strong></div>
+        <div class="rng">$65 &ndash; $95</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl hold">WAIT</div>
+        <div class="desc">观望，等催化剂兑现或估值消化</div>
+        <div class="rng">$95 &ndash; $150</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl trim">TRIM</div>
+        <div class="desc">减仓警戒（需业绩确认）</div>
+        <div class="rng">$150 &ndash; $220</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl sell">SELL</div>
+        <div class="desc">除非乐观情景兑现（回购+减亏+回暖）</div>
+        <div class="rng">&ge; $220 USD</div>
+      </div>
+    </div>
+    <div class="two-col" style="gap:18px;">
+      <div class="col">
+        <div class="col-title bull">🟢 加仓催化剂</div>
+        <ul class="col-list">
+          <li><strong>启动首次大规模回购</strong>（最强）</li>
+          <li>Temu 单季 EBIT 由负转正</li>
+          <li>主站广告增速回升 +10%</li>
+          <li>黄峥或陈磊首次公开采访</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-title bear">🔴 减仓信号</div>
+        <ul class="col-list">
+          <li>Temu 列入美国实体清单</li>
+          <li>主站广告增速跌破 +2%</li>
+          <li>商家集体维权升级为司法诉讼</li>
+          <li>4200 亿用于低回报海外并购</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>行动 · 定价</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: 镜子测试 + 结语 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">结语 <span class="sep">|</span> 镜子测试</span>
+    <span class="page-num">13<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">MIRROR TEST · 12</div>
+    <div class="slide-title" style="font-size:34px; margin-bottom:8px;">买入理由<span class="hl">5 句话</span>说清楚</div>
+    <div class="num-list" style="margin:2px 0;">
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">1</span>
+        <span>全球电商中唯一同时具备 <strong>56% 毛利 + 22% 净利 + 25% ROE</strong> 的公司。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">2</span>
+        <span>扣现 PE 仅 <strong>4.08x</strong>，账上 $59.5B 净现金 = <strong>53% 市值</strong>硬支撑。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">3</span>
+        <span>悲观情景 3 年后仍值 $79.5，<strong>下行仅 -3.7%</strong>；中性 $149 +81%。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">4</span>
+        <span>即便 Temu 归零，主站 22% 经营利润率仍能支撑现价的 <strong>60%+</strong>。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">5</span>
+        <span><strong>但——</strong>因 6/8 红线触发 + 5 种死法概率 55%+，仓位严格限制在总资产 <strong>5% 以内</strong>。</span>
+      </div>
+    </div>
+    <div class="quote-block" style="margin-bottom:24px; padding:18px 20px 16px 32px;">
+      <div class="quote-text" style="font-size:16px; line-height:1.55;">公司或许还能活 10 年，但 4200 亿现金既不分给你也不回购，创始人 5 年不说一句话，Temu 又逆着历史大势走——<strong>等更明确，或不碰</strong>。</div>
+      <div class="quote-attr" style="font-size:14px; margin-top:8px;">—— 李录风格总结</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>END · GRAY ZONE</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+</body>
+</html>
