@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阿里巴巴投资价值研究 · 四大师并行分析</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #F5F0EB;
+  --bg-box: #FFFFFF;
+  --bg-box-2: #FBF7F3;
+  --accent: #1A1A1A;
+  --accent-soft: #333333;
+  --hl: #d4380d;
+  --hl-soft: rgba(212,56,13,0.08);
+  --text: #2B2B2B;
+  --text-sec: #666666;
+  --text-mute: #999999;
+  --border: #E0D8D0;
+  --border-strong: #C8BEB4;
+  --slide-w: 720px;
+  --slide-h: 960px;
+  --pad: 56px;
+  --font-title: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-body: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+body {
+  background: #EDE7E0;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(212,56,13,0.03), transparent 40%),
+    radial-gradient(circle at 80% 100%, rgba(0,0,0,0.02), transparent 40%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 12px;
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.slide {
+  width: var(--slide-w);
+  height: var(--slide-h);
+  background: var(--bg);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px);
+  background-size: 40px 40px;
+  padding: var(--pad);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 0 0 1px var(--border);
+  border-radius: 4px;
+}
+.slide::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--hl) 0%, #1A1A1A 30%, transparent 70%);
+  opacity: 0.85;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-sec);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+.slide-header .topic { font-weight: 500; text-transform: uppercase; }
+.slide-header .topic .sep { color: var(--text-mute); margin: 0 8px; }
+.slide-header .page-num {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 17px;
+  font-family: var(--font-mono);
+}
+.slide-header .page-num .total { color: var(--text-mute); }
+
+.section-label {
+  font-size: 18px;
+  color: var(--hl);
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background: var(--hl);
+  display: inline-block;
+}
+
+.slide-title {
+  font-family: var(--font-title);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.slide-title .hl {
+  color: var(--hl);
+  position: relative;
+}
+.slide-title .hl::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: var(--hl);
+  opacity: 0.4;
+}
+
+.cover-title {
+  font-family: var(--font-title);
+  font-size: 60px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: center;
+  margin: 14px 0;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.cover-title .hl { color: var(--hl); }
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.body-text {
+  font-size: 19px;
+  line-height: 1.75;
+  color: var(--accent-soft);
+  font-weight: 400;
+}
+.body-text .hl { color: var(--hl); font-weight: 600; }
+.body-text strong { font-weight: 600; color: var(--accent); }
+
+.quote-block {
+  position: relative;
+  padding: 28px 28px 24px 40px;
+  border-left: 3px solid var(--hl);
+  background: var(--hl-soft);
+  margin: 8px 0;
+  border-radius: 0 4px 4px 0;
+}
+.quote-block::before {
+  content: "\201C";
+  position: absolute;
+  top: -6px;
+  left: 12px;
+  font-size: 72px;
+  color: var(--hl);
+  opacity: 0.3;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.quote-text {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--accent);
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-title);
+  font-weight: 500;
+}
+.quote-attr {
+  font-size: 16px;
+  color: var(--text-sec);
+  text-align: right;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+}
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin: 14px 0;
+}
+.stat-card {
+  flex: 1;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-box);
+  border-radius: 6px;
+  padding: 22px 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hl), transparent);
+  opacity: 0.6;
+}
+.stat-num {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--hl);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.stat-label {
+  font-size: 15px;
+  color: var(--text-sec);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+.callout {
+  background: linear-gradient(135deg, #2B2B2B 0%, #1A1A1A 100%);
+  color: #F5F0EB;
+  padding: 22px 28px;
+  border-radius: 4px;
+  font-size: 18px;
+  line-height: 1.65;
+  font-weight: 500;
+  margin: 8px 0;
+  position: relative;
+}
+.callout-label {
+  display: inline-block;
+  background: var(--hl);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 3px;
+  margin-right: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.callout-light {
+  background: var(--bg-box);
+  border-left: 3px solid var(--hl);
+  padding: 18px 24px;
+  border-radius: 0 4px 4px 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--accent-soft);
+  margin: 6px 0;
+}
+
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 8px 0;
+}
+.grid-item {
+  background: var(--bg-box);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 18px 20px;
+  position: relative;
+}
+.grid-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: var(--hl);
+  color: #FFFFFF;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+}
+.grid-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+.grid-desc {
+  font-size: 15px;
+  color: var(--text-sec);
+  line-height: 1.5;
+}
+
+.num-list { margin: 4px 0; }
+.num-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+}
+.num-list-item:last-child { border-bottom: none; }
+.num-bullet {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--hl);
+  color: var(--hl);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  font-family: var(--font-mono);
+}
+
+.two-col {
+  display: flex;
+  gap: 24px;
+  margin: 8px 0;
+}
+.two-col .col { flex: 1; }
+.col-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+.col-title.bull { color: #2f7c2f; }
+.col-title.bear { color: var(--hl); }
+.col-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-sec);
+}
+.col-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.col-list li {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--accent-soft);
+  padding: 6px 0;
+  padding-left: 16px;
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+}
+.col-list li:last-child { border-bottom: none; }
+.col-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  color: var(--hl);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.tag {
+  display: inline-block;
+  background: var(--hl);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.cover-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.cover-desc {
+  font-size: 18px;
+  line-height: 1.75;
+  text-align: center;
+  color: var(--text-sec);
+  margin: 10px 0;
+  max-width: 540px;
+  align-self: center;
+}
+
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-mute);
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.price-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 6px 0;
+}
+.price-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 180px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-box);
+  font-size: 15px;
+}
+.price-row .lvl {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  text-align: center;
+}
+.price-row .lvl.buy   { background: var(--hl); color: #fff; }
+.price-row .lvl.add   { background: rgba(212,56,13,0.85); color: #fff; }
+.price-row .lvl.hold  { background: #E7DFD6; color: #333; }
+.price-row .lvl.trim  { background: #C8BEB4; color: #333; }
+.price-row .lvl.sell  { background: #1A1A1A; color: #F5F0EB; }
+.price-row .desc { color: var(--accent-soft); font-size: 15px; line-height: 1.4; }
+.price-row .rng { text-align: right; font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 15px; }
+
+.score-row {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0;
+}
+.score-card {
+  flex: 1;
+  background: var(--bg-box);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 12px;
+  text-align: center;
+}
+.score-card .name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.score-card .frame {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.score-card .stars {
+  font-size: 20px;
+  color: var(--hl);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.score-card .num {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: var(--hl);
+  font-size: 20px;
+  margin-top: 6px;
+}
+
+@media (max-width: 800px) {
+  body { padding: 16px 8px; gap: 20px; }
+  .slide {
+    width: 100%;
+    max-width: var(--slide-w);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    padding: 6%;
+  }
+}
+
+@media print {
+  body { background: none; gap: 0; padding: 0; }
+  .slide {
+    box-shadow: none;
+    page-break-after: always;
+    page-break-inside: avoid;
+    border-radius: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SLIDE 1: COVER ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">ALIBABA <span class="sep">|</span> BABA / 9988.HK · 深度研究</span>
+    <span class="page-num">01<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="justify-content:center; align-items:center; text-align:center;">
+    <div class="cover-title">阿里巴巴<br>投资价值<span class="hl">研究</span></div>
+    <div class="cover-visual">
+      <svg width="100%" height="60" viewBox="0 0 624 60" fill="none">
+        <line x1="0" y1="30" x2="200" y2="30" stroke="#C8BEB4" stroke-width="1.5"/>
+        <polyline points="200,30 240,14 270,44 300,20 340,38 380,30 624,30"
+          stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="200" cy="30" r="4" fill="#d4380d"/>
+        <circle cx="380" cy="30" r="4" fill="#d4380d"/>
+        <line x1="380" y1="30" x2="624" y2="30" stroke="#d4380d" stroke-width="2.5"/>
+      </svg>
+    </div>
+    <p class="cover-desc" style="font-size:24px; color:var(--accent-soft); font-weight:500; letter-spacing:1px;">从电商公司到 <span style="color:#d4380d; font-weight:700;">AI 基础设施</span>的价值重估窗口</p>
+    <div class="stats-row" style="width:100%;">
+      <div class="stat-card">
+        <div class="stat-num">35.8%</div>
+        <div class="stat-label">中国 AI 云份额<br>阿里云绝对第一</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$28B</div>
+        <div class="stat-label">3 年累计回购<br>中概股冠军</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">~11x</div>
+        <div class="stat-label">扣现 PE<br>5 年估值底部</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>BABA · DEEP READ</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: 研究方法论 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">研究方法论 <span class="sep">|</span> 四大师并行投研管线</span>
+    <span class="page-num">02<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">METHOD · 01</div>
+    <div class="slide-title">研究方法论：<span class="hl">四大师并行</span>投研管线</div>
+    <p class="body-text">用<strong>巴菲特、芒格、段永平、李录</strong>四位大师的投资思想来进行价值投资。</p>
+    <div class="grid-2x2">
+      <div class="grid-item">
+        <div class="grid-num">👨</div>
+        <div class="grid-title">段永平 · 商业模式</div>
+        <div class="grid-desc">生意本质 / 差异化 / 定价权 / 可持续竞争优势</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-num">💰</div>
+        <div class="grid-title">巴菲特 · 财务估值</div>
+        <div class="grid-desc">ROE / FCF / 护城河式盈利 / 安全边际 / 三情景</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-num">🔍</div>
+        <div class="grid-title">芒格 · 行业竞争</div>
+        <div class="grid-desc">逆向思考 / 5 种"会死"情景 / 反共识判断</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-num">🏛️</div>
+        <div class="grid-title">李录 · 长期风险</div>
+        <div class="grid-desc">10 年确定性 / 8 条硬红线 / 管理层评估</div>
+      </div>
+    </div>
+    <div class="callout-light" style="margin-top:8px; margin-bottom:100px;">
+      <strong>⚠️ 免责声明</strong>：股市有风险，投资需谨慎；本内容仅供科普，<span class="hl">不构成任何投资建议</span>。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>方法 · 四视角</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: 一句话结论 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">开篇 <span class="sep">|</span> 结论前置</span>
+    <span class="page-num">03<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">VERDICT · 02</div>
+    <div class="slide-title">从电商公司转型为<br><span class="hl">AI 基础设施公司</span></div>
+    <p class="body-text">市场用旧的电商框架给它 11-13x 扣现 PE，但真正决定未来 5 年估值的是 <strong>Qwen 全球开源第一 + 阿里云 35.8% + 3800 亿 CAPEX</strong> 能否兑现"中国 Hyperscaler"叙事。</p>
+    <div class="quote-block">
+      <div class="quote-text">@ $98 现价扣现 PE 仅 <strong>11x</strong>（5 年中位 19x，-42% 折价）+ 3 年 <strong>$28B</strong> 回购 + 蚂蚁隐藏资产——<strong>已经过了最坏时刻，但还没兑现最好时刻</strong>的价值 + 成长混合体。</div>
+      <div class="quote-attr">—— 四大师并行研判 · 结论前置</div>
+    </div>
+    <div class="callout">
+      <span class="callout-label">CORE</span>
+      巴菲特 Checklist <strong>7/10 有条件通过</strong>；李录 8 条硬红线 <strong>5 通过 + 3 有条件</strong>；四大师首次<strong>温和一致偏正面</strong>（4.0 / 4.0 / 3.9 / 3.0）。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>结论 · 前置</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: 四大师评分 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">评分 <span class="sep">|</span> 四大师并行</span>
+    <span class="page-num">04<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">SCORECARD · 03</div>
+    <div class="slide-title">四大师<span class="hl">温和一致</span>偏正面</div>
+    <p class="body-text">段永平商业模式 + 巴菲特财务估值 + 芒格行业竞争 + 李录长期风险；四位大师评分全部落在 <span class="hl">3-4 星区间</span>，无极端分裂——比拼多多的 5-2-2-2 冲突更平衡。</p>
+    <div class="score-row">
+      <div class="score-card">
+        <div class="name">段永平</div>
+        <div class="frame">MOAT</div>
+        <div class="stars">★★★★☆</div>
+        <div class="num">4.0</div>
+      </div>
+      <div class="score-card">
+        <div class="name">巴菲特</div>
+        <div class="frame">VALUE</div>
+        <div class="stars">★★★★☆</div>
+        <div class="num">4.0</div>
+      </div>
+      <div class="score-card">
+        <div class="name">芒格</div>
+        <div class="frame">COMP</div>
+        <div class="stars">★★★★☆</div>
+        <div class="num">3.9</div>
+      </div>
+      <div class="score-card">
+        <div class="name">李录</div>
+        <div class="frame">RISK</div>
+        <div class="stars">★★★☆☆</div>
+        <div class="num">3.0</div>
+      </div>
+    </div>
+    <div class="callout-light">
+      <strong>综合评分 3.7 / 5.0</strong>——不是极端便宜，但极端不便宜的地方也不是"看不懂"，而是<span class="hl">"CAPEX 能否兑现"这一件可验证的事</span>。
+    </div>
+    <div class="callout">
+      <span class="callout-label">KEY</span>
+      蔡崇信是"中国版 Charlie Munger"，Yale Law + 投行出身；软银从 34% 减持到 &lt;3%，大股东退出压力已实质释放。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>评分 · 平衡</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 5: 财务基本盘 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">财务 <span class="sep">|</span> 五年趋势</span>
+    <span class="page-num">05<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">FINANCIALS · 04</div>
+    <div class="slide-title">FCF 首次转负，<span class="hl">3800 亿 CAPEX 财务地震</span></div>
+    <p class="body-text">FY2026 FCF 五年来<span class="hl">首次转负 -499 亿 RMB</span>，OCF 同比 -53%，CapEx 同比 +47%——3800 亿 AI CAPEX 财务冲击已经开始。这既是当前估值折价的原因，也是未来重估的核心变量。</p>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">-499<span style="font-size:22px;">亿</span></div>
+        <div class="stat-label">FY2026 FCF<br>五年来首次转负 ⚠️</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">+38%</div>
+        <div class="stat-label">FY26Q1 云智能<br>AI 收入 89.71 亿 ⭐</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">9.2%</div>
+        <div class="stat-label">ROE (TTM)<br>低于 15% 门槛</div>
+      </div>
+    </div>
+    <div class="two-col" style="gap:20px;">
+      <div class="col">
+        <div class="col-title">✅ FY26 Q1 亮点</div>
+        <ul class="col-list">
+          <li>云智能收入 416 亿 <span class="hl">+38%</span></li>
+          <li>AI 相关收入 <strong>连续 11 季三位数</strong></li>
+          <li>AIDC 国际电商从 -35.7 收窄到 -1.4 亿</li>
+          <li>Qwen 衍生模型 <strong>14 万个</strong>（全球开源第一）</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-title">⚠️ 需警惕信号</div>
+        <ul class="col-list">
+          <li>营收 5 年 CAGR 从 41% → 7.4%</li>
+          <li>净现金 YoY -71%（FY24 1974 → FY26 569 亿）</li>
+          <li>CapEx 从 321 → 1261 亿（+293%）</li>
+          <li>吴泳铭："投入可能远超 3800 亿"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>财务 · CAPEX 地震</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: 估值全景 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">估值 <span class="sep">|</span> 多维交叉</span>
+    <span class="page-num">06<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">VALUATION · 05</div>
+    <div class="slide-title">@ $98 扣现 PE 仅 <span class="hl">11x</span> 历史 5 年底部</div>
+    <p class="body-text">当前 <strong>$98 USD</strong> 对应 PE 15.4x（<span class="hl">远低于</span> 5 年中位 19x），扣现 PE ~11x——距离 5 年估值底部仅一步之遥，市场已把"AI CAPEX 失败"充分定价。</p>
+    <div class="stats-row" style="margin:6px 0;">
+      <div class="stat-card">
+        <div class="stat-num">15.4x</div>
+        <div class="stat-label">PE (TTM)<br>低于 5 年中位</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">~15x</div>
+        <div class="stat-label">Forward PE<br>与阿里 12.5x 接近</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="font-size:38px;">~11x</div>
+        <div class="stat-label">扣现 PE<br>5 年估值底部 ⭐</div>
+      </div>
+    </div>
+    <div class="callout-light" style="margin:2px 0;">
+      <strong>三情景估值</strong>（3 年后目标价，@ $98 起点）：乐观 EPS 15%×PE 22x → <span class="hl">$301 (+207%)</span>；中性 8%×15x → <span class="hl">$170 (+74%)</span>；<strong>悲观 2%×10x → $95 (-3%)</strong>——即使最悲观下行仅 3%，赔率不对称。
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <span class="callout-label">VS</span>
+      对比 MSFT 36x / META 27.5x / GOOG 24x——阿里估值仅美国云同行的 <strong>40-45%</strong>，但已实质拥有中国 AI 云 35.8% 份额与 Qwen 开源第一。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>估值 · 底部</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 7: 蚂蚁+Qwen 隐藏资产 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">隐藏资产 <span class="sep">|</span> 蚂蚁 + Qwen</span>
+    <span class="page-num">07<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">HIDDEN VALUE · 06</div>
+    <div class="slide-title">四张<span class="hl">被市场忽视</span>的隐含彩票</div>
+    <p class="body-text">阿里持股蚂蚁 33% 按账面价值持有，未来 IPO 可释放 <strong>$500-800 亿</strong> 隐含价值；Qwen 全球开源第一 + 阿里云 AI 收入 ARR 358 亿——这些资产在当前电商估值框架下几乎"免费送"。</p>
+    <div class="grid-2x2" style="gap:12px; margin:2px 0;">
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">01</div>
+        <div class="grid-title">蚂蚁集团 33% 持股</div>
+        <div class="grid-desc">$500-800 亿隐含（当前按账面价值持有）</div>
+      </div>
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">02</div>
+        <div class="grid-title">Qwen 通义千问</div>
+        <div class="grid-desc">全球开源模型 <strong>Top 1</strong>（14 万衍生模型）</div>
+      </div>
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">03</div>
+        <div class="grid-title">阿里云 35.8% 份额</div>
+        <div class="grid-desc">中国 AI 云绝对第一，&gt;2-4 名之和</div>
+      </div>
+      <div class="grid-item" style="padding:16px 18px;">
+        <div class="grid-num">04</div>
+        <div class="grid-title">净现金 $78B</div>
+        <div class="grid-desc">堡垒资产 + 88VIP 6200 万高价值用户</div>
+      </div>
+    </div>
+    <div class="callout-light" style="margin-bottom:24px;">
+      <strong>估值意义</strong>：如果给蚂蚁 + Qwen + 阿里云单独估值（对标 Coinbase + OpenAI 一半 + 30% AWS），隐含合理股价接近 <strong>$180</strong>——当前 $98 相当于给蚂蚁 IPO + AI 云成功两大变量 <strong>免费期权</strong>。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>隐藏 · 蚂蚁+AI</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: 资本纪律 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">资本纪律 <span class="sep">|</span> 中概股冠军</span>
+    <span class="page-num">08<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">CAPITAL DISCIPLINE · 07</div>
+    <div class="slide-title">3 年 <span class="hl">$28B</span> 回购<br>+ 首次分红中概股冠军</div>
+    <p class="body-text">蔡崇信主政后（2023.9-）3 年累计回购 <strong>$28.3B</strong>（约 4.4% 流通股），FY2024 首次分红 $2.5B + FY2025 分红 $4.6B——从"运营公司"升级为"运营+资本运作双引擎"。</p>
+    <div class="num-list" style="margin:2px 0;">
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">1</span>
+        <span><strong>大规模回购：</strong>FY2024 $16.5B + FY2025 $11.8B，中概股回购冠军。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">2</span>
+        <span><strong>首次分红：</strong>FY2024 首次 $2.5B + 特别 $1.3B；FY2025 分红约 $4.6B。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">3</span>
+        <span><strong>剥离非核心：</strong>2024 处置银泰 74 亿 + 高鑫 131 亿港元，聚焦"电商+云+AI"。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0;">
+        <span class="num-bullet">4</span>
+        <span><strong>总股东回报率 ≈ 5-6%</strong>——中概股顶端，仅次于腾讯，远超美股同行。</span>
+      </div>
+    </div>
+    <div class="quote-block" style="margin-bottom:24px; padding:20px 22px 18px 34px;">
+      <div class="quote-text" style="font-size:16px;">Buybacks are the highest-return option when the stock trades below intrinsic value.<br><span style="color:var(--text-sec); font-size:15px;">（当股价低于内在价值时，回购是回报率最高的资本配置。）</span></div>
+      <div class="quote-attr" style="font-size:14px;">—— 蔡崇信 · 董事长 · Norges Bank 2025.3</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>纪律 · 回购</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: Bull vs Bear ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">论点 <span class="sep">|</span> 多空辩证</span>
+    <span class="page-num">09<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">BULL VS BEAR · 08</div>
+    <div class="slide-title">看多的锚 & 看空的<span class="hl">最锋利一刀</span></div>
+    <div class="two-col" style="gap:18px;">
+      <div class="col">
+        <div class="col-title bull">🟢 看多逻辑</div>
+        <ul class="col-list">
+          <li>扣现 PE 11x，历史 5 年底部（-42%）</li>
+          <li>Qwen 全球开源 Top 1，14 万衍生模型</li>
+          <li>阿里云 AI 份额 35.8%，&gt; 2-4 名总和</li>
+          <li>3 年 $28B+ 回购 + 首次分红</li>
+          <li>蚂蚁 33% 隐含 $500-800 亿彩票</li>
+          <li>软银出清完成，长钱回归</li>
+          <li>抖音电商增速已见顶（60%→25%）</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-title bear">🔴 看空逻辑</div>
+        <ul class="col-list">
+          <li><strong>FCF 首次转负</strong>（FY26 -499 亿）</li>
+          <li>ROE 9.2% 低于巴菲特 15% 门槛</li>
+          <li>3800 亿 CAPEX 若失败 = 价值毁灭</li>
+          <li>淘天 EBITA -40%（即时零售拖累）</li>
+          <li>多线作战失焦风险（4 条战线烧钱）</li>
+          <li>蚂蚁 IPO 5 年内重启概率 &lt;30%</li>
+          <li>半导体断供尾部（依赖 NVIDIA H100）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-label">TAKE</span>
+      看空最锋利一刀：<strong>3800 亿 CAPEX 是"用今天的现金流换明天的护城河"</strong>——若 3 年后云毛利率不能从 8% 跳到 20%+（AWS 60%+），就是"运营商 3G/4G 陷阱"型价值毁灭。CAPEX 兑现是唯一 King Maker。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>论点 · 多空</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: 巴菲特 Checklist ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">检验 <span class="sep">|</span> 巴菲特清单</span>
+    <span class="page-num">10<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:12px;">
+    <div class="section-label">BUFFETT CHECKLIST · 09</div>
+    <div class="slide-title" style="font-size:32px; margin-bottom:6px;">10 项 Checklist 通过<span class="hl">7/10</span> 有条件通过</div>
+    <p class="body-text" style="font-size:16px; line-height:1.55;">7 项通过 + 2 项有条件（ROE / FCF）+ 1 项失败（20 年可持续性）——<strong>巴菲特-李录框架下"过关但需持续验证"</strong>。</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; margin:2px 0;">
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">01</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">能力圈 <span style="color:#e0a800;">⚠️</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">淘天懂+云 AI 能力圈边缘</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">02</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">护城河 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">淘天双边+云+Qwen 开源</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">03</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">管理层能力 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">蔡崇信+吴泳铭最强组合</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">04</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">管理层诚信 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">PCAOB 已检查通过</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">05</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">财务安全 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">净现金 $78B 零长期负债</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">06</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">盈利能力 <span style="color:#e0a800;">⚠️</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">ROE 9.2% 低于 15% 门槛</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">07</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">自由现金流 <span style="color:#d43a3a;">❌</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">FY26 FCF 首次转负 -499 亿</div>
+      </div>
+      <div style="background:var(--hl-soft); border:1.5px solid var(--hl); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--hl); font-family:var(--font-mono); font-weight:700;">08 ⭐</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">安全边际 <span style="color:var(--hl);">✅</span></div>
+        <div style="font-size:13px; color:var(--accent-soft); line-height:1.4;"><strong>扣现 PE 11x 中性目标 $170</strong></div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">09</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">可持续 20 年 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">电商+云+Qwen 三条腿</div>
+      </div>
+      <div style="background:var(--bg-box); border:1px solid var(--border); border-radius:6px; padding:9px 12px;">
+        <div style="font-size:14px; color:var(--text-mute); font-family:var(--font-mono);">10</div>
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">资本配置 <span style="color:#2f7c2f;">✅</span></div>
+        <div style="font-size:13px; color:var(--text-sec); line-height:1.4;">$28B+回购 + 首次分红</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-bottom:24px; padding:16px 22px; font-size:16px;">
+      <span class="callout-label">RESULT</span>
+      <strong>7 ✅ + 2 ⚠️ + 1 ❌ = 7/10</strong>——有条件通过（对比拼多多 6/10 灰色地带、腾讯 10/10 满分）。CAPEX 兑现 + ROE 修复是升到 9/10 的关键。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>检验 · 有条件</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: 五种"死法" ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">逆向 <span class="sep">|</span> 芒格式追问</span>
+    <span class="page-num">11<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">INVERT · 10</div>
+    <div class="slide-title">"什么情况下阿里<span class="hl">会死</span>？"</div>
+    <p class="body-text">芒格式逆向永远反过来想。列出所有可能的失败路径，估算概率，加权得出<span class="hl">结构性衰退联合概率 ≈ 18-22%</span>——低于芒格 1/3 阈值。</p>
+    <div class="num-list">
+      <div class="num-list-item">
+        <span class="num-bullet">1</span>
+        <span><strong>AI 军备竞赛输给字节+华为</strong>（云失去 AI 溢价） <span class="tag">L · 10-15%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">2</span>
+        <span><strong>淘天份额跌破 30%</strong>（用户心智让位拼多多）<span class="tag">M · 25%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">3</span>
+        <span><strong>地缘政治升级</strong>（美国 SDN / 半导体极限断供） <span class="tag">L · 10%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">4</span>
+        <span><strong>监管重罚 2.0</strong>（数据/垄断/VIE） <span class="tag">L-M · 15%</span></span>
+      </div>
+      <div class="num-list-item">
+        <span class="num-bullet">5</span>
+        <span><strong>多线作战失血</strong>（AI+本地生活+出海+文娱同时烧钱） <span class="tag">M · 25%</span></span>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-label">CORE</span>
+      唯一真正致命的组合是 <strong>#1 + #5 同时发生</strong>——AI CAPEX 3 年后云毛利率没跳升 + 淘天基本盘同步失血。这需要每季度只跟踪一件事：<strong>云增速能否维持 25%+</strong>。
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>逆向 · 追问</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: 分层操作建议 + 催化剂 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">行动 <span class="sep">|</span> 5 档定价</span>
+    <span class="page-num">12<span class="total">/13</span></span>
+  </div>
+  <div class="content">
+    <div class="section-label">ACTION · 11</div>
+    <div class="slide-title">5 档定价 & <span class="hl">关键催化剂</span></div>
+    <div class="price-ladder">
+      <div class="price-row">
+        <div class="lvl buy">STRONG BUY</div>
+        <div class="desc">强力买入，30%+ 安全边际 · ⭐ <strong>当前 $98 落此区</strong></div>
+        <div class="rng">&le; $100 USD</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl add">BUY</div>
+        <div class="desc">合理买入，分批建仓 60-80% 仓位</div>
+        <div class="rng">$100 &ndash; $120</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl hold">HOLD</div>
+        <div class="desc">合理持有区（中性目标 $170 附近）</div>
+        <div class="rng">$120 &ndash; $180</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl trim">TRIM</div>
+        <div class="desc">减仓警戒，需业绩验证</div>
+        <div class="rng">$180 &ndash; $250</div>
+      </div>
+      <div class="price-row">
+        <div class="lvl sell">SELL</div>
+        <div class="desc">除非乐观情景兑现（AI 云 AWS 时刻）</div>
+        <div class="rng">&ge; $250 USD</div>
+      </div>
+    </div>
+    <div class="two-col" style="gap:18px;">
+      <div class="col">
+        <div class="col-title bull">🟢 加仓信号</div>
+        <ul class="col-list">
+          <li>云智能 EBITA 连续 4 季正增</li>
+          <li>Qwen 全球开源榜 Top 3 稳定</li>
+          <li>蚂蚁集团重启 IPO</li>
+          <li>淘天 GMV 增速回升 +5%</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-title bear">🔴 减仓信号</div>
+        <ul class="col-list">
+          <li>AI CAPEX 追加超 5000 亿</li>
+          <li>淘天 GMV 增速跌破 -3%</li>
+          <li>蔡崇信或吴泳铭离任</li>
+          <li>阿里云增速跌破 15%</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>行动 · 定价</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: 镜子测试 + 结语 ===== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="topic">结语 <span class="sep">|</span> 镜子测试</span>
+    <span class="page-num">13<span class="total">/13</span></span>
+  </div>
+  <div class="content" style="gap:14px;">
+    <div class="section-label">MIRROR TEST · 12</div>
+    <div class="slide-title" style="font-size:34px; margin-bottom:8px;">买入理由<span class="hl">5 句话</span>说清楚</div>
+    <div class="num-list" style="margin:2px 0;">
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">1</span>
+        <span>中国唯一全栈 AI 玩家（<strong>Qwen 全球开源第一 + 阿里云 35.8%</strong>），估值仅给了电商公司折价。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">2</span>
+        <span>@ $98 扣现 PE 11x，5 年估值底部（自身中位 19x），<strong>-42% 折价</strong>。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">3</span>
+        <span>3 年 <strong>$28B+ 回购</strong> + 首次分红 + 剥离银泰高鑫，蔡崇信资本纪律 A+。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">4</span>
+        <span>蚂蚁 33% + 净现金 $78B + 软银出清完成，<strong>3 张免费彩票</strong>硬支撑。</span>
+      </div>
+      <div class="num-list-item" style="padding:9px 0; font-size:16px;">
+        <span class="num-bullet">5</span>
+        <span>悲观 -3%、中性 +74%、乐观 +207%，<strong>不对称赔率占优</strong>。</span>
+      </div>
+    </div>
+    <div class="quote-block" style="margin-bottom:24px; padding:18px 20px 16px 32px;">
+      <div class="quote-text" style="font-size:16px; line-height:1.55;">当估值给你在 11 倍 PE 拿到中国 AI 基建 + 电商现金牛 + 蚂蚁隐藏资产三张彩票的时候，你要做的不是预测每张彩票开奖，而是买入并每季度只问一件事——<strong>蔡崇信在、吴泳铭在、回购在做吗</strong>？</div>
+      <div class="quote-attr" style="font-size:14px; margin-top:8px;">—— 李录风格总结</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>END · WAIT & HOLD</span>
+    <span>产品老A</span>
+  </div>
+</div>
+
+</body>
+</html>
