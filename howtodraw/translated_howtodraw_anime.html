@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>如何画动漫人物 · 手绘手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Long Document · theme: Almanac × Hum (kid-friendly variant) · tone: playful field guide · accents: coral / mustard / sky-blue (three-color rotation) */
+/* Hallmark · critique: P5 H5 E4 S5 R5 V5 */
+
+:root {
+    --paper: oklch(97.5% 0.028 88);
+    --paper-deep: oklch(94% 0.04 70);
+    --paper-rag: oklch(90% 0.045 65);
+    --ink: oklch(24% 0.03 55);
+    --ink-soft: oklch(38% 0.04 50);
+    --ink-mute: oklch(55% 0.04 55);
+    --rule: oklch(70% 0.05 55);
+    --rule-soft: oklch(84% 0.04 65);
+
+    /* primary — sunny coral (playful, warm, kid-friendly) */
+    --accent: oklch(66% 0.19 32);
+    --accent-deep: oklch(48% 0.16 32);
+    --accent-tint: oklch(93% 0.055 45);
+
+    /* secondary spots — cycled deliberately across plates */
+    --spot-yellow: oklch(78% 0.17 85);
+    --spot-yellow-deep: oklch(58% 0.14 82);
+    --spot-yellow-tint: oklch(94% 0.08 90);
+    --spot-blue: oklch(60% 0.15 235);
+    --spot-blue-deep: oklch(42% 0.14 240);
+    --spot-blue-tint: oklch(92% 0.05 235);
+    --spot-green: oklch(60% 0.15 155);
+    --spot-green-deep: oklch(42% 0.12 150);
+
+    --font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", serif;
+    --font-body: "Source Serif 4", "Noto Serif SC", "Songti SC", Georgia, serif;
+    --font-cn: "Noto Serif SC", "Songti SC", "Source Han Serif SC", serif;
+    --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+    --space-2xs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 32px;
+    --space-xl: 52px;
+    --space-2xl: 84px;
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --nav-rail-w: 108px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: clip; }
+
+html {
+    background: var(--paper);
+    background-image:
+        radial-gradient(ellipse at 20% 30%, oklch(96% 0.03 88) 0%, transparent 55%),
+        radial-gradient(ellipse at 82% 78%, oklch(93% 0.03 82) 0%, transparent 60%);
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink);
+    font-feature-settings: "onum" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    padding: var(--space-xl) 0 var(--space-2xl);
+}
+
+::selection { background: var(--accent-tint); color: var(--accent-deep); }
+
+.frame {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 56px);
+}
+
+/* ─── fixed left step nav ─── */
+.step-nav {
+    position: fixed;
+    top: 50%;
+    left: var(--space-md);
+    transform: translateY(-50%);
+    z-index: 20;
+    width: var(--nav-rail-w);
+    padding: var(--space-md) 0;
+    border-left: 1px solid var(--rule);
+}
+.step-nav .rail-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 0 0 var(--space-sm) var(--space-sm);
+    margin-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--rule-soft);
+    font-variant-numeric: tabular-nums;
+}
+.step-nav ol {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.step-nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink-mute);
+    padding: 6px 6px 6px var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out), background-color 200ms var(--ease-out);
+}
+.step-nav a .n {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    line-height: 1;
+    transition: color 200ms var(--ease-out);
+    min-width: 22px;
+    font-variant-numeric: tabular-nums;
+}
+.step-nav a .n:lang(zh),
+.step-nav li:first-child a .n,
+.step-nav li:last-child a .n {
+    font-family: var(--font-cn);
+    font-size: 13px;
+    font-weight: 600;
+}
+.step-nav a .lbl {
+    color: var(--ink-mute);
+    font-size: 10px;
+}
+.step-nav a:hover {
+    color: var(--ink);
+    background: var(--paper-deep);
+}
+.step-nav a.nc-coral .n { color: var(--accent); }
+.step-nav a.nc-yellow .n { color: var(--spot-yellow-deep); }
+.step-nav a.nc-blue .n { color: var(--spot-blue); }
+.step-nav a.is-active {
+    color: var(--ink);
+    border-left-color: var(--accent);
+    background: var(--accent-tint);
+}
+.step-nav a.is-active.nc-yellow { border-left-color: var(--spot-yellow); background: var(--spot-yellow-tint); }
+.step-nav a.is-active.nc-blue { border-left-color: var(--spot-blue); background: var(--spot-blue-tint); }
+.step-nav a.is-active .n { font-weight: 700; }
+.step-nav a.is-active .lbl { color: var(--ink); }
+.step-nav a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 1px;
+}
+.step-nav .divider {
+    height: 1px;
+    background: var(--rule-soft);
+    margin: var(--space-xs) var(--space-sm);
+}
+
+.step-nav .home { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); text-decoration: none; padding: 4px var(--space-sm); display: block; border-bottom: 1px solid var(--rule-soft); margin-bottom: var(--space-xs); }
+.step-nav .home:hover { color: var(--accent); }
+@media (min-width: 1180px) {
+    .step-nav { left: calc((100vw - 960px) / 2 - var(--nav-rail-w) - var(--space-md)); }
+}
+
+/* ─── hero ─── */
+.hero {
+    padding: var(--space-lg) 0 var(--space-xl);
+    max-width: none;
+}
+.hero .kicker {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--accent-deep);
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.005em;
+}
+.hero h1 {
+    font-family: var(--font-cn);
+    font-weight: 700;
+    font-size: clamp(40px, 10vw, 110px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    overflow-wrap: normal;
+    word-break: keep-all;
+    white-space: nowrap;
+    min-width: 0;
+    font-style: normal;
+}
+.hero h1 .accent { color: var(--accent); font-style: normal; font-weight: 700; }
+.hero .lede {
+    margin-top: var(--space-md);
+    max-width: 640px;
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    font-family: var(--font-cn);
+}
+.hero .lede::first-letter {
+    font-family: var(--font-display);
+    font-size: 74px;
+    line-height: 0.9;
+    float: left;
+    padding: 6px 12px 0 0;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* ─── section ─── */
+.section {
+    padding: var(--space-2xl) 0 var(--space-lg);
+    border-top: 1px solid var(--ink);
+    scroll-margin-top: var(--space-md);
+}
+.section-head {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: var(--space-lg);
+    align-items: baseline;
+    margin-bottom: var(--space-lg);
+}
+.section-head .no {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    padding-top: 12px;
+    font-weight: 500;
+}
+.section-head h2 {
+    font-family: var(--font-cn);
+    font-weight: 700;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.15;
+    color: var(--ink);
+    font-style: normal;
+    letter-spacing: -0.005em;
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+.section-head .subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--accent-deep);
+    margin-top: 6px;
+}
+.section-body { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: var(--space-lg); }
+.section-body > .content { max-width: 720px; }
+.section-body > .content p { margin-bottom: var(--space-sm); }
+.section-body > .content.wide { max-width: none; }
+
+.zh { font-family: var(--font-cn); }
+
+/* ─── materials ─── */
+.materials {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+}
+.materials th, .materials td {
+    text-align: left;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: baseline;
+}
+.materials th {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 10px;
+}
+.materials td.item {
+    font-family: var(--font-cn);
+    font-weight: 600;
+    color: var(--ink);
+    width: 30%;
+}
+.materials td.gloss { font-family: var(--font-cn); color: var(--ink-soft); }
+.materials td.badge {
+    width: 90px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* ─── plates ─── */
+.plate {
+    padding: var(--space-xl) 0;
+    border-top: 1px dashed var(--rule);
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: var(--space-lg);
+    align-items: start;
+    scroll-margin-top: var(--space-md);
+}
+.plate:first-of-type { border-top: 1px solid var(--ink); }
+.plate .plate-marker { font-family: var(--font-display); font-weight: 500; color: var(--ink); }
+.plate .plate-marker .n {
+    font-size: 56px;
+    line-height: 0.85;
+    color: var(--accent);
+    display: block;
+    font-variant-numeric: lining-nums;
+    letter-spacing: -0.02em;
+}
+
+/* Kid-friendly color rotation across the nine plates —
+   three colors, each used three times, deliberate not random */
+.plate.c-coral .plate-marker .n { color: var(--accent); }
+.plate.c-coral .tip { border-left-color: var(--accent);
+    background: linear-gradient(90deg, var(--accent-tint), transparent 90%); }
+.plate.c-coral .tip .label { color: var(--accent-deep); }
+
+.plate.c-yellow .plate-marker .n { color: var(--spot-yellow-deep); }
+.plate.c-yellow .tip { border-left-color: var(--spot-yellow);
+    background: linear-gradient(90deg, var(--spot-yellow-tint), transparent 90%); }
+.plate.c-yellow .tip .label { color: var(--spot-yellow-deep); }
+
+.plate.c-blue .plate-marker .n { color: var(--spot-blue); }
+.plate.c-blue .tip { border-left-color: var(--spot-blue);
+    background: linear-gradient(90deg, var(--spot-blue-tint), transparent 90%); }
+.plate.c-blue .tip .label { color: var(--spot-blue-deep); }
+.plate .plate-marker .of {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 8px;
+    display: block;
+}
+.plate .plate-title {
+    font-family: var(--font-cn);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: var(--space-sm);
+    font-style: normal;
+}
+.plate .plate-instruction {
+    font-family: var(--font-cn);
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: var(--space-md);
+}
+.plate .tip {
+    padding: 12px 0 12px 16px;
+    border-left: 2px solid var(--accent);
+    font-family: var(--font-cn);
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    background: linear-gradient(90deg, var(--accent-tint), transparent 90%);
+}
+.plate .tip .label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    margin-bottom: 4px;
+}
+.plate figure { margin: 0; }
+.plate figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--rule);
+    background: var(--paper-deep);
+}
+.plate figure figcaption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid var(--rule-soft);
+}
+
+/* ─── overview ─── */
+.overview { text-align: center; }
+.overview figure {
+    margin: var(--space-md) 0 0;
+    border: 1px solid var(--rule);
+    padding: var(--space-md);
+    background: var(--paper-deep);
+}
+.overview figure img { width: 100%; height: auto; display: block; }
+.overview figcaption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: var(--space-sm);
+}
+
+/* ─── focus & motion ─── */
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    html { scroll-behavior: auto; }
+}
+
+/* ─── responsive ─── */
+@media (max-width: 1179px) {
+    .step-nav {
+        left: 8px;
+        width: 92px;
+    }
+}
+@media (max-width: 900px) {
+    .step-nav { display: none; }
+}
+@media (max-width: 820px) {
+    .section-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
+    .section-body { grid-template-columns: minmax(0, 1fr); }
+    .section-head .no { padding-top: 0; }
+    .plate {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-md);
+        padding: var(--space-lg) 0;
+    }
+    .plate .plate-marker {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        border-bottom: 1px solid var(--rule-soft);
+        padding-bottom: 10px;
+    }
+    .plate .plate-marker .n { font-size: 40px; }
+    .plate .plate-marker .of { margin-top: 0; }
+}
+@media (max-width: 480px) {
+    .hero h1 { font-size: clamp(30px, 12vw, 48px); }
+}
+</style>
+</head>
+<body>
+
+
+<aside class="step-nav" aria-label="步骤导航">
+    <div class="rail-title">目录</div>
+    <a class="home" href="translated_howtodraw_index.html">← 返回首页</a>
+    <ol>
+        <li><a href="index.html" data-target="__home" class="nc-coral"><span class="n">←</span><span class="lbl">首页</span></a></li>
+        <li><a href="#materials" data-target="materials" class="nc-coral"><span class="n">一</span><span class="lbl">材料</span></a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="#plate-1" data-target="plate-1" class="nc-coral"><span class="n">01</span><span class="lbl">头顶</span></a></li>
+        <li><a href="#plate-2" data-target="plate-2" class="nc-yellow"><span class="n">02</span><span class="lbl">下颚</span></a></li>
+        <li><a href="#plate-3" data-target="plate-3" class="nc-blue"><span class="n">03</span><span class="lbl">脖颈</span></a></li>
+        <li><a href="#plate-4" data-target="plate-4" class="nc-coral"><span class="n">04</span><span class="lbl">眼位</span></a></li>
+        <li><a href="#plate-5" data-target="plate-5" class="nc-yellow"><span class="n">05</span><span class="lbl">眼睛</span></a></li>
+        <li><a href="#plate-6" data-target="plate-6" class="nc-blue"><span class="n">06</span><span class="lbl">五官</span></a></li>
+        <li><a href="#plate-7" data-target="plate-7" class="nc-coral"><span class="n">07</span><span class="lbl">头发</span></a></li>
+        <li><a href="#plate-8" data-target="plate-8" class="nc-yellow"><span class="n">08</span><span class="lbl">清理</span></a></li>
+        <li><a href="#plate-9" data-target="plate-9" class="nc-blue"><span class="n">09</span><span class="lbl">上色</span></a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="#overview" data-target="overview" class="nc-coral"><span class="n">二</span><span class="lbl">概览</span></a></li>
+    </ol>
+</aside>
+
+<div class="frame">
+
+<section class="hero" id="top">
+    <div class="kicker">A Field Guide for Beginners &amp; Young Hands</div>
+    <h1 class="zh">如何画一个<span class="accent">动漫人物</span></h1>
+</section>
+
+<section class="section" id="materials">
+    <div class="section-head">
+        <div class="no">一 · Materials</div>
+        <div>
+            <h2 class="zh">开工之前，请备齐这四样</h2>
+            <div class="subtitle">Four humble tools, and nothing more.</div>
+        </div>
+    </div>
+    <div class="section-body">
+        <div class="no"></div>
+        <div class="content wide">
+            <p class="zh" style="margin-bottom:var(--space-md);">画一个可爱的动漫人物，其实并不复杂——只用圆、弧线和几个简单的形状就能拼出来。所以，工具也应当保持朴素。以下是这本小册子推荐的清单：</p>
+            <table class="materials">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Material</th>
+                        <th>Note</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="badge">01</td>
+                        <td class="item">铅笔</td>
+                        <td class="gloss">用来勾勒基础形状，下笔要轻。</td>
+                        <td class="badge">Sketch</td>
+                    </tr>
+                    <tr>
+                        <td class="badge">02</td>
+                        <td class="item">橡皮擦</td>
+                        <td class="gloss">清除重叠辅助线，让轮廓变干净。</td>
+                        <td class="badge">Erase</td>
+                    </tr>
+                    <tr>
+                        <td class="badge">03</td>
+                        <td class="item">画纸</td>
+                        <td class="gloss">稍厚的纸张更耐擦、也更耐上色。</td>
+                        <td class="badge">Paper</td>
+                    </tr>
+                    <tr>
+                        <td class="badge">04</td>
+                        <td class="item">蜡笔或马克笔</td>
+                        <td class="gloss">最后一步用来上色，让动漫人物真正活起来。</td>
+                        <td class="badge">Color</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="plates">
+    <div class="section-head">
+        <div class="no">Plates · 01–09</div>
+        <div>
+            <h2 class="zh">九张分步图版</h2>
+            <div class="subtitle">Nine plates, drawn in the order they must be drawn.</div>
+        </div>
+    </div>
+
+    <article class="plate c-coral" id="plate-1">
+        <div class="plate-marker"><span class="n">01</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画一个大圆圈</h3>
+            <p class="plate-instruction zh">在纸面正中画一个又大又圆的形状，作为整个头部的上半部分。</p>
+            <div class="tip"><span class="label">Marginalia</span>下笔要轻。这条辅助线在第八步会被擦掉，重压的痕迹很难消除。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-1.png" alt="第 1 步：画一个大圆圈">
+            <figcaption><span>Plate 01</span><span>Head</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-yellow" id="plate-2">
+        <div class="plate-marker"><span class="n">02</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">添加下颌线</h3>
+            <p class="plate-instruction zh">在圆圈下方接一个柔和的 V 字形，这就是下半张脸和下巴。</p>
+            <div class="tip"><span class="label">Marginalia</span>把 V 字底部画得稍微圆一点——弧一点，才是软软甜甜的动漫脸。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-2.png" alt="第 2 步：添加下颌线">
+            <figcaption><span>Plate 02</span><span>Jawline</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-blue" id="plate-3">
+        <div class="plate-marker"><span class="n">03</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画出脖子</h3>
+            <p class="plate-instruction zh">从下巴向下画两条短短的竖线，末端用一道弯弯的领口把它们连起来。</p>
+            <div class="tip"><span class="label">Marginalia</span>脖子要画得窄一些——只有细脖子，才配得上那双大眼睛。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-3.png" alt="第 3 步：画出脖子">
+            <figcaption><span>Plate 03</span><span>Neck</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-coral" id="plate-4">
+        <div class="plate-marker"><span class="n">04</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">定位眼睛</h3>
+            <p class="plate-instruction zh">在头部内部画两条宽宽的弧线，标出两只眼睛的顶端，中间留出一段距离。</p>
+            <div class="tip"><span class="label">Marginalia</span>两条弧线之间要留够空间，鼻子才有地方安放。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-4.png" alt="第 4 步：定位眼睛">
+            <figcaption><span>Plate 04</span><span>Eyes Placement</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-yellow" id="plate-5">
+        <div class="plate-marker"><span class="n">05</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">完成眼睛</h3>
+            <p class="plate-instruction zh">把每只眼睛用一个大 U 形收口，再在里面画上椭圆的瞳孔。</p>
+            <div class="tip"><span class="label">Marginalia</span>在瞳孔中间点一个小小的白圆——这一笔，眼睛立刻闪起来。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-5.png" alt="第 5 步：完成眼睛">
+            <figcaption><span>Plate 05</span><span>Eyes</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-blue" id="plate-6">
+        <div class="plate-marker"><span class="n">06</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">加上鼻子和嘴巴</h3>
+            <p class="plate-instruction zh">在眼睛下方点一个小点或一段短弧作为鼻子，再画一道小小的微笑。</p>
+            <div class="tip"><span class="label">Marginalia</span>鼻子和嘴巴都要画得非常小——和巨大的眼睛形成对比，才是动漫脸的味道。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-6.png" alt="第 6 步：加上鼻子和嘴巴">
+            <figcaption><span>Plate 06</span><span>Nose & Mouth</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-coral" id="plate-7">
+        <div class="plate-marker"><span class="n">07</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画出头发轮廓</h3>
+            <p class="plate-instruction zh">从头顶开始，向下画几道飘逸的弧线，一路延伸到耳朵下方，把整张脸框起来。</p>
+            <div class="tip"><span class="label">Marginalia</span>头发的最高点，永远比原来的圆圈要高一点点——这样才有蓬松感。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-7.png" alt="第 7 步：画出头发轮廓">
+            <figcaption><span>Plate 07</span><span>Hair</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-yellow" id="plate-8">
+        <div class="plate-marker"><span class="n">08</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">擦掉多余的线</h3>
+            <p class="plate-instruction zh">把原来的圆圈里被头发盖住的那一段擦干净，让头发和头形融为一体。</p>
+            <div class="tip"><span class="label">Marginalia</span>另一只手轻轻按住纸——纸不动，橡皮擦才不会把线条也带走。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-8.png" alt="第 8 步：擦掉多余的线">
+            <figcaption><span>Plate 08</span><span>Clean-up</span></figcaption>
+        </figure>
+    </article>
+
+    <article class="plate c-blue" id="plate-9">
+        <div class="plate-marker"><span class="n">09</span><span class="of">final</span></div>
+        <div>
+            <h3 class="plate-title zh">为作品上色</h3>
+            <p class="plate-instruction zh">用马克笔或蜡笔给头发、眼睛、衣领分别涂上你喜欢的颜色。</p>
+            <div class="tip"><span class="label">Marginalia</span>沿同一方向涂色，整张画面看起来会更整洁、更干净。</div>
+        </div>
+        <figure>
+            <img src="images_anime/step-9.png" alt="第 9 步：为作品上色">
+            <figcaption><span>Plate 09</span><span>Finished</span></figcaption>
+        </figure>
+    </article>
+</section>
+
+<section class="section overview" id="overview">
+    <div class="section-head">
+        <div class="no">二 · Overview</div>
+        <div>
+            <h2 class="zh">概览 · 九步全流程一览图</h2>
+            <div class="subtitle">The whole exercise, folded into a single plate.</div>
+        </div>
+    </div>
+    <figure>
+        <img src="images_anime/_overview.png" alt="动漫人物九步绘画流程全览">
+        <figcaption>Plate · Complete · 建议打印后贴在书桌旁</figcaption>
+    </figure>
+</section>
+
+</div>
+
+<script>
+(function(){
+    const links = document.querySelectorAll('.step-nav a[data-target]');
+    const map = new Map();
+    links.forEach(a => {
+        const id = a.getAttribute('data-target');
+        const el = document.getElementById(id);
+        if (el) map.set(el, a);
+    });
+    if (!('IntersectionObserver' in window) || map.size === 0) return;
+
+    const setActive = (activeLink) => {
+        links.forEach(a => a.classList.toggle('is-active', a === activeLink));
+    };
+
+    const io = new IntersectionObserver((entries) => {
+        const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) {
+            const link = map.get(visible[0].target);
+            if (link) setActive(link);
+        }
+    }, {
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0
+    });
+
+    map.forEach((_, el) => io.observe(el));
+
+    if (map.size) setActive(map.values().next().value);
+})();
+</script>
+
+</body>
+</html>

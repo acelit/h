@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>如何画一只小猫 · 手绘手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Long Document · theme: Almanac × Hum · tone: playful field guide · accents: coral / mustard / sky-blue */
+/* Hallmark · critique: P5 H5 E4 S5 R5 V5 */
+
+:root {
+    --paper: oklch(97.5% 0.028 88); --paper-deep: oklch(94% 0.04 70); --paper-rag: oklch(90% 0.045 65);
+    --ink: oklch(24% 0.03 55); --ink-soft: oklch(38% 0.04 50); --ink-mute: oklch(55% 0.04 55);
+    --rule: oklch(70% 0.05 55); --rule-soft: oklch(84% 0.04 65);
+    --accent: oklch(66% 0.19 32); --accent-deep: oklch(48% 0.16 32); --accent-tint: oklch(93% 0.055 45);
+    --spot-yellow: oklch(78% 0.17 85); --spot-yellow-deep: oklch(58% 0.14 82); --spot-yellow-tint: oklch(94% 0.08 90);
+    --spot-blue: oklch(60% 0.15 235); --spot-blue-deep: oklch(42% 0.14 240); --spot-blue-tint: oklch(92% 0.05 235);
+    --font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", serif;
+    --font-body: "Source Serif 4", "Noto Serif SC", "Songti SC", Georgia, serif;
+    --font-cn: "Noto Serif SC", "Songti SC", "Source Han Serif SC", serif;
+    --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 20px; --space-lg: 32px; --space-xl: 52px; --space-2xl: 84px;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1); --nav-rail-w: 108px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { background: var(--paper); background-image: radial-gradient(ellipse at 20% 30%, oklch(96% 0.03 88) 0%, transparent 55%), radial-gradient(ellipse at 82% 78%, oklch(93% 0.03 82) 0%, transparent 60%); scroll-behavior: smooth; }
+body { font-family: var(--font-body); font-size: 17px; line-height: 1.7; color: var(--ink); font-feature-settings: "onum" 1, "kern" 1; -webkit-font-smoothing: antialiased; padding: var(--space-xl) 0 var(--space-2xl); }
+::selection { background: var(--accent-tint); color: var(--accent-deep); }
+.frame { max-width: 960px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
+
+/* fixed left step nav */
+.step-nav { position: fixed; top: 50%; left: var(--space-md); transform: translateY(-50%); z-index: 20; width: var(--nav-rail-w); padding: var(--space-md) 0; border-left: 1px solid var(--rule); }
+.step-nav .rail-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-mute); padding: 0 0 var(--space-sm) var(--space-sm); margin-bottom: var(--space-xs); border-bottom: 1px solid var(--rule-soft); }
+.step-nav ol { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.step-nav a { display: flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--ink-mute); padding: 6px 6px 6px var(--space-sm); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-variant-numeric: tabular-nums; border-left: 2px solid transparent; margin-left: -1px; transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out), background-color 200ms var(--ease-out); }
+.step-nav a .n { font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--ink-soft); line-height: 1; min-width: 22px; font-variant-numeric: tabular-nums; }
+.step-nav li:first-child a .n, .step-nav li:last-child a .n { font-family: var(--font-cn); font-size: 13px; font-weight: 600; }
+.step-nav a .lbl { color: var(--ink-mute); font-size: 10px; }
+.step-nav a:hover { color: var(--ink); background: var(--paper-deep); }
+.step-nav a.nc-coral .n { color: var(--accent); }
+.step-nav a.nc-yellow .n { color: var(--spot-yellow-deep); }
+.step-nav a.nc-blue .n { color: var(--spot-blue); }
+.step-nav a.is-active { color: var(--ink); border-left-color: var(--accent); background: var(--accent-tint); }
+.step-nav a.is-active.nc-yellow { border-left-color: var(--spot-yellow); background: var(--spot-yellow-tint); }
+.step-nav a.is-active.nc-blue { border-left-color: var(--spot-blue); background: var(--spot-blue-tint); }
+.step-nav a.is-active .n { font-weight: 700; }
+.step-nav a.is-active .lbl { color: var(--ink); }
+.step-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 1px; }
+.step-nav .divider { height: 1px; background: var(--rule-soft); margin: var(--space-xs) var(--space-sm); }
+.step-nav .home { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); text-decoration: none; padding: 4px var(--space-sm); display: block; border-bottom: 1px solid var(--rule-soft); margin-bottom: var(--space-xs); }
+.step-nav .home:hover { color: var(--accent); }
+@media (min-width: 1180px) { .step-nav { left: calc((100vw - 960px) / 2 - var(--nav-rail-w) - var(--space-md)); } }
+@media (max-width: 1179px) { .step-nav { left: 8px; width: 92px; } }
+@media (max-width: 900px) { .step-nav { display: none; } }
+
+/* hero */
+.hero { padding: var(--space-lg) 0 var(--space-xl); }
+.hero .kicker { font-family: var(--font-display); font-size: 18px; font-style: italic; color: var(--accent-deep); margin-bottom: var(--space-md); letter-spacing: 0.005em; }
+.hero h1 { font-family: var(--font-cn); font-weight: 700; font-size: clamp(40px, 10vw, 110px); line-height: 1.05; letter-spacing: -0.01em; color: var(--ink); word-break: keep-all; white-space: nowrap; min-width: 0; font-style: normal; }
+.hero h1 .accent { color: var(--accent); font-weight: 700; }
+
+/* sections */
+.section { padding: var(--space-2xl) 0 var(--space-lg); border-top: 1px solid var(--ink); scroll-margin-top: var(--space-md); }
+.section-head { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: var(--space-lg); align-items: baseline; margin-bottom: var(--space-lg); }
+.section-head .no { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); padding-top: 12px; font-weight: 500; }
+.section-head h2 { font-family: var(--font-cn); font-weight: 700; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.15; color: var(--ink); font-style: normal; letter-spacing: -0.005em; overflow-wrap: anywhere; min-width: 0; }
+.section-head .subtitle { font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--accent-deep); margin-top: 6px; }
+.section-body { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: var(--space-lg); }
+.section-body > .content { max-width: 720px; }
+.section-body > .content.wide { max-width: none; }
+.zh { font-family: var(--font-cn); }
+
+/* materials */
+.materials { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.materials th, .materials td { text-align: left; padding: 14px 0; border-bottom: 1px solid var(--rule-soft); vertical-align: baseline; }
+.materials th { font-family: var(--font-mono); font-weight: 400; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-mute); border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+.materials td.item { font-family: var(--font-cn); font-weight: 600; color: var(--ink); width: 30%; }
+.materials td.gloss { font-family: var(--font-cn); color: var(--ink-soft); }
+.materials td.badge { width: 90px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+
+/* plates */
+.plate { padding: var(--space-xl) 0; border-top: 1px dashed var(--rule); display: grid; grid-template-columns: 100px minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--space-lg); align-items: start; scroll-margin-top: var(--space-md); }
+.plate:first-of-type { border-top: 1px solid var(--ink); }
+.plate .plate-marker { font-family: var(--font-display); font-weight: 500; color: var(--ink); }
+.plate .plate-marker .n { font-size: 56px; line-height: 0.85; color: var(--accent); display: block; font-variant-numeric: lining-nums; letter-spacing: -0.02em; }
+.plate.c-coral .plate-marker .n { color: var(--accent); }
+.plate.c-coral .tip { border-left-color: var(--accent); background: linear-gradient(90deg, var(--accent-tint), transparent 90%); }
+.plate.c-coral .tip .label { color: var(--accent-deep); }
+.plate.c-yellow .plate-marker .n { color: var(--spot-yellow-deep); }
+.plate.c-yellow .tip { border-left-color: var(--spot-yellow); background: linear-gradient(90deg, var(--spot-yellow-tint), transparent 90%); }
+.plate.c-yellow .tip .label { color: var(--spot-yellow-deep); }
+.plate.c-blue .plate-marker .n { color: var(--spot-blue); }
+.plate.c-blue .tip { border-left-color: var(--spot-blue); background: linear-gradient(90deg, var(--spot-blue-tint), transparent 90%); }
+.plate.c-blue .tip .label { color: var(--spot-blue-deep); }
+.plate .plate-marker .of { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-mute); margin-top: 8px; display: block; }
+.plate .plate-title { font-family: var(--font-cn); font-weight: 700; font-size: 26px; line-height: 1.25; color: var(--ink); margin-bottom: var(--space-sm); font-style: normal; }
+.plate .plate-instruction { font-family: var(--font-cn); font-size: 16.5px; color: var(--ink-soft); line-height: 1.75; margin-bottom: var(--space-md); }
+.plate .tip { padding: 12px 0 12px 16px; border-left: 2px solid var(--accent); font-family: var(--font-cn); font-size: 14.5px; color: var(--ink-soft); line-height: 1.65; }
+.plate .tip .label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-deep); margin-bottom: 4px; }
+.plate figure { margin: 0; }
+.plate figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-deep); }
+.plate figure figcaption { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); margin-top: 10px; display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid var(--rule-soft); }
+
+/* overview */
+.overview { text-align: center; }
+.overview figure { margin: var(--space-md) 0 0; border: 1px solid var(--rule); padding: var(--space-md); background: var(--paper-deep); }
+.overview figure img { width: 100%; height: auto; display: block; }
+.overview figcaption { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-mute); margin-top: var(--space-sm); }
+
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 1px; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } html { scroll-behavior: auto; } }
+
+@media (max-width: 820px) {
+    .section-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
+    .section-body { grid-template-columns: minmax(0, 1fr); }
+    .section-head .no { padding-top: 0; }
+    .plate { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); padding: var(--space-lg) 0; }
+    .plate .plate-marker { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid var(--rule-soft); padding-bottom: 10px; }
+    .plate .plate-marker .n { font-size: 40px; }
+    .plate .plate-marker .of { margin-top: 0; }
+}
+@media (max-width: 480px) { .hero h1 { font-size: clamp(30px, 12vw, 48px); } }
+</style>
+</head>
+<body>
+
+<aside class="step-nav" aria-label="步骤导航">
+    <div class="rail-title">目录</div>
+    <a class="home" href="translated_howtodraw_index.html">← 返回首页</a>
+    <ol>
+        <li><a href="#materials" data-target="materials" class="nc-coral"><span class="n">一</span><span class="lbl">材料</span></a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="#plate-1" data-target="plate-1" class="nc-coral"><span class="n">01</span><span class="lbl">头部</span></a></li>
+        <li><a href="#plate-2" data-target="plate-2" class="nc-yellow"><span class="n">02</span><span class="lbl">耳朵</span></a></li>
+        <li><a href="#plate-3" data-target="plate-3" class="nc-blue"><span class="n">03</span><span class="lbl">面部</span></a></li>
+        <li><a href="#plate-4" data-target="plate-4" class="nc-coral"><span class="n">04</span><span class="lbl">胡须</span></a></li>
+        <li><a href="#plate-5" data-target="plate-5" class="nc-yellow"><span class="n">05</span><span class="lbl">身体</span></a></li>
+        <li><a href="#plate-6" data-target="plate-6" class="nc-blue"><span class="n">06</span><span class="lbl">前腿</span></a></li>
+        <li><a href="#plate-7" data-target="plate-7" class="nc-coral"><span class="n">07</span><span class="lbl">后爪</span></a></li>
+        <li><a href="#plate-8" data-target="plate-8" class="nc-yellow"><span class="n">08</span><span class="lbl">尾巴</span></a></li>
+        <li><a href="#plate-9" data-target="plate-9" class="nc-blue"><span class="n">09</span><span class="lbl">上色</span></a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="#overview" data-target="overview" class="nc-coral"><span class="n">二</span><span class="lbl">概览</span></a></li>
+    </ol>
+</aside>
+
+<div class="frame">
+
+<section class="hero" id="top">
+    <div class="kicker">A Field Guide for Beginners &amp; Young Hands</div>
+    <h1 class="zh">如何画一只<span class="accent">小猫</span></h1>
+</section>
+
+<section class="section" id="materials">
+    <div class="section-head">
+        <div class="no">一 · Materials</div>
+        <div><h2 class="zh">开工之前，请备齐这四样</h2><div class="subtitle">Four humble tools, and nothing more.</div></div>
+    </div>
+    <div class="section-body">
+        <div class="no"></div>
+        <div class="content wide">
+            <p class="zh" style="margin-bottom:var(--space-md);">画一只猫，比想象中更容易。它的整个身体，可以用圆、三角形和几条弧线搭出来。以下这四样，够用了：</p>
+            <table class="materials">
+                <thead><tr><th>№</th><th>Material</th><th>Note</th><th>Role</th></tr></thead>
+                <tbody>
+                    <tr><td class="badge">01</td><td class="item">白纸</td><td class="gloss">干净的一张即可，尺寸不限。</td><td class="badge">Paper</td></tr>
+                    <tr><td class="badge">02</td><td class="item">勾线笔</td><td class="gloss">深色马克笔，用来勾出最终轮廓。</td><td class="badge">Outline</td></tr>
+                    <tr><td class="badge">03</td><td class="item">橡皮擦</td><td class="gloss">擦掉铅笔起稿的辅助线。</td><td class="badge">Erase</td></tr>
+                    <tr><td class="badge">04</td><td class="item">蜡笔</td><td class="gloss">最后一步用来上色，让猫毛活起来。</td><td class="badge">Color</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="plates">
+    <div class="section-head">
+        <div class="no">Plates · 01–09</div>
+        <div><h2 class="zh">九张分步图版</h2><div class="subtitle">Nine plates, drawn in the order they must be drawn.</div></div>
+    </div>
+
+    <article class="plate c-coral" id="plate-1">
+        <div class="plate-marker"><span class="n">01</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画出头部</h3>
+            <p class="plate-instruction zh">在纸面上方靠中间的位置，画一个圆润饱满的圆形。下方要留出足够空间，给身体和四条腿。</p>
+            <div class="tip"><span class="label">Marginalia</span>圆要画得够大，否则第三步里的眼睛、鼻子、嘴巴挤不进去。</div>
+        </div>
+        <figure><img src="images_cat/step-1.png" alt="第 1 步：头部圆形"><figcaption><span>Plate 01</span><span>Head</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-yellow" id="plate-2">
+        <div class="plate-marker"><span class="n">02</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">加上耳朵</h3>
+            <p class="plate-instruction zh">在头顶的两侧，各画一个整齐的三角形。左右对称，让它们像两只小屋顶。</p>
+            <div class="tip"><span class="label">Marginalia</span>三角形的尖端不要过尖，稍微圆一点，猫会看起来更温柔。</div>
+        </div>
+        <figure><img src="images_cat/step-2.png" alt="第 2 步：耳朵"><figcaption><span>Plate 02</span><span>Ears</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-blue" id="plate-3">
+        <div class="plate-marker"><span class="n">03</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画出脸部</h3>
+            <p class="plate-instruction zh">在头部圆内，正中间点两个小实心点，就是眼睛。中间偏下画一个小三角形当鼻子，再往下用一条弯弯的 "W" 画出嘴角上扬的小嘴。</p>
+            <div class="tip"><span class="label">Marginalia</span>眼睛的位置务必对齐在同一水平线上，否则整只猫会显得歪着头。</div>
+        </div>
+        <figure><img src="images_cat/step-3.png" alt="第 3 步：面部"><figcaption><span>Plate 03</span><span>Face</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-coral" id="plate-4">
+        <div class="plate-marker"><span class="n">04</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">添上胡须</h3>
+            <p class="plate-instruction zh">从左脸颊向外画三条长而直的胡须；右脸颊镜像画三条。左右各三，共六条。</p>
+            <div class="tip"><span class="label">Marginalia</span>胡须要画得又长又神气，不要含糊 —— 它是猫脸上最能表达情绪的一笔。</div>
+        </div>
+        <figure><img src="images_cat/step-4.png" alt="第 4 步：胡须"><figcaption><span>Plate 04</span><span>Whiskers</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-yellow" id="plate-5">
+        <div class="plate-marker"><span class="n">05</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画出身体</h3>
+            <p class="plate-instruction zh">从头部下边缘的正下方开始，向下画一个开口朝上的大 U 形，作为猫的身体。宽度略宽于头部。</p>
+            <div class="tip"><span class="label">Marginalia</span>身体底部的弧要画得柔和圆润，猫的坐姿才自然。</div>
+        </div>
+        <figure><img src="images_cat/step-5.png" alt="第 5 步：身体"><figcaption><span>Plate 05</span><span>Body</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-blue" id="plate-6">
+        <div class="plate-marker"><span class="n">06</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画出前腿</h3>
+            <p class="plate-instruction zh">从胸口中间向下，画两个长长的椭圆作为前腿，脚底用小弧线勾出爪子。</p>
+            <div class="tip"><span class="label">Marginalia</span>两条前腿的长度务必一致，不然猫会像跛脚。</div>
+        </div>
+        <figure><img src="images_cat/step-6.png" alt="第 6 步：前腿"><figcaption><span>Plate 06</span><span>Fore-legs</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-coral" id="plate-7">
+        <div class="plate-marker"><span class="n">07</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">露出后爪</h3>
+            <p class="plate-instruction zh">在身体右下角，画一个小小的半圆形凸起 —— 这是猫坐下时藏在身下、只露出一角的后爪。</p>
+            <div class="tip"><span class="label">Marginalia</span>后爪要贴着底部边缘，画得低一点，才像坐姿。</div>
+        </div>
+        <figure><img src="images_cat/step-7.png" alt="第 7 步：后爪"><figcaption><span>Plate 07</span><span>Back Paw</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-yellow" id="plate-8">
+        <div class="plate-marker"><span class="n">08</span><span class="of">of nine</span></div>
+        <div>
+            <h3 class="plate-title zh">画上尾巴</h3>
+            <p class="plate-instruction zh">从身体左下方开始，画一条向上高高翘起、又弯又长的曲线。旁边再画一条与它平行的线，尾巴就有了厚度。</p>
+            <div class="tip"><span class="label">Marginalia</span>尾巴的弧线越自然、越流畅，猫的动感就越好。别急，慢慢一笔画完。</div>
+        </div>
+        <figure><img src="images_cat/step-8.png" alt="第 8 步：尾巴"><figcaption><span>Plate 08</span><span>Tail</span></figcaption></figure>
+    </article>
+
+    <article class="plate c-blue" id="plate-9">
+        <div class="plate-marker"><span class="n">09</span><span class="of">final</span></div>
+        <div>
+            <h3 class="plate-title zh">为作品上色</h3>
+            <p class="plate-instruction zh">拿出蜡笔或马克笔，涂上你喜欢的颜色 —— 橘色的、纯黑的、灰色的猫咪都好看。</p>
+            <div class="tip"><span class="label">Marginalia</span>永远在轮廓线内涂色，最后画面才干净利落。</div>
+        </div>
+        <figure><img src="images_cat/step-9.png" alt="第 9 步：上色完成"><figcaption><span>Plate 09</span><span>Finished</span></figcaption></figure>
+    </article>
+</section>
+
+<section class="section overview" id="overview">
+    <div class="section-head">
+        <div class="no">二 · Overview</div>
+        <div><h2 class="zh">概览 · 九步全流程一览图</h2><div class="subtitle">The whole exercise, folded into a single plate.</div></div>
+    </div>
+    <figure>
+        <img src="images_cat/_overview.png" alt="小猫九步绘画流程全览">
+        <figcaption>Plate · Complete · 建议打印后贴在书桌旁</figcaption>
+    </figure>
+</section>
+
+</div>
+
+<script>
+(function(){
+    const links = document.querySelectorAll('.step-nav a[data-target]');
+    const map = new Map();
+    links.forEach(a => { const el = document.getElementById(a.getAttribute('data-target')); if (el) map.set(el, a); });
+    if (!('IntersectionObserver' in window) || map.size === 0) return;
+    const setActive = (link) => links.forEach(a => a.classList.toggle('is-active', a === link));
+    const io = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) { const link = map.get(visible[0].target); if (link) setActive(link); }
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+    map.forEach((_, el) => io.observe(el));
+    if (map.size) setActive(map.values().next().value);
+})();
+</script>
+
+</body>
+</html>

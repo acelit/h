@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>如何画图 · 中文教程手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Directory (Long Document variant) · theme: Almanac × Hum · tone: playful field-guide index · accents: coral / mustard / sky-blue */
+/* Hallmark · critique: P5 H5 E4 S5 R5 V5 */
+
+:root {
+    --paper: oklch(97.5% 0.028 88);
+    --paper-deep: oklch(94% 0.04 70);
+    --paper-rag: oklch(90% 0.045 65);
+    --ink: oklch(24% 0.03 55);
+    --ink-soft: oklch(38% 0.04 50);
+    --ink-mute: oklch(55% 0.04 55);
+    --rule: oklch(70% 0.05 55);
+    --rule-soft: oklch(84% 0.04 65);
+
+    --accent: oklch(66% 0.19 32);
+    --accent-deep: oklch(48% 0.16 32);
+    --accent-tint: oklch(93% 0.055 45);
+
+    --spot-yellow: oklch(78% 0.17 85);
+    --spot-yellow-deep: oklch(58% 0.14 82);
+    --spot-yellow-tint: oklch(94% 0.08 90);
+    --spot-blue: oklch(60% 0.15 235);
+    --spot-blue-deep: oklch(42% 0.14 240);
+    --spot-blue-tint: oklch(92% 0.05 235);
+
+    --font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", serif;
+    --font-body: "Source Serif 4", "Noto Serif SC", "Songti SC", Georgia, serif;
+    --font-cn: "Noto Serif SC", "Songti SC", "Source Han Serif SC", serif;
+    --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+    --space-2xs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 32px;
+    --space-xl: 52px;
+    --space-2xl: 84px;
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --nav-rail-w: 108px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: clip; }
+
+html {
+    background: var(--paper);
+    background-image:
+        radial-gradient(ellipse at 20% 30%, oklch(96% 0.03 88) 0%, transparent 55%),
+        radial-gradient(ellipse at 82% 78%, oklch(93% 0.03 82) 0%, transparent 60%);
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink);
+    font-feature-settings: "onum" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    padding: var(--space-xl) 0 var(--space-2xl);
+}
+
+::selection { background: var(--accent-tint); color: var(--accent-deep); }
+
+.frame {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 56px);
+}
+
+/* ─── fixed left category nav ─── */
+.cat-nav {
+    position: fixed;
+    top: 50%;
+    left: var(--space-md);
+    transform: translateY(-50%);
+    z-index: 20;
+    width: var(--nav-rail-w);
+    padding: var(--space-md) 0;
+    border-left: 1px solid var(--rule);
+}
+.cat-nav .rail-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 0 0 var(--space-sm) var(--space-sm);
+    margin-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--rule-soft);
+    font-variant-numeric: tabular-nums;
+}
+.cat-nav ol { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.cat-nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink-mute);
+    padding: 6px 6px 6px var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out), background-color 200ms var(--ease-out);
+}
+.cat-nav a .n {
+    font-family: var(--font-cn);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    line-height: 1;
+    min-width: 22px;
+}
+.cat-nav a .lbl { color: var(--ink-mute); font-size: 10px; }
+.cat-nav a:hover { color: var(--ink); background: var(--paper-deep); }
+.cat-nav a.nc-coral .n { color: var(--accent); }
+.cat-nav a.nc-yellow .n { color: var(--spot-yellow-deep); }
+.cat-nav a.nc-blue .n { color: var(--spot-blue); }
+.cat-nav a.is-active { color: var(--ink); border-left-color: var(--accent); background: var(--accent-tint); }
+.cat-nav a.is-active.nc-yellow { border-left-color: var(--spot-yellow); background: var(--spot-yellow-tint); }
+.cat-nav a.is-active.nc-blue { border-left-color: var(--spot-blue); background: var(--spot-blue-tint); }
+.cat-nav a.is-active .n { font-weight: 700; }
+.cat-nav a.is-active .lbl { color: var(--ink); }
+.cat-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 1px; }
+
+@media (min-width: 1360px) {
+    .cat-nav { left: calc((100vw - 1080px) / 2 - var(--nav-rail-w) - var(--space-md)); }
+}
+@media (max-width: 1180px) { .cat-nav { left: 8px; width: 92px; } }
+@media (max-width: 900px) { .cat-nav { display: none; } }
+
+/* ─── hero ─── */
+.hero {
+    padding: var(--space-lg) 0 var(--space-xl);
+}
+.hero .kicker {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--accent-deep);
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.005em;
+}
+.hero h1 {
+    font-family: var(--font-cn);
+    font-weight: 700;
+    font-size: clamp(40px, 9vw, 108px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    word-break: keep-all;
+    white-space: nowrap;
+    min-width: 0;
+    font-style: normal;
+}
+.hero h1 .accent { color: var(--accent); font-weight: 700; }
+.hero .subline {
+    margin-top: var(--space-md);
+    font-family: var(--font-cn);
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 640px;
+}
+.hero .stat-row {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+}
+.hero .stat-row span {
+    padding: 4px 18px 4px 0;
+    margin-right: 18px;
+    border-right: 1px solid var(--rule-soft);
+}
+.hero .stat-row span:last-child { border-right: none; margin-right: 0; }
+.hero .stat-row b { color: var(--accent-deep); font-weight: 700; font-family: var(--font-display); font-size: 15px; }
+
+/* ─── category section ─── */
+.section {
+    padding: var(--space-2xl) 0 var(--space-md);
+    border-top: 1px solid var(--ink);
+    scroll-margin-top: var(--space-md);
+}
+.section-head {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: var(--space-lg);
+    align-items: baseline;
+    margin-bottom: var(--space-lg);
+}
+.section-head .no {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    padding-top: 12px;
+    font-weight: 500;
+}
+.section.c-yellow .section-head .no { color: var(--spot-yellow-deep); }
+.section.c-blue .section-head .no { color: var(--spot-blue); }
+.section-head h2 {
+    font-family: var(--font-cn);
+    font-weight: 700;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.15;
+    color: var(--ink);
+    font-style: normal;
+    letter-spacing: -0.005em;
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+.section-head .subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--accent-deep);
+    margin-top: 6px;
+}
+.section.c-yellow .section-head .subtitle { color: var(--spot-yellow-deep); }
+.section.c-blue .section-head .subtitle { color: var(--spot-blue-deep); }
+
+/* ─── card grid ─── */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-md);
+}
+.card {
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+    padding: var(--space-sm) var(--space-sm) var(--space-md);
+    border: 1px solid var(--rule-soft);
+    background: var(--paper);
+    position: relative;
+    transition: transform 220ms var(--ease-out), border-color 220ms var(--ease-out), background-color 220ms var(--ease-out);
+}
+.card:hover {
+    transform: translateY(-3px);
+    background: var(--accent-tint);
+    border-color: var(--accent);
+}
+.section.c-yellow .card:hover { background: var(--spot-yellow-tint); border-color: var(--spot-yellow); }
+.section.c-blue .card:hover { background: var(--spot-blue-tint); border-color: var(--spot-blue); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.card .thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--paper-deep);
+    border: 1px solid var(--rule-soft);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-sm);
+}
+.card .thumb img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    object-fit: contain;
+}
+.card .zh-name {
+    font-family: var(--font-cn);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+.card .en-name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-mute);
+    letter-spacing: 0.005em;
+}
+.card .badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    padding: 3px 7px;
+    background: var(--accent);
+    color: var(--paper);
+    text-transform: uppercase;
+    font-weight: 500;
+    z-index: 2;
+}
+.card .arrow {
+    position: absolute;
+    bottom: var(--space-md);
+    right: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+.card:hover .arrow { opacity: 1; transform: translateX(0); color: var(--accent-deep); }
+.section.c-yellow .card:hover .arrow { color: var(--spot-yellow-deep); }
+.section.c-blue .card:hover .arrow { color: var(--spot-blue-deep); }
+
+@media (max-width: 1000px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 820px) {
+    .section-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
+    .section-head .no { padding-top: 0; }
+}
+@media (max-width: 480px) {
+    .hero h1 { font-size: clamp(30px, 12vw, 48px); }
+    .card .zh-name { font-size: 17px; }
+}
+
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 1px; }
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<aside class="cat-nav" aria-label="分类导航">
+    <div class="rail-title">目录</div>
+    <ol>
+        <li><a href="#c-animals"      data-target="c-animals"      class="nc-coral"><span class="n">一</span><span class="lbl">动物</span></a></li>
+        <li><a href="#c-fantasy"      data-target="c-fantasy"      class="nc-yellow"><span class="n">二</span><span class="lbl">奇幻</span></a></li>
+        <li><a href="#c-plants"       data-target="c-plants"       class="nc-blue"><span class="n">三</span><span class="lbl">植物</span></a></li>
+        <li><a href="#c-people"       data-target="c-people"       class="nc-coral"><span class="n">四</span><span class="lbl">人物</span></a></li>
+        <li><a href="#c-anime"        data-target="c-anime"        class="nc-yellow"><span class="n">五</span><span class="lbl">动漫</span></a></li>
+        <li><a href="#c-holidays"     data-target="c-holidays"     class="nc-blue"><span class="n">六</span><span class="lbl">节日</span></a></li>
+        <li><a href="#c-transport"    data-target="c-transport"    class="nc-coral"><span class="n">七</span><span class="lbl">交通</span></a></li>
+        <li><a href="#c-objects"      data-target="c-objects"      class="nc-yellow"><span class="n">八</span><span class="lbl">物品</span></a></li>
+        <li><a href="#c-nature"       data-target="c-nature"       class="nc-blue"><span class="n">九</span><span class="lbl">风景</span></a></li>
+        <li><a href="#c-sports"       data-target="c-sports"       class="nc-coral"><span class="n">十</span><span class="lbl">运动</span></a></li>
+        <li><a href="#c-food"         data-target="c-food"         class="nc-yellow"><span class="n">十一</span><span class="lbl">食物</span></a></li>
+    </ol>
+</aside>
+
+<div class="frame">
+
+<section class="hero">
+    <div class="kicker">A Field Guide to Drawing · for Beginners &amp; Young Hands</div>
+    <h1 class="zh">如何<span class="accent">画图</span></h1>
+    <p class="subline zh">十一个类目，五十份图版教程 —— 从一只小狗到一条会喷火的龙，每份都是十几分钟就能完成的简单练习。</p>
+</section>
+
+<!-- ═══ 动物 Animals ═══ -->
+<section class="section c-coral" id="c-animals">
+    <div class="section-head">
+        <div class="no">一 · Animals</div>
+        <div>
+            <h2 class="zh">动物</h2>
+            <div class="subtitle">Pets, wild creatures, and everything with fur or feathers.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_dog.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/dog.png" alt="小狗"></div><div class="zh-name">小狗</div><div class="en-name">Dog</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_cat.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/cat.png" alt="小猫"></div><div class="zh-name">小猫</div><div class="en-name">Cat</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_butterfly.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/butterfly.png" alt="蝴蝶"></div><div class="zh-name">蝴蝶</div><div class="en-name">Butterfly</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_bird.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/bird.png" alt="小鸟"></div><div class="zh-name">小鸟</div><div class="en-name">Bird</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_fish.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/fish.png" alt="鱼"></div><div class="zh-name">鱼</div><div class="en-name">Fish</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_frog.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/frog.png" alt="青蛙"></div><div class="zh-name">青蛙</div><div class="en-name">Frog</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_turtle.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/turtle.png" alt="乌龟"></div><div class="zh-name">乌龟</div><div class="en-name">Turtle</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_bear.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/bear.png" alt="小熊"></div><div class="zh-name">小熊</div><div class="en-name">Bear</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_penguin.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/penguin.png" alt="企鹅"></div><div class="zh-name">企鹅</div><div class="en-name">Penguin</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_dinosaur.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/dinosaur.png" alt="恐龙"></div><div class="zh-name">恐龙</div><div class="en-name">Dinosaur</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_animals.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/animals.png" alt="动物合集"></div><div class="zh-name">动物合集</div><div class="en-name">Animals</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 奇幻神话 Fantasy ═══ -->
+<section class="section c-yellow" id="c-fantasy">
+    <div class="section-head">
+        <div class="no">二 · Fantasy</div>
+        <div>
+            <h2 class="zh">奇幻神话</h2>
+            <div class="subtitle">Dragons, unicorns, and the world beyond the map.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_dragon.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/dragon.png" alt="龙"></div><div class="zh-name">龙</div><div class="en-name">Dragon</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_skull.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/skull.png" alt="骷髅"></div><div class="zh-name">骷髅</div><div class="en-name">Skull</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_unicorn.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/unicorn.png" alt="独角兽"></div><div class="zh-name">独角兽</div><div class="en-name">Unicorn</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_elf.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/elf.png" alt="精灵"></div><div class="zh-name">精灵</div><div class="en-name">Elf</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 植物花卉 Plants ═══ -->
+<section class="section c-blue" id="c-plants">
+    <div class="section-head">
+        <div class="no">三 · Plants</div>
+        <div>
+            <h2 class="zh">植物花卉</h2>
+            <div class="subtitle">Flowers, leaves, and the quiet things that grow.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_rose.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/rose.png" alt="玫瑰"></div><div class="zh-name">玫瑰</div><div class="en-name">Rose</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_flower.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/flower.png" alt="花朵"></div><div class="zh-name">花朵</div><div class="en-name">Flower</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_tree.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/tree.png" alt="树"></div><div class="zh-name">树</div><div class="en-name">Tree</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_leaf.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/leaf.png" alt="叶子"></div><div class="zh-name">叶子</div><div class="en-name">Leaf</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_mushroom.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/mushroom.png" alt="蘑菇"></div><div class="zh-name">蘑菇</div><div class="en-name">Mushroom</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 人物与五官 People ═══ -->
+<section class="section c-coral" id="c-people">
+    <div class="section-head">
+        <div class="no">四 · People &amp; Features</div>
+        <div>
+            <h2 class="zh">人物与五官</h2>
+            <div class="subtitle">Eyes, hands, faces — the pieces that make a person.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_eyes.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/eyes.png" alt="眼睛"></div><div class="zh-name">眼睛</div><div class="en-name">Eyes</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_body.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/body.png" alt="人体"></div><div class="zh-name">人体</div><div class="en-name">Body</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_person.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/person.png" alt="一个人"></div><div class="zh-name">一个人</div><div class="en-name">Person</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_face.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/face.png" alt="脸"></div><div class="zh-name">脸</div><div class="en-name">Face</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_nose.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/nose.png" alt="鼻子"></div><div class="zh-name">鼻子</div><div class="en-name">Nose</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_hair.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/hair.png" alt="头发"></div><div class="zh-name">头发</div><div class="en-name">Hair</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_girl.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/girl.png" alt="女孩"></div><div class="zh-name">女孩</div><div class="en-name">Girl</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_hands.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/hands.png" alt="手"></div><div class="zh-name">手</div><div class="en-name">Hands</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 二次元动漫 Anime ═══ -->
+<section class="section c-yellow" id="c-anime">
+    <div class="section-head">
+        <div class="no">五 · Anime</div>
+        <div>
+            <h2 class="zh">二次元动漫</h2>
+            <div class="subtitle">Big eyes, sharper lines, and Japanese-style character art.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_anime-eyes.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/anime-eyes.png" alt="动漫眼睛"></div><div class="zh-name">动漫眼睛</div><div class="en-name">Anime Eyes</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_anime.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/anime.png" alt="动漫人物"></div><div class="zh-name">动漫人物</div><div class="en-name">Anime</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 节日季节 Holidays ═══ -->
+<section class="section c-blue" id="c-holidays">
+    <div class="section-head">
+        <div class="no">六 · Holidays</div>
+        <div>
+            <h2 class="zh">节日季节</h2>
+            <div class="subtitle">Halloween, Christmas, Thanksgiving — festive drawing for every season.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_pumpkin.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/pumpkin.png" alt="南瓜"></div><div class="zh-name">南瓜</div><div class="en-name">Pumpkin</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_christmas-tree.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/christmas-tree.png" alt="圣诞树"></div><div class="zh-name">圣诞树</div><div class="en-name">Christmas Tree</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_turkey.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/turkey.png" alt="火鸡"></div><div class="zh-name">火鸡</div><div class="en-name">Turkey</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_santa.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/santa.png" alt="圣诞老人"></div><div class="zh-name">圣诞老人</div><div class="en-name">Santa</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_spider-web.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/spider-web.png" alt="蜘蛛网"></div><div class="zh-name">蜘蛛网</div><div class="en-name">Spider Web</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_leprechaun.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/leprechaun.png" alt="爱尔兰小精灵"></div><div class="zh-name">爱尔兰小精灵</div><div class="en-name">Leprechaun</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_turkey-easy.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/turkey-easy.png" alt="简易火鸡"></div><div class="zh-name">简易火鸡</div><div class="en-name">Turkey Easy</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 交通建筑 Transport ═══ -->
+<section class="section c-coral" id="c-transport">
+    <div class="section-head">
+        <div class="no">七 · Transport</div>
+        <div>
+            <h2 class="zh">交通与建筑</h2>
+            <div class="subtitle">Wheels, wings, and roofs over our heads.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_car.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/car.png" alt="汽车"></div><div class="zh-name">汽车</div><div class="en-name">Car</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_house.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/house.png" alt="房子"></div><div class="zh-name">房子</div><div class="en-name">House</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_airplane.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/airplane.png" alt="飞机"></div><div class="zh-name">飞机</div><div class="en-name">Airplane</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 物品符号 Objects ═══ -->
+<section class="section c-yellow" id="c-objects">
+    <div class="section-head">
+        <div class="no">八 · Objects</div>
+        <div>
+            <h2 class="zh">物品与符号</h2>
+            <div class="subtitle">Little things you can draw in a single sitting.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_heart.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/heart.png" alt="爱心"></div><div class="zh-name">爱心</div><div class="en-name">Heart</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_book.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/book.png" alt="书本"></div><div class="zh-name">书本</div><div class="en-name">Book</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_bubble-letters.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/bubble-letters.png" alt="气泡字体"></div><div class="zh-name">气泡字体</div><div class="en-name">Bubble Letters</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 自然风景 Nature ═══ -->
+<section class="section c-blue" id="c-nature">
+    <div class="section-head">
+        <div class="no">九 · Nature</div>
+        <div>
+            <h2 class="zh">自然风景</h2>
+            <div class="subtitle">Fire, clouds, mountains — the world outside the window.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_fire.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/fire.png" alt="火焰"></div><div class="zh-name">火焰</div><div class="en-name">Fire</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_cloud.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/cloud.png" alt="云朵"></div><div class="zh-name">云朵</div><div class="en-name">Clouds</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_mountain.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/mountain.png" alt="山"></div><div class="zh-name">山</div><div class="en-name">Mountains</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 运动器材 Sports ═══ -->
+<section class="section c-coral" id="c-sports">
+    <div class="section-head">
+        <div class="no">十 · Sports</div>
+        <div>
+            <h2 class="zh">运动器材</h2>
+            <div class="subtitle">Balls, gear, and the games we play.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_basketball.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/basketball.png" alt="篮球"></div><div class="zh-name">篮球</div><div class="en-name">Basketball</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+<!-- ═══ 食物饮品 Food ═══ -->
+<section class="section c-yellow" id="c-food">
+    <div class="section-head">
+        <div class="no">十一 · Food</div>
+        <div>
+            <h2 class="zh">食物饮品</h2>
+            <div class="subtitle">Tasty things — draw them, then go make one.</div>
+        </div>
+    </div>
+    <div class="cards">
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_apple.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/apple.png" alt="苹果"></div><div class="zh-name">苹果</div><div class="en-name">Apple</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_cake.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/cake.png" alt="蛋糕"></div><div class="zh-name">蛋糕</div><div class="en-name">Cake</div><div class="arrow">→</div></a>
+        <a class="card" href="https://acelit.github.io/h/howtodraw/translated_howtodraw_taco.html" target="_blank" rel="noopener"><div class="thumb"><img src="images_index/taco.png" alt="塔可"></div><div class="zh-name">塔可</div><div class="en-name">Taco</div><div class="arrow">→</div></a>
+    </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+    const links = document.querySelectorAll('.cat-nav a[data-target]');
+    const map = new Map();
+    links.forEach(a => {
+        const el = document.getElementById(a.getAttribute('data-target'));
+        if (el) map.set(el, a);
+    });
+    if (!('IntersectionObserver' in window) || map.size === 0) return;
+    const setActive = (link) => links.forEach(a => a.classList.toggle('is-active', a === link));
+    const io = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) {
+            const link = map.get(visible[0].target);
+            if (link) setActive(link);
+        }
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+    map.forEach((_, el) => io.observe(el));
+    if (map.size) setActive(map.values().next().value);
+})();
+</script>
+
+</body>
+</html>
