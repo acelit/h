@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google官方Skills大全</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Catalogue + Sidebar Rail · theme: Almanac 变体 (accent→cobalt) · tone: 参考索引/年鉴 · accent hue: cobalt-blue */
+/* Hallmark · critique: P4 H5 E4 S5 R4 V4 */
+  :root{
+    --paper: oklch(96.5% 0.014 90);
+    --paper-raised: oklch(93.5% 0.018 90);
+    --paper-inset: oklch(98% 0.01 90);
+    --ink: oklch(26% 0.02 70);
+    --ink-soft: oklch(45% 0.02 70);
+    --ink-faint: oklch(59% 0.016 75);
+    --rule: oklch(84% 0.018 88);
+    --rule-strong: oklch(72% 0.022 85);
+    --accent: oklch(50% 0.16 258);
+    --accent-deep: oklch(41% 0.14 259);
+    --accent-wash: oklch(92% 0.035 255);
+    --ext: oklch(52% 0.13 46);
+    --ext-wash: oklch(93% 0.045 55);
+    --shell: 1220px;
+    --2xs:4px; --xs:8px; --sm:12px; --md:20px; --lg:32px; --xl:52px; --2xl:80px;
+    --ease-out: cubic-bezier(.22,.61,.36,1);
+    --font-display:"Fraunces","Songti SC","STSong","Noto Serif SC",Georgia,serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;overflow-x:clip;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.62;
+    font-feature-settings:"tnum" 1;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ===== masthead ===== */
+  .masthead{border-bottom:1.5px solid var(--rule-strong);}
+  .masthead-in{max-width:var(--shell);margin:0 auto;padding:var(--lg) var(--lg) var(--md);}
+  .kicker{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;
+    letter-spacing:.28em;color:var(--accent);margin:0 0 var(--sm);
+  }
+  h1.title{
+    font-family:var(--font-display);font-weight:900;font-style:normal;
+    font-size:clamp(28px,5.2vw,46px);line-height:1.04;letter-spacing:-.01em;
+    margin:0 0 var(--sm);overflow-wrap:anywhere;min-width:0;
+  }
+  .lede{font-size:15px;max-width:70ch;color:var(--ink-soft);margin:0 0 var(--sm);}
+  .lede a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash);transition:border-color .18s var(--ease-out);}
+  .lede a:hover{border-color:var(--accent-deep);}
+  .facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 var(--md);padding:0;list-style:none;}
+  .facts li{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);}
+  .facts b{color:var(--accent-deep);font-weight:600;}
+  .install{
+    display:inline-flex;align-items:center;gap:10px;margin:0 0 var(--md);
+    font-family:var(--font-mono);font-size:13px;color:var(--ink);
+    background:var(--paper-inset);border:1px solid var(--rule-strong);border-radius:2px;
+    padding:8px 14px;
+  }
+  .install .dollar{color:var(--ink-faint);user-select:none;}
+  .install button{
+    border:none;background:transparent;cursor:pointer;font-family:var(--font-mono);
+    font-size:11px;color:var(--accent-deep);padding:2px 6px;border:1px solid var(--rule-strong);border-radius:2px;
+    transition:background .16s var(--ease-out);
+  }
+  .install button:hover{background:var(--accent-wash);}
+  .install button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .install button:active{transform:translateY(1px);}
+  .toolbar{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--md);}
+  .search{
+    flex:1;min-width:min(100%,320px);border:none;border-bottom:1.5px solid var(--rule-strong);
+    background:transparent;font-size:17px;font-family:var(--font-body);color:var(--ink);
+    padding:6px 2px;transition:border-color .18s var(--ease-out),box-shadow .18s var(--ease-out);
+  }
+  .search::placeholder{color:var(--ink-faint);}
+  .search:focus{outline:none;border-color:var(--accent);box-shadow:0 1.5px 0 0 var(--accent);}
+  .readout{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);white-space:nowrap;}
+  .readout b{color:var(--accent-deep);}
+  .statusbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:var(--sm);}
+  .statusbar .sf-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);}
+  .sf{font-family:var(--font-body);font-size:12.5px;border:1px solid var(--rule-strong);background:transparent;color:var(--ink-soft);border-radius:999px;padding:4px 13px;cursor:pointer;transition:background .16s var(--ease-out),color .16s var(--ease-out);}
+  .sf:hover{background:var(--paper-inset);}
+  .sf.on{background:var(--accent-wash);color:var(--accent-deep);border-color:var(--accent);font-weight:600;}
+  .sf:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .sf:active{transform:translateY(1px);}
+
+  /* ===== shell ===== */
+  .shell{display:grid;grid-template-columns:236px minmax(0,1fr);max-width:var(--shell);margin:0 auto;}
+  .shell>*{min-width:0;}
+  .rail{position:sticky;top:0;align-self:start;border-right:1px solid var(--rule);padding:var(--lg) var(--md) var(--2xl);max-height:100vh;overflow-y:auto;}
+  .rail-title{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.24em;
+    color:var(--ink-faint);padding-bottom:var(--sm);border-bottom:1px solid var(--rule);margin:0 0 var(--xs);
+  }
+  .rail ul{list-style:none;margin:0;padding:0;}
+  .rail li{
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    padding:7px 10px 7px 12px;border-radius:2px;color:var(--ink-soft);cursor:pointer;position:relative;
+    transition:color .16s var(--ease-out),background .16s var(--ease-out);
+  }
+  .rail li::before{
+    content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;background:var(--accent);
+    transform:scaleY(0);transform-origin:top;transition:transform .18s var(--ease-out);
+  }
+  .rail li:hover{color:var(--ink);background:var(--paper-inset);}
+  .rail li.active{color:var(--accent-deep);background:var(--accent-wash);}
+  .rail li.active::before{transform:scaleY(1);}
+  .rail li:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .rail .cname{font-size:14px;}
+  .rail .ccount{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums;}
+  .rail li.active .ccount{color:var(--accent-deep);}
+
+  /* ===== catalogue ===== */
+  .catalogue{padding:var(--lg) var(--md) var(--lg) var(--xl);}
+  .cat-block{margin-bottom:var(--xl);}
+  .cat-head{display:flex;align-items:baseline;gap:var(--sm);border-bottom:1.5px solid var(--rule-strong);padding-bottom:var(--xs);margin-bottom:var(--2xs);}
+  .cat-head h2{font-family:var(--font-display);font-weight:600;font-style:normal;font-size:clamp(20px,2.6vw,26px);margin:0;overflow-wrap:anywhere;}
+  .cat-full{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+  .cat-count{margin-left:auto;font-family:var(--font-mono);font-size:13px;color:var(--accent-deep);font-variant-numeric:tabular-nums;}
+
+  .entry{
+    display:grid;grid-template-columns:52px minmax(0,1fr) auto;column-gap:var(--md);align-items:baseline;
+    padding:var(--md) var(--sm) var(--md) 0;border-bottom:1px solid var(--rule);transition:background .16s var(--ease-out);
+  }
+  .entry:hover{background:var(--paper-inset);}
+  .entry:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .entry-num{font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);font-variant-numeric:tabular-nums;padding-left:var(--sm);transition:color .16s var(--ease-out);}
+  .entry:hover .entry-num{color:var(--accent);}
+  .entry-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;}
+  .entry-title{font-family:var(--font-display);font-weight:600;font-style:normal;font-size:18px;line-height:1.3;margin:0;transition:color .16s var(--ease-out);overflow-wrap:anywhere;min-width:0;}
+  .entry:hover .entry-title{color:var(--accent-deep);}
+  .entry-en{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);overflow-wrap:anywhere;}
+  .entry-sub{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);border:1px solid var(--rule-strong);border-radius:2px;padding:2px 8px;}
+  .entry-desc{font-size:14px;color:var(--ink-soft);line-height:1.66;max-width:82ch;margin:6px 0 0;}
+  .entry-go{font-family:var(--font-mono);font-size:12px;color:var(--accent-deep);white-space:nowrap;transition:transform .16s var(--ease-out),color .16s var(--ease-out);}
+  .entry:hover .entry-go{transform:translateX(3px);color:var(--accent);}
+
+  .empty{padding:var(--2xl) 0;text-align:center;}
+  .empty h3{font-family:var(--font-display);font-size:20px;font-style:normal;color:var(--ink-soft);margin:0 0 8px;font-weight:600;}
+  .empty p{font-size:14px;color:var(--ink-faint);margin:0;}
+
+  .fade-in{animation:fade .32s var(--ease-out);}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+  /* ===== appendix + colophon ===== */
+  .appendix{border-top:1.5px solid var(--rule-strong);background:var(--paper-inset);}
+  .appendix-in{max-width:var(--shell);margin:0 auto;padding:var(--xl) var(--lg);}
+  .appendix h2{font-family:var(--font-display);font-weight:600;font-style:normal;font-size:22px;margin:0 0 var(--2xs);}
+  .appendix .sub{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);margin:0 0 var(--md);}
+  .repo-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:0 0 var(--xl);}
+  .repo-list a{background:var(--paper);border:1px solid var(--rule-strong);border-radius:2px;padding:14px 16px;display:block;transition:background .16s var(--ease-out);}
+  .repo-list a:hover{background:var(--accent-wash);}
+  .repo-list a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .repo-list .rname{font-weight:600;font-size:14px;display:block;}
+  .repo-list .rpath{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);}
+  .plugin-table{width:100%;border-collapse:collapse;font-size:13.5px;max-width:760px;}
+  .plugin-table th{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);text-align:left;padding:8px 14px 8px 0;border-bottom:1.5px solid var(--rule-strong);}
+  .plugin-table td{padding:10px 14px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+  .plugin-table code{font-family:var(--font-mono);font-size:12px;background:var(--paper-raised);padding:2px 6px;border-radius:2px;}
+  .colophon{border-top:1px solid var(--rule);margin-top:var(--xl);padding-top:var(--md);display:flex;flex-wrap:wrap;gap:8px 24px;}
+  .colophon p{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin:0;}
+  .colophon a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash);}
+  .colophon a:hover{border-color:var(--accent-deep);}
+
+  @media (max-width:860px){
+    .shell{grid-template-columns:minmax(0,1fr);}
+    .rail{position:sticky;top:0;z-index:5;border-right:none;border-bottom:1px solid var(--rule);max-height:none;background:var(--paper);
+      display:flex;gap:8px;overflow-x:auto;padding:var(--sm) var(--md);white-space:nowrap;}
+    .rail-title{display:none;}
+    .rail ul{display:flex;gap:8px;}
+    .rail li{border:1px solid var(--rule-strong);border-radius:999px;padding:6px 14px;flex:0 0 auto;}
+    .rail li::before{display:none;}
+    .catalogue{padding:var(--md);}
+    .appendix-in{padding:var(--lg) var(--md);}
+    .cat-head{flex-wrap:wrap;row-gap:2px;}
+    .cat-head h2{white-space:nowrap;overflow-wrap:normal;}
+  }
+  @media (max-width:560px){
+    .entry{grid-template-columns:minmax(0,1fr);row-gap:4px;}
+    .entry-num{padding-left:0;}
+    .entry-go{margin-top:6px;}
+    .masthead-in{padding:var(--md);}
+    .install{max-width:100%;overflow-x:auto;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.12s!important;}
+    .fade-in{animation:none;}
+    .entry:hover .entry-go{transform:none;}
+    .rail li.active::before{transition:none;}
+  }
+</style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-in">
+      <p class="kicker">开源索引 · github.com/google/skills</p>
+      <h1 class="title">Google官方Skills大全</h1>
+      <p class="lede">汇集 <a href="https://github.com/google/skills" target="_blank" rel="noopener">google/skills</a> 官方仓库全部 <b>108</b> 个 Agent Skills——覆盖 Google Cloud 入门、多产品解决方案、AI/ML（Agent Platform · Gemini）、GKE 基础设施、数据库与分析、运维管理、架构完善框架、安全、广告与 Analytics 共 12 大类。条目描述译自各 skill 的 SKILL.md 官方元数据，点击直达仓库源码。仓库处于积极开发中，Apache 2.0 协议开放使用。</p>
+      <ul class="facts">
+        <li>Star <b>17,654</b></li>
+        <li>Skills <b>108</b> 个 · <b>12</b> 大类</li>
+        <li>协议 <b>Apache 2.0</b></li>
+        <li>数据抓取 <b>2026-08-11</b></li>
+      </ul>
+      <p class="install"><span class="dollar">$</span><span id="cmd">npx skills add google/skills</span><button type="button" id="copy" aria-label="复制安装命令">复制</button></p>
+      <div class="toolbar">
+        <input class="search" id="search" type="search" placeholder="搜索 skill / 产品 / 关键词…（如 GKE、BigQuery、微调、排障）" aria-label="搜索">
+        <span class="readout" id="readout"></span>
+      </div>
+      <div class="statusbar" id="statusbar"></div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="rail" id="rail" aria-label="分类导航">
+      <p class="rail-title">分类导航</p>
+      <ul id="rail-list"></ul>
+    </nav>
+    <main class="catalogue" id="catalogue"></main>
+  </div>
+
+  <footer class="appendix">
+    <div class="appendix-in">
+      <h2>更多 Google 官方 Skills 仓库</h2>
+      <p class="sub">README 推荐的姊妹仓库 · 各自独立维护</p>
+      <div class="repo-list">
+        <a href="https://github.com/google/agents-cli" target="_blank" rel="noopener"><span class="rname">Agent Development Kit（ADK）</span><span class="rpath">google/agents-cli</span></a>
+        <a href="https://github.com/android/skills" target="_blank" rel="noopener"><span class="rname">Android Skills</span><span class="rpath">android/skills</span></a>
+        <a href="https://github.com/dart-lang/skills" target="_blank" rel="noopener"><span class="rname">Dart Skills</span><span class="rpath">dart-lang/skills</span></a>
+        <a href="https://github.com/flutter/skills" target="_blank" rel="noopener"><span class="rname">Flutter Skills</span><span class="rpath">flutter/skills</span></a>
+        <a href="https://github.com/genkit-ai/skills" target="_blank" rel="noopener"><span class="rname">Genkit Skills</span><span class="rpath">genkit-ai/skills</span></a>
+        <a href="https://github.com/firebase/agent-skills/tree/main/skills/firebase-firestore" target="_blank" rel="noopener"><span class="rname">Firestore Skills</span><span class="rpath">firebase/agent-skills</span></a>
+        <a href="https://github.com/gemini-cli-extensions/google-cloud-storage" target="_blank" rel="noopener"><span class="rname">GCS 进阶 Skills</span><span class="rpath">gemini-cli-extensions/google-cloud-storage</span></a>
+      </div>
+      <h2>插件安装（Skills + MCP 服务器）</h2>
+      <p class="sub">仓库同时为各智能体框架打包了 Google 产品插件</p>
+      <table class="plugin-table">
+        <thead><tr><th>Agent 框架</th><th>安装方式</th></tr></thead>
+        <tbody>
+          <tr><td>Claude Code</td><td><code>claude plugin marketplace add google/skills</code>，再 <code>claude plugin install &lt;plugin&gt;@google-plugins</code></td></tr>
+          <tr><td>Codex</td><td><code>codex plugin marketplace add google/skills</code>，再从 <code>/plugins</code> 浏览器中安装</td></tr>
+          <tr><td>Antigravity CLI</td><td><code>agy plugin install https://github.com/google/skills/&lt;plugin-path&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <div class="colophon">
+        <p>来源：<a href="https://github.com/google/skills" target="_blank" rel="noopener">github.com/google/skills</a>（Apache 2.0）</p>
+        <p>问题反馈：<a href="https://github.com/google/skills/issues" target="_blank" rel="noopener">GitHub Issues</a></p>
+        <p>本页描述由 SKILL.md 官方元数据翻译整理 · 2026-08-11</p>
+      </div>
+    </div>
+  </footer>
+
+<script>
+const CATS = [
+  {id:"start", cn:"入门上手", en:"Getting started with Google Cloud"},
+  {id:"solution", cn:"多产品解决方案", en:"Multi-product solution skills"},
+  {id:"aiml", cn:"AI / ML", en:"AI/ML · Agent Platform & Gemini"},
+  {id:"infra", cn:"基础设施", en:"Infrastructure"},
+  {id:"db", cn:"数据库与分析", en:"Databases and analytics"},
+  {id:"dev", cn:"开发者工具", en:"Developer tools"},
+  {id:"mgmt", cn:"管理与运维", en:"Management tools"},
+  {id:"waf", cn:"架构完善框架", en:"Well-Architected Framework"},
+  {id:"sec", cn:"安全与身份", en:"Security and identity"},
+  {id:"web", cn:"Web 与应用托管", en:"Web and app hosting"},
+  {id:"ads", cn:"广告", en:"Advertising"},
+  {id:"ga", cn:"Analytics 分析", en:"Google Analytics"}
+];
+const B = "https://github.com/google/skills/tree/main/";
+const ROWS = [
+{cat:"start",sub:"Google Cloud",name:"Authenticating to Google Cloud",cn:"Google Cloud 认证与授权",p:[],path:"skills/cloud/google-cloud-recipe-auth",desc:"认证与授权专家指引：覆盖人类用户、服务身份、应用默认凭据（ADC）与安全访问 Google Cloud 服务和 API 的最佳实践。"},
+{cat:"start",sub:"Landing Zone",name:"Google Cloud Recipe: Foundation Builder",cn:"落地基座构建",p:[],path:"skills/cloud/google-cloud-recipe-foundation-builder",desc:"为 Google Cloud 组织部署基线 Landing Zone：用组织策略建立安全护栏、规划资源层级（文件夹/项目）、关联结算账号，并配置集中式日志与监控。"},
+{cat:"start",sub:"Google Cloud",name:"Onboarding to Google Cloud",cn:"新手上路",p:[],path:"skills/cloud/google-cloud-recipe-onboarding",desc:"引导开发者迈出 Google Cloud 第一步：创建账号、配置结算、管理项目并部署第一个资源，适合初始化首个项目的新开发者。"},
+
+{cat:"solution",sub:"架构设计",name:"Google Cloud solution-architecture workflow",cn:"解决方案架构工作流",p:[],path:"skills/cloud/google-cloud-solution-architecture",desc:"交互式挖掘特定云工作负载的需求，生成端到端、跨产品的整体设计建议与架构指导。"},
+{cat:"solution",sub:"数据分析",name:"Agentic analytics across cloud providers and data types",cn:"跨云智能体分析",p:["data"],path:"skills/cloud/google-cloud-solution-agentic-analytics-spark-knowledge-catalog",desc:"为分布在 Google Cloud、其他云厂商或本地（如 Databricks、Snowflake）的数据，设计并部署受治理、安全的智能体分析解决方案。"},
+{cat:"solution",sub:"数据湖仓",name:"Borderless open data lakehouse agentic AI system",cn:"无边界开放数据湖仓",p:["data"],path:"skills/cloud/google-cloud-solution-agentic-ai-borderless-data-lakehouse",desc:"设计受治理、安全的无边界开放数据湖仓并集成智能体 AI：打通数据孤岛、跨云 join 数据、运行联邦查询。"},
+{cat:"solution",sub:"Agent",name:"Build and deploy AI agents on Google Cloud",cn:"构建并部署 AI 智能体",p:["agent"],path:"skills/cloud/google-cloud-solution-build-deploy-agents",desc:"在 Google Cloud 上设计、构建并部署 AI 智能体或多智能体系统：交互式收集需求、推荐定制架构并生成部署指令。"},
+{cat:"solution",sub:"数据科学",name:"Data science workflow with AI agents solution",cn:"智能体数据科学工作流",p:["data","agent"],path:"skills/cloud/google-cloud-solution-agentic-ai-data-science-workflow",desc:"为基于智能体的数据分析或 ML 工作负载定制多产品数据科学架构，内置有主张（opinionated）的最佳实践。"},
+{cat:"solution",sub:"实时流",name:"Live bidirectional multimodal streaming agentic AI",cn:"双向多模态实时流方案",p:["agent"],path:"skills/cloud/google-cloud-solution-agentic-ai-bidirectional-streaming",desc:"为处理连续多模态数据流的实时双向多智能体系统（实时技术指导、安全监控等场景）挖掘需求并生成定制方案。"},
+{cat:"solution",sub:"GKE",name:"Migrate AI Workloads to GKE Inference",cn:"AI 负载迁移至 GKE 推理",p:["gke"],path:"skills/cloud/google-cloud-solution-guided-gke-ai-migration",desc:"用 gcloud 与 kubectl 引导把现有 AI 推理负载（Cloud Run、Gemini API、Agent Platform）迁移到自托管的 GKE 推理。"},
+{cat:"solution",sub:"GKE + AlloyDB",name:"RAG for enterprise search using GKE and AlloyDB",cn:"企业搜索 RAG 方案",p:["gke","data"],path:"skills/cloud/google-cloud-solution-rag-enterprise-search-gke-sqldb",desc:"为具备 RAG 能力的企业搜索系统生成架构、设计与部署指导：以向量化 SQL 数据库（AlloyDB）作为存储与索引，跑在 GKE 上。"},
+{cat:"solution",sub:"Serverless",name:"Secure n-tier serverless web application",cn:"安全 N 层无服务器应用",p:[],path:"skills/cloud/google-cloud-solution-n-tier-serverless-web-app",desc:"交互式挖掘需求并生成「严格私有应用层」的安全 N 层无服务器 Web 应用多产品方案，内置最佳实践与架构指导。"},
+
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Alert Configuration",cn:"智能体告警配置",p:["agent"],path:"skills/cloud/agent-platform-alert-configuration",desc:"基于 OpenTelemetry（OTel）指标为 AI 智能体配置最佳实践告警策略：监控延迟、错误率、token 用量与质量指标。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Endpoint Management",cn:"服务端点管理",p:["agent"],path:"skills/cloud/agent-platform-endpoint-management",desc:"创建、列举、查看、更新与删除模型部署的 serving 端点，并排查端点权限、配额与资源占用错误。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Eval Flywheel Skill",cn:"评测飞轮",p:["agent"],path:"skills/cloud/agent-platform-eval-flywheel",desc:"用 Eval Quality Flywheel 方法论度量并提升模型/智能体质量：构建评测集、挑选或编写评测指标、分析失败案例、对比结果。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform GenAI Inference Skill",cn:"GenAI 推理",p:["agent"],path:"skills/cloud/agent-platform-inference",desc:"连接并调用 Agent Platform 上的 GenAI 模型：覆盖第一方 Gemini 与第三方 OpenMaaS 模型（Llama、DeepSeek、Qwen 等）的调用代码生成与认证。"},
+{cat:"aiml",sub:"Model Garden",name:"Agent Platform Model Garden Deploy Skill",cn:"Model Garden 部署",p:["agent"],path:"skills/cloud/agent-platform-deploy",desc:"把 Model Garden 中的开源模型或自定义权重部署到 Agent Platform 端点，查询部署进度，并做模型下线与资源清理。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Model Registry Management",cn:"模型注册表管理",p:["agent"],path:"skills/cloud/agent-platform-model-registry",desc:"在 Model Registry 中上传、列举、查看、更新与删除机器学习模型及其版本。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Model Tuning",cn:"模型微调",p:["agent"],path:"skills/cloud/agent-platform-tuning",desc:"用 Agent Platform 基础设施微调（fine-tune）开源模型或 Gemini 模型。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Prompt Management",cn:"提示词管理",p:["agent"],path:"skills/cloud/agent-platform-prompt-management",desc:"在 Agent Platform 中创建、列举、读取、版本化与删除受管提示词（managed prompts）。"},
+{cat:"aiml",sub:"RAG Engine",name:"Agent Platform RAG Engine Management",cn:"RAG 引擎管理",p:["agent"],path:"skills/cloud/agent-platform-rag-engine-management",desc:"用 Google GenAI SDK 管理与查询 RAG Engine 语料库：列举语料/文件、检索上下文、生成有据可依（grounded）的内容。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Troubleshooting",cn:"平台排障",p:["agent"],path:"skills/cloud/agent-platform-troubleshooting",desc:"排查 Gemini Enterprise Agent Platform 问题（Agent Gateway、Registry、Identity、Policies、Model Armor、IAP）：403 未授权出口、Agent Runtime 500 等。"},
+{cat:"aiml",sub:"Agent Platform",name:"Agent Platform Tuning Management",cn:"微调作业管理",p:["agent"],path:"skills/cloud/agent-platform-tuning-management",desc:"列举、查看或取消 Agent Platform 中进行中的 GenAI 微调作业。"},
+{cat:"aiml",sub:"BigQuery",name:"BigQuery AI & ML",cn:"BigQuery AI 与 ML",p:["data"],path:"skills/cloud/bigquery-ai-ml",desc:"用 BigQuery 内置 ML 与 GenAI 能力做高级分析：时序预测、数值预测、异常/离群检测、关键驱动分析、语义搜索等 SQL 场景。"},
+{cat:"aiml",sub:"Gemini",name:"Gemini API in Agent Platform",cn:"Gemini API 企业用法",p:["agent"],path:"skills/cloud/gemini-api",desc:"指导在 Agent Platform（Vertex AI）企业环境中通过 Google Gen AI SDK 使用 Gemini API，覆盖 Python、JS/TS、Go、Java 等 SDK 用法。"},
+{cat:"aiml",sub:"Gemini",name:"Managed Agents API Skill",cn:"受管智能体 API",p:["agent"],path:"skills/cloud/gemini-agents-api",desc:"以编程方式创建、配置、列举、更新与删除有状态、服务端托管的 Agent 资源（含挂载文件、技能与工具）。"},
+{cat:"aiml",sub:"Gemini",name:"Gemini Interactions API Skill",cn:"Interactions API",p:["agent"],path:"skills/cloud/gemini-interactions-api",desc:"指导使用有状态、服务端托管的 Interactions API：多轮对话、后台执行、流式输出、结构化输出与函数调用。"},
+{cat:"aiml",sub:"Gemini",name:"LiveAPI Service Skill",cn:"LiveAPI 客户端生成",p:["agent"],path:"skills/cloud/gemini-live-api",desc:"用你选择的编程语言生成 Gemini LiveAPI 客户端服务类：连接 websocket 端点、处理会话建立与恢复。"},
+{cat:"aiml",sub:"迁移",name:"Migrating from Gemini API in AI Studio to Agent Platform",cn:"AI Studio 迁移",p:["agent"],path:"skills/cloud/agent-platform-migrate-from-ai-studio",desc:"引导应用从 Google AI Studio 的 Gemini API 迁移到 Gemini Enterprise Agent Platform（原 Vertex AI），利用云额度并统一推理入口。"},
+{cat:"aiml",sub:"Agent Platform",name:"Skill Registry",cn:"技能注册表",p:["agent"],path:"skills/cloud/agent-platform-skill-registry",desc:"与 Skill Registry 交互：让智能体注册自身功能或发现新能力，支持技能的创建与搜索。"},
+
+{cat:"infra",sub:"Terraform",name:"Custom Infrastructure Design and Deployment Skill",cn:"基础设施设计与部署",p:[],path:"skills/cloud/design-deploy",desc:"GCP 基础设施设计与部署工作流：Terraform 设计、本地 HCL 校验、最佳实践 plan 扫描、导入 Application Design Center（ADC）模板并部署。"},
+{cat:"infra",sub:"Terraform",name:"Deployment Troubleshooting Skill",cn:"部署排障",p:[],path:"skills/cloud/design-deploy/references/infra-deployment-debugging",desc:"分析 ADC 应用或原生 Terraform 部署失败的排障专项。"},
+{cat:"infra",sub:"GKE",name:"GKE AI/ML Inference",cn:"GKE AI 推理",p:["gke"],path:"skills/cloud/gke-inference",desc:"在 GKE 上部署并优化 AI/ML 推理负载：GPU/TPU 资源配置、模型服务器与 LLM 部署。"},
+{cat:"infra",sub:"GKE",name:"GKE App Onboarding",cn:"应用上云",p:["gke"],path:"skills/cloud/gke-app-onboarding",desc:"管理应用首次部署到 GKE：容器化、部署清单编写与迁移。"},
+{cat:"infra",sub:"GKE",name:"GKE Backup & Disaster Recovery",cn:"备份与容灾",p:["gke"],path:"skills/cloud/gke-backup-dr",desc:"配置 GKE Backup Plan 与恢复工作流：备份策略、灾难恢复与集群还原（不含数据库备份）。"},
+{cat:"infra",sub:"GKE",name:"GKE Basics & Critical Gotchas",cn:"基础与关键陷阱",p:["gke"],path:"skills/cloud/gke-basics",desc:"核心 GKE 集群供给：kubectl 凭据获取、Autopilot vs Standard 选型、Workload Identity 配置与负载部署。"},
+{cat:"infra",sub:"GKE",name:"GKE Batch & HPC Workloads",cn:"批处理与 HPC",p:["gke"],path:"skills/cloud/gke-batch-hpc",desc:"在 GKE 上运行批处理与 HPC 负载：作业队列与并行处理。"},
+{cat:"infra",sub:"GKE",name:"GKE Cluster Autoscaler",cn:"集群自动扩缩",p:["gke"],path:"skills/cloud/gke-cluster-autoscaler",desc:"集群 Autoscaler、节点池自动创建/节点自动供给的启用、优化与排障（节点不扩容/不缩容等问题）。"},
+{cat:"infra",sub:"GKE",name:"GKE Cluster Creation",cn:"集群创建",p:["gke"],path:"skills/cloud/gke-cluster-creation",desc:"按预置模板（Autopilot、Standard Regional、GPU/AI 推理、AI Hypercompute）规划并执行集群创建、供给与生产就绪审计。"},
+{cat:"infra",sub:"GKE",name:"GKE ComputeClasses",cn:"计算类配置",p:["gke"],path:"skills/cloud/gke-compute-classes",desc:"配置、优化与排障 ComputeClasses：Spot VM + 按需回退、锁定特定加速器（GPU/TPU）或机型家族、访问限制与 pending pod 调试。"},
+{cat:"infra",sub:"GKE",name:"GKE Golden Path Configuration",cn:"黄金路径配置",p:["gke"],path:"skills/cloud/gke-golden-path",desc:"GKE 黄金路径默认配置、生产就绪检查清单与集群默认模式对照。"},
+{cat:"infra",sub:"GKE · TPU",name:"GKE JobSet Interruption Troubleshooting",cn:"JobSet 中断排障",p:["gke"],path:"skills/cloud/gke-ai-troubleshooting-jobset-interruption",desc:"自主诊断 AI/ML 训练负载的 JobSet 中断、重启与抢占：重启循环、Spot 抢占、节点就绪失败、宿主机问题与协调器 worker 崩溃。"},
+{cat:"infra",sub:"GKE",name:"GKE Manifest Generation Skill",cn:"清单生成",p:["gke"],path:"skills/cloud/gke-manifest-generation",desc:"为 Autopilot 与 Standard 集群生成/更新安全、生产级 Kubernetes YAML：容器安全上下文、CPU/内存资源限额等。"},
+{cat:"infra",sub:"GKE",name:"GKE Multi-Tenancy",cn:"多租户",p:["gke"],path:"skills/cloud/gke-multitenancy",desc:"规划配置 GKE 多租户：命名空间隔离、团队 RBAC、资源配额、LimitRange、网络隔离与成本分摊。"},
+{cat:"infra",sub:"GKE",name:"GKE Networking",cn:"集群网络",p:["gke"],path:"skills/cloud/gke-networking",desc:"规划与管理核心 GKE 网络：私有集群、VPC-native 配置、DNS、节点出口、Dataplane V2 与 IP 规划。"},
+{cat:"infra",sub:"GKE",name:"GKE Productionize Skill",cn:"生产化评审",p:["gke"],path:"skills/cloud/gke-productionize",desc:"对 GKE 集群与负载做全面生产就绪评审：扩展性、安全、可靠性、可观测、备份容灾与成本优化。"},
+{cat:"infra",sub:"GKE",name:"GKE Reliability",cn:"负载可靠性",p:["gke"],path:"skills/cloud/gke-reliability",desc:"用 PDB、健康探针（liveness/readiness/startup）与拓扑分布约束提升 GKE 负载可靠性。"},
+{cat:"infra",sub:"GKE",name:"GKE Service Networking Skill",cn:"服务网络",p:["gke"],path:"skills/cloud/gke-service-networking",desc:"配置 GKE 边缘网络与流量路由：Gateway API、标准 Ingress、Cloud Armor WAF、容器原生负载均衡（NEG）、Private Service Connect。"},
+{cat:"infra",sub:"GKE",name:"GKE Storage",cn:"存储管理",p:["gke"],path:"skills/cloud/gke-storage",desc:"管理 GKE 存储：PVC、PersistentVolume、Filestore 与 GCS FUSE 配置。"},
+{cat:"infra",sub:"GKE · TPU",name:"GKE TPU Dynamic Slices Monitoring & Management",cn:"TPU 动态切片",p:["gke"],path:"skills/cloud/gke-tpu-dynamic-slices-monitoring",desc:"监控、排障与管理 TPU Dynamic Slices 自定义资源：切片生命周期、供给失败、单/多切片（JobSet）清单校验与卡死资源安全修复。"},
+{cat:"infra",sub:"GKE",name:"GKE Upgrades & Maintenance",cn:"升级与维护",p:["gke"],path:"skills/cloud/gke-upgrades",desc:"规划、执行并验证 Standard 与 Autopilot 集群升级与维护：升级计划、前后检查清单、gcloud 维护 runbook 与发布渠道策略。"},
+{cat:"infra",sub:"GKE",name:"GKE Workload Scaling",cn:"负载扩缩",p:["gke"],path:"skills/cloud/gke-workload-scaling",desc:"用 HPA（水平）与 VPA（垂直）管理 GKE 负载自动伸缩及最佳实践。"},
+{cat:"infra",sub:"GKE",name:"GKE Workload Troubleshooting Skill",cn:"负载排障",p:["gke"],path:"skills/cloud/gke-workload-troubleshooting",desc:"通过日志与事件诊断 GKE 负载故障：CrashLoopBackOff、OOMKilled、ImagePullBackOff、Pending 等 pod 启动失败与反复崩溃问题。"},
+{cat:"infra",sub:"Filestore",name:"Google Cloud Filestore Autoscale",cn:"Filestore 弹性伸缩",p:[],path:"skills/cloud/google-cloud-filestore-autoscale",desc:"巡检 Filestore 容量与利用率，评估存储伸缩规则并执行扩容（余量不足）或缩容（成本优化）。"},
+{cat:"infra",sub:"负载均衡",name:"Global external Application Load Balancer Configuration",cn:"全球外部负载均衡",p:[],path:"skills/cloud/google-cloud-global-frontend-configuration",desc:"通过 6 步发现流程设计部署全球外部应用负载均衡器：Cloud CDN、Cloud Armor 与 Service Extensions 的最佳实践配置映射。"},
+{cat:"infra",sub:"网络",name:"Google Cloud Networking Observability Expert",cn:"网络可观测专家",p:[],path:"skills/cloud/google-cloud-networking-observability",desc:"分析日志、指标与诊断信息排查网络问题：VPC Flow Logs（含成本估算）、NAT、防火墙、威胁日志、延迟/吞吐指标与连通性测试。"},
+{cat:"infra",sub:"GCS",name:"Google Cloud Storage Basics",cn:"云存储基础",p:["data"],path:"skills/cloud/google-cloud-storage-basics",desc:"Cloud Storage（GCS）对象存取与管理：创建配置存储桶、上传/下载/流式传输数据、以目录组织对象。"},
+{cat:"infra",sub:"Terraform",name:"Simplified GCP Modular Terraform Architect Skill",cn:"模块化 Terraform 架构",p:[],path:"skills/cloud/design-deploy/references/design",desc:"模块化 Terraform 架构设计与本地校验：编写 HCL、terraform validate 校验与 terraform plan 规划。"},
+
+{cat:"db",sub:"AlloyDB",name:"AlloyDB Basics",cn:"AlloyDB 基础",p:["data"],path:"skills/cloud/alloydb-basics",desc:"管理 AlloyDB for PostgreSQL 集群、实例与备份，并集成 AlloyDB MCP 工具做自动化数据库运维。"},
+{cat:"db",sub:"BigQuery",name:"BigFrames (BigQuery DataFrame) basics",cn:"BigFrames 基础",p:["data"],path:"skills/cloud/bigquery-bigframes",desc:"生成 BigQuery DataFrames（BigFrames）Python 代码——BigQuery 之上的 pandas / scikit-learn 风格 API，适合 notebook 中的 dataframe 与 ML 工作。"},
+{cat:"db",sub:"BigQuery",name:"BigQuery Asset Impact Analysis",cn:"资产影响分析",p:["data"],path:"skills/cloud/datalineage-bigquery-asset-impact-analysis",desc:"分析 BigQuery 表/视图损坏、过期或变更时的下游影响（爆炸半径）：识别所有受波及的下游表、看板与流程。"},
+{cat:"db",sub:"BigQuery",name:"BigQuery Basics",cn:"BigQuery 基础",p:["data"],path:"skills/cloud/bigquery-basics",desc:"管理 BigQuery 数据集、表与作业：运行 SQL 查询、管理资源（数据集/表/视图）、基础数据摄入与分析。"},
+{cat:"db",sub:"Bigtable",name:"Bigtable Basics",cn:"Bigtable 基础",p:["data"],path:"skills/cloud/bigtable-basics",desc:"Bigtable 实例/表供给、高性能 schema 设计（行键、列族）、SQL 与客户端库（Java/Go/Python）查询代码及性能诊断。"},
+{cat:"db",sub:"Cloud SQL",name:"Cloud SQL Basics",cn:"Cloud SQL 基础",p:["data"],path:"skills/cloud/cloud-sql-basics",desc:"生成或讲解 Cloud SQL 资源：创建托管的 MySQL、PostgreSQL 或 SQL Server 实例与数据库。"},
+{cat:"db",sub:"Data Lineage",name:"Data Lineage Summary",cn:"数据血缘摘要",p:["data"],path:"skills/cloud/datalineage-summary",desc:"汇总 Data Lineage 图谱：帮助调试数据质量问题、理解 BQ/GCS 数据来源，以直观 Markdown 报告呈现上下游数据流。"},
+{cat:"db",sub:"Airflow",name:"Managed Service for Apache Airflow Migration Guide",cn:"托管 Airflow 迁移",p:["data"],path:"skills/cloud/managed-airflow-migrations",desc:"Managed Service for Apache Airflow（原 Cloud Composer）DAG 迁移指导：Airflow 2.11.1（Gen 2/3）与 Airflow 3（Gen 3），含环境巡检与 GCS 上传下载。"},
+{cat:"db",sub:"Spanner",name:"Spanner Basics",cn:"Spanner 基础",p:["data"],path:"skills/cloud/spanner-basics",desc:"Spanner 实例/数据库供给、高性能 schema 与主键设计、SQL 与客户端库代码编写及性能问题诊断。"},
+
+{cat:"dev",sub:"DDP",name:"Developer Device Platform",cn:"远程设备平台",p:[],path:"skills/cloud/developer-device-platform-basics",desc:"管理 Developer Device Platform（DDP）远程 Android 设备：预约设备、建立连接隧道、查看会话状态、续租或取消租约。"},
+{cat:"dev",sub:"gcloud",name:"gcloud CLI Skill for AI Agents",cn:"gcloud CLI 安全护栏",p:[],path:"skills/cloud/gcloud",desc:"为跨 GCP 服务的 gcloud CLI 操作提供安全关键校验、护栏与数据缩减——规划、生成、构造与执行 gcloud 命令的守门员。"},
+{cat:"dev",sub:"agents-cli",name:"Google Agents CLI Onboarding",cn:"Agents CLI 上手",p:["agent"],path:"skills/cloud/google-agents-cli-onboarding",desc:"agents-cli 上手入口：创建/开发智能体、用 ADK 构建、本地运行调试、测试评估与部署。"},
+
+{cat:"mgmt",sub:"Monitoring",name:"Cloud Monitoring Chart Generation Skill",cn:"监控图表生成",p:[],path:"skills/cloud/cloud-monitoring-chart-generation",desc:"从解析后的 PromQL 查询生成 Cloud Monitoring 服务端驱动 UI（SDUI）Widget 与 XyChart 的 Protocol Buffer textproto。"},
+{cat:"mgmt",sub:"Logging",name:"Configuring Cloud Logging",cn:"日志配置",p:[],path:"skills/cloud/cloud-logging-configuration-basics",desc:"单项目 Cloud Logging 配置：区域日志桶、日志 Sink、日志视图、默认视图中隐藏敏感日志、视图 IAM 权限、日志指标与排除规则。"},
+{cat:"mgmt",sub:"Logging",name:"Configuring Cross-Project Logging",cn:"跨项目日志",p:[],path:"skills/cloud/cloud-logging-cross-project-configuration",desc:"配置与排障跨项目集中式日志与读取时聚合：把多项目/文件夹/组织的日志路由到中央日志桶，创建跨项目 Sink。"},
+{cat:"mgmt",sub:"Logging",name:"Generate Logging Query Language queries",cn:"LQL 查询生成",p:[],path:"skills/cloud/cloud-logging-query-generation",desc:"从自然语言生成 Cloud Logging 的 LQL 查询：按 Google Cloud 服务过滤日志数据、辅助问题调试。"},
+{cat:"mgmt",sub:"GKE",name:"GKE Cost Analysis",cn:"GKE 成本分析",p:["gke"],path:"skills/cloud/gke-cost-analysis",desc:"用 BigQuery 账单导出、成本分摊数据与实时集群监控指标，以自然语言问答方式分析跨项目、命名空间与负载的 GKE 成本。"},
+{cat:"mgmt",sub:"GKE",name:"GKE Cost Optimization",cn:"GKE 成本优化",p:["gke"],path:"skills/cloud/gke-cost-optimization",desc:"优化 GKE 成本：负载 rightsizing（CPU/内存请求校准）、Spot VM 选型、CUD 承诺使用折扣、成本分摊与资源配额。"},
+{cat:"mgmt",sub:"GKE",name:"GKE Observability",cn:"GKE 可观测",p:["gke"],path:"skills/cloud/gke-observability",desc:"配置 GKE 可观测性：Cloud Logging、Cloud Monitoring 与托管 Prometheus 指标采集。"},
+{cat:"mgmt",sub:"GKE · TPU",name:"GKE TPU Metrics Monitoring Guide",cn:"TPU 指标监控",p:["gke"],path:"skills/cloud/gke-tpu-metrics-monitoring",desc:"用 GKE 系统指标与 PromQL 监控排障 TPU 负载/节点/节点池：TensorCore 占空比、TPU 内存、节点就绪、多主机节点池可用性、维护与抢占中断。"},
+{cat:"mgmt",sub:"GKE · GPU/TPU",name:"Handle Disruption on GPUs and TPUs Troubleshooting",cn:"GPU/TPU 中断处置",p:["gke"],path:"skills/cloud/gke-ai-troubleshooting-handle-disruption-gpu-tpu",desc:"诊断、预测并缓解 GPU/TPU 负载在 Compute Engine 宿主机维护与软硬件维护事件中的节点中断。"},
+{cat:"mgmt",sub:"Monitoring",name:"Metric Selection",cn:"指标遴选",p:[],path:"skills/cloud/cloud-monitoring-metric-selection",desc:"检索、查询并锁定 GCP 服务/资源相关的 Cloud Monitoring 指标描述符（Compute Engine、Spanner、BigQuery、Cloud Run、Cloud SQL、Pub/Sub 等）。"},
+{cat:"mgmt",sub:"SLO",name:"SLO Alert Configuration Setup Wizard",cn:"SLO 告警向导",p:[],path:"skills/cloud/google-cloud-slo-alert-configuration",desc:"为 App Hub 注册或单独指定的 Google Cloud 资源配置基于 PromQL 的 SLO 告警策略，输出 Terraform 代码。"},
+{cat:"mgmt",sub:"GKE · TPU",name:"TPU Connection Failure and VBAR OOM Troubleshooting",cn:"TPU v6e 疑难排障",p:["gke"],path:"skills/cloud/gke-ai-troubleshooting-tpu-vbar-oom",desc:"诊断预防 GKE TPU v6e 节点上 vbar_control_agent 段错误、OOM 与 TPU 设备初始化失败（由设备重置竞态或高频指标轮询引发）。"},
+{cat:"mgmt",sub:"WLM",name:"Workload Manager Basics",cn:"负载管理器基础",p:[],path:"skills/cloud/workload-manager-basics",desc:"用公开客户端库与 REST API 管理 Workload Manager 评估、规则、扫描资源与验证结果：巡检最佳实践规则并对资源执行评估。"},
+
+{cat:"waf",sub:"WAF",name:"WAF · Cost Optimization pillar",cn:"成本优化支柱",p:[],path:"skills/cloud/google-cloud-waf-cost-optimization",desc:"基于 Google Cloud 架构完善框架（Well-Architected Framework）生成成本优化指导：评估负载、识别成本需求与约束、输出构建/部署阶段的可落地建议。"},
+{cat:"waf",sub:"WAF",name:"WAF · Operational Excellence pillar",cn:"卓越运营支柱",p:[],path:"skills/cloud/google-cloud-waf-operational-excellence",desc:"基于 WAF 卓越运营支柱的设计原则与建议，为 Google Cloud 工作负载生成运营侧指导。"},
+{cat:"waf",sub:"WAF",name:"WAF · Performance Optimization pillar",cn:"性能优化支柱",p:[],path:"skills/cloud/google-cloud-waf-performance-optimization",desc:"基于 WAF 性能优化支柱的设计原则与建议，评估负载、识别性能需求并生成性能指导。"},
+{cat:"waf",sub:"WAF",name:"WAF · Reliability pillar",cn:"可靠性支柱",p:[],path:"skills/cloud/google-cloud-waf-reliability",desc:"生成可靠性、韧性、可用性、冗余、容错与灾难恢复（DR）方面的指导，依据 WAF 可靠性支柱的设计原则。"},
+{cat:"waf",sub:"WAF",name:"WAF · Security pillar",cn:"安全支柱",p:[],path:"skills/cloud/google-cloud-waf-security",desc:"基于 WAF 安全支柱的设计原则与建议，为 Google Cloud 工作负载生成安全侧指导。"},
+{cat:"waf",sub:"WAF",name:"WAF · Sustainability pillar",cn:"可持续支柱",p:[],path:"skills/cloud/google-cloud-waf-sustainability",desc:"基于 WAF 可持续支柱评估负载并识别环境影响需求，生成可持续性指导。"},
+
+{cat:"sec",sub:"GKE",name:"GKE Platform Security",cn:"GKE 平台安全",p:["gke"],path:"skills/cloud/gke-platform-security",desc:"规划配置并加固平台级 GKE 集群安全：Secret Manager 插件启用、RBAC 加固（禁用不安全绑定、审计工具）、Binary Authorization 与 Shielded Nodes。"},
+{cat:"sec",sub:"GKE",name:"GKE Workload Security",cn:"GKE 负载安全",p:["gke"],path:"skills/cloud/gke-workload-security",desc:"审计配置并加固负载级安全控制：运行集群安全审计脚本（audit_cluster.sh）、配置 Workload Identity Federation（身份模拟、KSA）。"},
+{cat:"sec",sub:"SecOps",name:"SecOps Detection Coverage Skill",cn:"SecOps 检测覆盖",p:[],path:"skills/cloud/detection-engineering-coverage-evaluation",desc:"用 MCP 工具自动化 Google SecOps 端到端检测工程：抓取博客威胁情报、生成威胁检测机会（TDO）、用合成 UDM 事件模拟攻击者行为并评估检测覆盖。"},
+
+{cat:"web",sub:"Cloud Run",name:"Cloud Run Basics",cn:"Cloud Run 基础",p:[],path:"skills/cloud/cloud-run-basics",desc:"管理 Cloud Run 服务、作业与工作池：响应 HTTP 请求的应用（services）、事件触发/定时任务（jobs）、常驻拉取式后台处理（worker pools）。"},
+{cat:"web",sub:"Firebase",name:"Firebase Basics",cn:"Firebase 基础",p:[],path:"skills/cloud/firebase-basics",desc:"Firebase CLI 基础：安装与版本检查、登录（含 --no-localhost）、项目创建与选择（firebase use）、应用配置文件下载。"},
+
+{cat:"ads",sub:"GMA SDK",name:"AI Migration Agent Instructions for the Google Mobile Ads SDK",cn:"移动广告 SDK 迁移",p:["ads"],path:"skills/ads/google-mobile-ads-android-migrate-to-next-gen",desc:"把 Android 应用从旧版 Google Mobile Ads SDK（play-services-ads）迁移到新一代 GMA Next-Gen SDK，提供完整 API 映射表。"},
+{cat:"ads",sub:"Data Manager",name:"Data Manager API Audience Ingestion",cn:"受众数据摄入",p:["ads"],path:"skills/ads/data-manager-api-audience-ingestion",desc:"通过 Data Manager API 与客户端库管理受众成员：上传受众、移除指定用户、清空受众列表。"},
+{cat:"ads",sub:"Data Manager",name:"Data Manager API Event Ingestion",cn:"事件数据摄入",p:["ads"],path:"skills/ads/data-manager-api-event-ingestion",desc:"通过 /v1/events/ingest 端点向 Google 产品上报事件与转化：离线转化、增强转化等场景的实现指导。"},
+{cat:"ads",sub:"Data Manager",name:"Data Manager API Setup",cn:"Data Manager 初始化",p:["ads"],path:"skills/ads/data-manager-api-setup",desc:"Data Manager API 入门：客户端库安装与认证配置，搭建本地开发环境。"},
+{cat:"ads",sub:"Google Ads API",name:"Google Ads API Account Performance Diagnostics Skill",cn:"账户表现诊断",p:["ads"],path:"skills/ads/google-ads-api-account-diagnostics",desc:"诊断 Google Ads 账户表现问题：转化流失（价值/数量）、线索量下滑、因广告评级/出价/预算导致的展示份额损失，排查突发的效果暴跌。"},
+{cat:"ads",sub:"Google Ads API",name:"Google Ads API MCP Server Installation",cn:"Ads MCP 服务器安装",p:["ads"],path:"skills/ads/google-ads-api-mcp-setup",desc:"下载、配置并安装官方开源 Google Ads MCP Server：把 AI 助手（Gemini、Claude Code、Cursor）接入你的 Google Ads 账户。"},
+{cat:"ads",sub:"Google Ads API",name:"Google Ads API Quickstart",cn:"Ads API 快速上手",p:["ads"],path:"skills/ads/google-ads-api-quickstart",desc:"Google Ads API 快速上手：凭据配置、6 种客户端库/REST 选择、环境配置、跑通「拉取广告系列」脚本并排查 USER_PERMISSION_DENIED 等常见错误。"},
+{cat:"ads",sub:"GMA SDK",name:"Google Mobile Ads SDK - Banner Ads",cn:"横幅广告",p:["ads"],path:"skills/ads/google-mobile-ads-banner",desc:"在 Android、iOS 或 Unity 应用中实现、集成与配置 GMA 横幅广告（banner）。"},
+{cat:"ads",sub:"GMA SDK",name:"Google Mobile Ads SDK - Install",cn:"SDK 安装",p:["ads"],path:"skills/ads/google-mobile-ads-get-started",desc:"集成 Google Mobile Ads SDK：AdMob 或 Ad Manager、GMA Next-Gen SDK 在移动应用中的初始化与配置。"},
+{cat:"ads",sub:"GMA SDK",name:"Google Mobile Ads SDK - Interstitial Ads",cn:"插屏广告",p:["ads"],path:"skills/ads/google-mobile-ads-interstitial",desc:"在 Android 与 iOS 应用中实现、集成与配置 GMA 插屏广告（interstitial）。"},
+{cat:"ads",sub:"GMA SDK",name:"Google Mobile Ads SDK - Rewarded Ads",cn:"激励广告",p:["ads"],path:"skills/ads/google-mobile-ads-rewarded",desc:"在 Android 与 iOS 应用中实现、集成与配置 GMA 激励视频广告（rewarded）。"},
+{cat:"ads",sub:"IMA SDK",name:"IMA SDK basics",cn:"IMA 视频广告",p:["ads"],path:"skills/ads/ima-sdk-basics",desc:"用 IMA SDK 做客户端广告插入（CSAI）：向网站、App、TV 等平台请求 VAST/VMAP 视频广告（不含 DAI/SSAI/SGAI）。"},
+
+{cat:"ga",sub:"GA4",name:"Getting Started with Google Analytics Admin API",cn:"Analytics Admin API",p:["data"],path:"skills/analytics/google-analytics-admin-api-basics",desc:"管理 Google Analytics 账号与媒体资源设置：启用 Admin API、列举账号/资源、管理数据流、自定义维度、转化事件与集成。"},
+{cat:"ga",sub:"GA4",name:"Getting Started with Google Analytics Data API",cn:"Analytics Data API",p:["data"],path:"skills/analytics/google-analytics-data-api-basics",desc:"管理 Google Analytics 报表数据：启用 Data API（v1beta）、对 GA 媒体资源运行自定义分析报表。"}
+];
+
+const PLABEL={gke:"GKE",agent:"Agent Platform · Gemini",data:"数据与分析",ads:"广告与营销"};
+const PORDER=["gke","agent","data","ads"];
+let activeCat="all", activeP="all";
+const railList=document.getElementById("rail-list"),catalogue=document.getElementById("catalogue"),
+      readout=document.getElementById("readout"),searchEl=document.getElementById("search"),statusbar=document.getElementById("statusbar");
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function catCount(id){return ROWS.filter(d=>d.cat===id).length;}
+
+document.getElementById("copy").addEventListener("click",function(){
+  const btn=this;
+  navigator.clipboard.writeText(document.getElementById("cmd").textContent).then(()=>{
+    btn.textContent="已复制";setTimeout(()=>btn.textContent="复制",1400);
+  }).catch(()=>{btn.textContent="请手动复制";setTimeout(()=>btn.textContent="复制",1800);});
+});
+
+function buildRail(){
+  let html=`<li data-cat="all" class="${activeCat==="all"?"active":""}" tabindex="0"><span class="cname">全部</span><span class="ccount">${ROWS.length}</span></li>`;
+  CATS.forEach(c=>{const n=catCount(c.id);if(!n)return;
+    html+=`<li data-cat="${c.id}" class="${activeCat===c.id?"active":""}" tabindex="0"><span class="cname">${esc(c.cn)}</span><span class="ccount">${n}</span></li>`;});
+  railList.innerHTML=html;
+  railList.querySelectorAll("li").forEach(li=>{
+    const set=()=>{activeCat=li.dataset.cat;buildRail();render();catalogue.scrollIntoView({behavior:"smooth",block:"start"});};
+    li.addEventListener("click",set);
+    li.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();set();}});
+  });
+}
+function buildStatus(){
+  let html=`<span class="sf-label">产品线</span><button class="sf ${activeP==="all"?"on":""}" data-p="all" type="button">全部</button>`;
+  PORDER.forEach(k=>{const n=ROWS.filter(d=>d.p.includes(k)).length;if(!n)return;
+    html+=`<button class="sf ${activeP===k?"on":""}" data-p="${k}" type="button">${PLABEL[k]} · ${n}</button>`;});
+  statusbar.innerHTML=html;
+  statusbar.querySelectorAll(".sf").forEach(b=>b.addEventListener("click",()=>{activeP=b.dataset.p;buildStatus();render();}));
+}
+function matches(d,q){
+  if(activeP!=="all" && !d.p.includes(activeP)) return false;
+  if(!q) return true;
+  const c=CATS.find(x=>x.id===d.cat);
+  const hay=(d.name+" "+d.cn+" "+d.sub+" "+d.desc+" "+(c?c.cn+" "+c.en:"")).toLowerCase();
+  return q.split(/\s+/).every(t=>hay.includes(t));
+}
+function render(){
+  const q=searchEl.value.trim().toLowerCase();
+  const cats=activeCat==="all"?CATS.map(c=>c.id):[activeCat];
+  let num=0,shown=0,html="";
+  cats.forEach(cid=>{
+    const c=CATS.find(x=>x.id===cid);
+    const items=ROWS.filter(d=>d.cat===cid && matches(d,q));
+    if(!items.length)return;
+    html+=`<section class="cat-block"><header class="cat-head"><h2>${esc(c.cn)}</h2><span class="cat-full">${esc(c.en)}</span><span class="cat-count">${items.length}</span></header>`;
+    items.forEach(d=>{
+      num++;shown++;
+      const url=B+d.path;
+      html+=`<a class="entry" href="${esc(url)}" target="_blank" rel="noopener" title="${esc(d.name)}">
+        <span class="entry-num">${String(num).padStart(3,"0")}</span>
+        <span class="entry-main">
+          <span class="entry-head"><h3 class="entry-title">${esc(d.cn)}</h3><span class="entry-en">${esc(d.name)}</span><span class="entry-sub">${esc(d.sub)}</span></span>
+          <p class="entry-desc">${esc(d.desc)}</p>
+        </span>
+        <span class="entry-go">源码 ↗</span>
+      </a>`;
+    });
+    html+=`</section>`;
+  });
+  if(!shown) html=`<div class="empty"><h3>没有匹配的条目</h3><p>换个关键词、分类或产品线试试</p></div>`;
+  catalogue.innerHTML=html;
+  catalogue.classList.remove("fade-in");void catalogue.offsetWidth;catalogue.classList.add("fade-in");
+  readout.innerHTML=`共 <b>${shown}</b> / 全部 ${ROWS.length} 个 skill`;
+}
+searchEl.addEventListener("input",render);
+buildRail();buildStatus();render();
+</script>
+</body>
+</html>
