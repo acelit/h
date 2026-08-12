@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生操作系统Skills大全</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · macrostructure: Catalogue + Sidebar Rail（用户指定沿用系列版式） · theme: Almanac 变体 (accent→violet) · tone: 参考索引/年鉴 · accent hue: violet */
+/* Hallmark · critique: P4 H5 E4 S5 R4 V4 */
+  :root{
+    --paper: oklch(96.5% 0.014 90);
+    --paper-raised: oklch(93.5% 0.018 90);
+    --paper-inset: oklch(98% 0.01 90);
+    --ink: oklch(26% 0.02 70);
+    --ink-soft: oklch(45% 0.02 70);
+    --ink-faint: oklch(59% 0.016 75);
+    --rule: oklch(84% 0.018 88);
+    --rule-strong: oklch(72% 0.022 85);
+    --accent: oklch(50% 0.17 300);
+    --accent-deep: oklch(41% 0.15 300);
+    --accent-wash: oklch(93% 0.035 300);
+    --shell: 1220px;
+    --2xs:4px; --xs:8px; --sm:12px; --md:20px; --lg:32px; --xl:52px; --2xl:80px;
+    --ease-out: cubic-bezier(.22,.61,.36,1);
+    --font-display:"Fraunces","Songti SC","STSong","Noto Serif SC",Georgia,serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;overflow-x:clip;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.62;
+    font-feature-settings:"tnum" 1;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ===== masthead ===== */
+  .masthead{border-bottom:1.5px solid var(--rule-strong);}
+  .masthead-in{max-width:var(--shell);margin:0 auto;padding:var(--lg) var(--lg) var(--md);}
+  .kicker{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;
+    letter-spacing:.28em;color:var(--accent);margin:0 0 var(--sm);
+  }
+  h1.title{
+    font-family:var(--font-display);font-weight:900;font-style:normal;
+    font-size:clamp(28px,5.2vw,46px);line-height:1.04;letter-spacing:-.01em;
+    margin:0 0 var(--sm);overflow-wrap:anywhere;min-width:0;
+  }
+  .lede{font-size:15px;max-width:70ch;color:var(--ink-soft);margin:0 0 var(--sm);}
+  .lede a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash);transition:border-color .18s var(--ease-out);}
+  .lede a:hover{border-color:var(--accent-deep);}
+  .motto{
+    font-family:var(--font-display);font-weight:600;font-style:normal;font-size:16px;
+    color:var(--accent-deep);margin:0 0 var(--sm);
+  }
+  .facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 var(--md);padding:0;list-style:none;}
+  .facts li{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);}
+  .facts b{color:var(--accent-deep);font-weight:600;}
+  .install{
+    display:inline-flex;align-items:center;gap:10px;margin:0 0 var(--md);max-width:100%;
+    font-family:var(--font-mono);font-size:13px;color:var(--ink);
+    background:var(--paper-inset);border:1px solid var(--rule-strong);border-radius:2px;
+    padding:8px 14px;
+  }
+  .install .dollar{color:var(--ink-faint);user-select:none;flex:0 0 auto;}
+  .install #cmd{overflow-wrap:anywhere;}
+  .install button{
+    background:transparent;cursor:pointer;font-family:var(--font-mono);flex:0 0 auto;
+    font-size:11px;color:var(--accent-deep);padding:2px 6px;border:1px solid var(--rule-strong);border-radius:2px;
+    transition:background .16s var(--ease-out);
+  }
+  .install button:hover{background:var(--accent-wash);}
+  .install button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .install button:active{transform:translateY(1px);}
+  .toolbar{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--md);}
+  .search{
+    flex:1;min-width:min(100%,320px);border:none;border-bottom:1.5px solid var(--rule-strong);
+    background:transparent;font-size:17px;font-family:var(--font-body);color:var(--ink);
+    padding:6px 2px;transition:border-color .18s var(--ease-out),box-shadow .18s var(--ease-out);
+  }
+  .search::placeholder{color:var(--ink-faint);}
+  .search:focus{outline:none;border-color:var(--accent);box-shadow:0 1.5px 0 0 var(--accent);}
+  .readout{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);white-space:nowrap;}
+  .readout b{color:var(--accent-deep);}
+
+  /* ===== shell ===== */
+  .shell{display:grid;grid-template-columns:236px minmax(0,1fr);max-width:var(--shell);margin:0 auto;}
+  .shell>*{min-width:0;}
+  .rail{position:sticky;top:0;align-self:start;border-right:1px solid var(--rule);padding:var(--lg) var(--md) var(--2xl);max-height:100vh;overflow-y:auto;}
+  .rail-title{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.24em;
+    color:var(--ink-faint);padding-bottom:var(--sm);border-bottom:1px solid var(--rule);margin:0 0 var(--xs);
+  }
+  .rail ul{list-style:none;margin:0;padding:0;}
+  .rail li{
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    padding:7px 10px 7px 12px;border-radius:2px;color:var(--ink-soft);cursor:pointer;position:relative;
+    transition:color .16s var(--ease-out),background .16s var(--ease-out);
+  }
+  .rail li::before{
+    content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;background:var(--accent);
+    transform:scaleY(0);transform-origin:top;transition:transform .18s var(--ease-out);
+  }
+  .rail li:hover{color:var(--ink);background:var(--paper-inset);}
+  .rail li.active{color:var(--accent-deep);background:var(--accent-wash);}
+  .rail li.active::before{transform:scaleY(1);}
+  .rail li:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .rail .cname{font-size:14px;}
+  .rail .ccount{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums;}
+  .rail li.active .ccount{color:var(--accent-deep);}
+
+  /* ===== catalogue ===== */
+  .catalogue{padding:var(--lg) var(--md) var(--lg) var(--xl);}
+  .cat-block{margin-bottom:var(--xl);}
+  .cat-head{display:flex;align-items:baseline;gap:var(--sm);border-bottom:1.5px solid var(--rule-strong);padding-bottom:var(--xs);margin-bottom:var(--2xs);}
+  .cat-head h2{font-family:var(--font-display);font-weight:600;font-style:normal;font-size:clamp(20px,2.6vw,26px);margin:0;overflow-wrap:anywhere;}
+  .cat-full{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+  .cat-count{margin-left:auto;font-family:var(--font-mono);font-size:13px;color:var(--accent-deep);font-variant-numeric:tabular-nums;}
+
+  .entry{
+    display:grid;grid-template-columns:52px minmax(0,1fr) auto;column-gap:var(--md);align-items:baseline;
+    padding:var(--md) var(--sm) var(--md) 0;border-bottom:1px solid var(--rule);transition:background .16s var(--ease-out);
+  }
+  .entry:hover{background:var(--paper-inset);}
+  .entry:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .entry-num{font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);font-variant-numeric:tabular-nums;padding-left:var(--sm);transition:color .16s var(--ease-out);}
+  .entry:hover .entry-num{color:var(--accent);}
+  .entry-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;}
+  .entry-title{font-family:var(--font-display);font-weight:600;font-style:normal;font-size:18px;line-height:1.3;margin:0;transition:color .16s var(--ease-out);overflow-wrap:anywhere;min-width:0;}
+  .entry:hover .entry-title{color:var(--accent-deep);}
+  .entry-en{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);overflow-wrap:anywhere;}
+  .entry-desc{font-size:14px;color:var(--ink-soft);line-height:1.66;max-width:82ch;margin:6px 0 0;}
+  .entry-go{font-family:var(--font-mono);font-size:12px;color:var(--accent-deep);white-space:nowrap;transition:transform .16s var(--ease-out),color .16s var(--ease-out);}
+  .entry:hover .entry-go{transform:translateX(3px);color:var(--accent);}
+
+  .empty{padding:var(--2xl) 0;text-align:center;}
+  .empty h3{font-family:var(--font-display);font-size:20px;font-style:normal;color:var(--ink-soft);margin:0 0 8px;font-weight:600;}
+  .empty p{font-size:14px;color:var(--ink-faint);margin:0;}
+
+  .fade-in{animation:fade .32s var(--ease-out);}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+  /* ===== appendix + colophon ===== */
+  .appendix{border-top:1.5px solid var(--rule-strong);background:var(--paper-inset);}
+  .appendix-in{max-width:var(--shell);margin:0 auto;padding:var(--xl) var(--lg);}
+  .appendix h2{font-family:var(--font-display);font-weight:600;font-style:normal;font-size:22px;margin:0 0 var(--2xs);}
+  .appendix .sub{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);margin:0 0 var(--md);}
+  .concept-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0 0 var(--xl);}
+  .concept-list .concept{background:var(--paper);border:1px solid var(--rule-strong);border-radius:2px;padding:14px 16px;}
+  .concept .cn-name{font-weight:600;font-size:14px;display:block;}
+  .concept .cn-en{font-family:var(--font-mono);font-size:11.5px;color:var(--accent-deep);}
+  .concept p{font-size:13px;color:var(--ink-soft);margin:6px 0 0;line-height:1.6;}
+  .install-table{width:100%;border-collapse:collapse;font-size:13.5px;max-width:820px;margin:0 0 var(--xl);}
+  .install-table th{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);text-align:left;padding:8px 14px 8px 0;border-bottom:1.5px solid var(--rule-strong);}
+  .install-table td{padding:10px 14px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+  .install-table code{font-family:var(--font-mono);font-size:12px;background:var(--paper-raised);padding:2px 6px;border-radius:2px;overflow-wrap:anywhere;}
+  .link-row{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 var(--md);}
+  .link-row a{font-family:var(--font-mono);font-size:12.5px;color:var(--accent-deep);border-bottom:1px solid var(--accent-wash);transition:border-color .16s var(--ease-out);}
+  .link-row a:hover{border-color:var(--accent-deep);}
+  .link-row a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .colophon{border-top:1px solid var(--rule);margin-top:var(--xl);padding-top:var(--md);display:flex;flex-wrap:wrap;gap:8px 24px;}
+  .colophon p{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin:0;}
+  .colophon a{color:var(--accent-deep);border-bottom:1px solid var(--accent-wash);}
+  .colophon a:hover{border-color:var(--accent-deep);}
+
+  @media (max-width:860px){
+    .shell{grid-template-columns:minmax(0,1fr);}
+    .rail{position:sticky;top:0;z-index:5;border-right:none;border-bottom:1px solid var(--rule);max-height:none;background:var(--paper);
+      display:flex;gap:8px;overflow-x:auto;padding:var(--sm) var(--md);white-space:nowrap;}
+    .rail-title{display:none;}
+    .rail ul{display:flex;gap:8px;}
+    .rail li{border:1px solid var(--rule-strong);border-radius:999px;padding:6px 14px;flex:0 0 auto;}
+    .rail li::before{display:none;}
+    .catalogue{padding:var(--md);}
+    .appendix-in{padding:var(--lg) var(--md);}
+    .cat-head{flex-wrap:wrap;row-gap:2px;}
+    .cat-head h2{white-space:nowrap;overflow-wrap:normal;}
+  }
+  @media (max-width:560px){
+    .entry{grid-template-columns:minmax(0,1fr);row-gap:4px;}
+    .entry-num{padding-left:0;}
+    .entry-go{margin-top:6px;}
+    .masthead-in{padding:var(--md);}
+    .install{overflow-x:auto;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.12s!important;}
+    .fade-in{animation:none;}
+    .entry:hover .entry-go{transform:none;}
+    .rail li.active::before{transition:none;}
+  }
+</style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-in">
+      <p class="kicker">开源索引 · github.com/danielmiessler/LifeOS</p>
+      <h1 class="title">人生操作系统Skills大全</h1>
+      <p class="motto">Current State → Ideal State，追寻 Euphoric Surprise（狂喜式惊喜）。</p>
+      <p class="lede">汇集安全研究者 Daniel Miessler 的 <a href="https://github.com/danielmiessler/LifeOS" target="_blank" rel="noopener">LifeOS</a>——「AI 驱动的人生操作系统」内置的全部 <b>52</b> 个 Agent Skills。LifeOS 是一个通用 AI harness：捕捉你是谁、在乎什么、要去哪里，再用懂你的 AI 帮你抵达——从构建应用、创业到创意项目。整套系统以一个技能包安装，内含研究、安全、写作、思维框架等技能库。条目描述译自各 SKILL.md 官方元数据，点击直达源码；8 大分类为本页编辑归类（仓库本身不分组）。</p>
+      <ul class="facts">
+        <li>Star <b>18,328</b></li>
+        <li>Skills <b>52</b> 个 · <b>8</b> 大类</li>
+        <li>作者 <b>Daniel Miessler</b></li>
+        <li>协议 <b>MIT</b></li>
+        <li>数据抓取 <b>2026-08-12</b></li>
+      </ul>
+      <p class="install"><span class="dollar">&gt;</span><span id="cmd">Read https://ourlifeos.ai/install and install LifeOS for me.</span><button type="button" id="copy" aria-label="复制安装提示词">复制</button></p>
+      <div class="toolbar">
+        <input class="search" id="search" type="search" placeholder="搜索 skill / 关键词…（如 研究、红队、TELOS、写作）" aria-label="搜索">
+        <span class="readout" id="readout"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="rail" id="rail" aria-label="分类导航">
+      <p class="rail-title">分类导航</p>
+      <ul id="rail-list"></ul>
+    </nav>
+    <main class="catalogue" id="catalogue"></main>
+  </div>
+
+  <footer class="appendix">
+    <div class="appendix-in">
+      <h2>核心概念速览</h2>
+      <p class="sub">LifeOS 的独有部件 · 全部技能都围绕它们运转</p>
+      <div class="concept-list">
+        <div class="concept"><span class="cn-name">现状 → 理想态</span><span class="cn-en">Current State → Ideal State</span><p>整个系统只做一件事：把你（或任意目标）从现状推向理想状态，追寻 Euphoric Surprise。</p></div>
+        <div class="concept"><span class="cn-name">TELOS 目标文件</span><span class="cn-en">TELOS</span><p>记录你的目标、信念、叙事与战略的「宪法文件」，让 AI 真正了解你并据此工作。</p></div>
+        <div class="concept"><span class="cn-name">算法</span><span class="cn-en">The Algorithm</span><p>驱动 Loop / Optimize / Ideate 的通用改进循环：评估现状、生成候选、测试、选择、再迭代。</p></div>
+        <div class="concept"><span class="cn-name">理想态工件 ISA</span><span class="cn-en">Ideal State Artifact</span><p>承载一个项目或任务「理想状态」的原语，可打分、可对账、可访谈补全。</p></div>
+        <div class="concept"><span class="cn-name">技能系统</span><span class="cn-en">The Skill System</span><p>本页收录的 52 个技能即其载体：一个自包含技能包装下整套库，由 CreateSkill 统一编排。</p></div>
+        <div class="concept"><span class="cn-name">Pulse 可观测</span><span class="cn-en">Pulse</span><p>随附的可观测面板，追踪系统运行与你的推进状态。</p></div>
+      </div>
+      <h2>安装方式</h2>
+      <p class="sub">LifeOS 由 AI 来安装——安装动作本身就是一句提示词</p>
+      <table class="install-table">
+        <thead><tr><th>路径</th><th>做法</th></tr></thead>
+        <tbody>
+          <tr><td>AI 提示词（推荐）</td><td>把 <code>Read https://ourlifeos.ai/install and install LifeOS for me.</code> 粘贴给 Claude Code、Cursor、Codex 等任意有能力的编码智能体，它会读取安装页并全程征求许可地完成配置</td></tr>
+          <tr><td>终端一行命令</td><td>macOS/Linux + Claude Code：<code>curl -fsSL https://ourlifeos.ai/install.sh | bash</code></td></tr>
+          <tr><td>依赖</td><td>一个有能力的 AI 编码 harness（官方在 Claude Code 上构建与运行）+ <code>bun</code></td></tr>
+        </tbody>
+      </table>
+      <h2>官方链接</h2>
+      <p class="sub">站点与社区</p>
+      <div class="link-row">
+        <a href="https://ourlifeos.ai" target="_blank" rel="noopener">官网 ourlifeos.ai</a>
+        <a href="https://docs.ourlifeos.ai" target="_blank" rel="noopener">文档 docs.ourlifeos.ai</a>
+        <a href="https://youtu.be/Le0DLrn7ta0" target="_blank" rel="noopener">视频演示 Walkthrough</a>
+        <a href="https://github.com/danielmiessler/LifeOS/releases" target="_blank" rel="noopener">Releases</a>
+        <a href="https://discord.gg/danielmiessler" target="_blank" rel="noopener">Discord 社区</a>
+      </div>
+      <div class="colophon">
+        <p>来源：<a href="https://github.com/danielmiessler/LifeOS" target="_blank" rel="noopener">github.com/danielmiessler/LifeOS</a>（MIT）</p>
+        <p>本页描述由各 SKILL.md 官方元数据翻译整理 · 分类为编辑归类 · 2026-08-12</p>
+      </div>
+    </div>
+  </footer>
+
+<script>
+const CATS = [
+  {id:"core", cn:"系统核心", en:"System Core · TELOS / ISA / Knowledge"},
+  {id:"algo", cn:"算法与自我改进", en:"The Algorithm · Loop / Optimize / Evals"},
+  {id:"think", cn:"思维与决策框架", en:"Thinking & Decision Frameworks"},
+  {id:"adv", cn:"对抗与风险推演", en:"Adversarial & Risk Analysis"},
+  {id:"research", cn:"研究与情报", en:"Research & Intelligence"},
+  {id:"create", cn:"创作与媒体", en:"Creation & Media"},
+  {id:"web", cn:"网页与自动化", en:"Web, Scraping & Automation"},
+  {id:"dev", cn:"开发者工具", en:"Developer Tools"}
+];
+const B = "https://github.com/danielmiessler/LifeOS/tree/main/LifeOS/install/skills/";
+const ROWS = [
+{cat:"core",name:"LifeOS",cn:"安装与引导",desc:"LifeOS 的安装引导入口：智能安装器检测你的操作系统与 AI harness 并完成接线，把用户从现状带向理想态（TELOS + 算法）。"},
+{cat:"core",name:"Telos",cn:"TELOS 目标系统",desc:"双上下文技能：个人 TELOS 读取并更新目标、信念、叙事与战略（带时间戳备份）；项目 TELOS 分析 .md/.csv 目录做深度盘点。"},
+{cat:"core",name:"ISA",cn:"理想态工件",desc:"掌管 Ideal State Artifact——承载项目/任务「理想状态」的原语：脚手架搭建、访谈补全、完整度打分、特性摘录与主档对账。"},
+{cat:"core",name:"Interview",cn:"宪法文件访谈",desc:"经 TelosFreshness 读取七份「宪法文件」（TELOS、双重身份、项目、系统提示词等），浮出最陈旧的条目并通过访谈更新。"},
+{cat:"core",name:"ContextSearch",cn:"上下文检索",desc:"按主题或日期短语查找 LifeOS 既往工作——会话、ISA、对话记录，跨工作注册表、标题、目录名与正文检索，按相关度排序。"},
+{cat:"core",name:"Knowledge",cn:"知识档案",desc:"管理 LifeOS 知识档案：人物、公司、想法与研究笔记的类型化图谱（带 related: 关联链接），支持检索、添加、收割、发展与摄取。"},
+{cat:"core",name:"Daemon",cn:"数字分身档案",desc:"管理公开的 daemon 档案——「你正在做什么」的数字表示：聚合 TELOS、知识库、项目、工作记忆与身份信息生成对外画像。"},
+{cat:"core",name:"Migrate",cn:"内容迁移",desc:"摄取外部内容、按 LifeOS 分类法归类分块、带出处提交。来源覆盖 md/txt、stdin、CLAUDE.md、Cursor 与 OpenAI 自定义指令等。"},
+{cat:"core",name:"Trim",cn:"上下文瘦身",desc:"给膨胀过大的常驻上下文文件做人工把关的瘦身：先确定性回收陈旧条目，再做语义合并与迁移——绝不静默丢信息。"},
+{cat:"core",name:"Upgrade",cn:"系统升级",desc:"跟随最强实践者升级 LifeOS：Anthropic 优先（changelog、文档、发布），其次可信创作者与热门仓库的 AI harness 动向。"},
+{cat:"core",name:"CreateSkill",cn:"技能工厂",desc:"LifeOS 全部技能工作的强制编排器：创建、编辑、追加工作流或工具、重命名、校验与规范化——禁止手搓技能文件。"},
+
+{cat:"algo",name:"Loop",cn:"迭代循环",desc:"迭代改进循环：跨多个「算法」周期把任意目标对象向理想态持续精炼——loop、iterate、refine、keep improving。"},
+{cat:"algo",name:"Optimize",cn:"自主优化",desc:"自主优化循环（爬山法）：有指标的代码直接对指标爬山；技能、提示词、智能体则用 LLM-as-judge 评审驱动改进。"},
+{cat:"algo",name:"Ideate",cn:"演化式发散",desc:"演化式创意引擎：多轮循环驱动，历经梦想、跨域偷师、重组、适应度测试、选择与拉马克式遗传诸阶段。"},
+{cat:"algo",name:"Science",cn:"科学方法",desc:"把科学方法当通用问题求解算法：目标先行、多个可证伪假设、设计实验、诚实测量——从 TDD 一路扩展到特性开发。"},
+{cat:"algo",name:"Evals",cn:"评测框架",desc:"断言优先的 AI 评测框架（对齐 Anthropic《Demystifying evals for AI agents》）：类型化确定性断言 + 强制结构化的 LLM 裁判。"},
+{cat:"algo",name:"Hardening",cn:"测试加固",desc:"用属性测试与突变测试加固 LifeOS 的测试体系：fast-check 属性测试、Stryker 突变测试等。"},
+
+{cat:"think",name:"FirstPrinciples",cn:"第一性原理",desc:"马斯克式物理推理框架：把问题拆解到不可再分的基本事实，将每个要素归类为硬约束、软约束或假设。"},
+{cat:"think",name:"SystemsThinking",cn:"系统思考",desc:"复杂系统的结构化分析：冰山模型、因果回路图、系统原型匹配、Meadows 杠杆点与概念图。"},
+{cat:"think",name:"RootCauseAnalysis",cn:"根因分析",desc:"结构化事故调查：五问法、鱼骨图、免责复盘、故障树、Kepner-Tregoe 与 FMEA——把故障追到系统性根因而非追责个人。"},
+{cat:"think",name:"IterativeDepth",cn:"多镜头深潜",desc:"对同一问题做 2-8 轮顺序遍历，每轮换一个科学透镜，逼出单轮分析看不见的隐藏需求与边界情况。"},
+{cat:"think",name:"ApertureOscillation",cn:"光圈振荡",desc:"三遍「变焦」分析：问题保持不变，先窄焦战术、再广角战略、最后综合——暴露设计张力并给出范围建议。"},
+{cat:"think",name:"BiasCheck",cn:"偏见审查",desc:"对任意 URL、文件或文本做三层偏见分析：自动抓取内容及其引用研究，审计数据层偏差、信源利益冲突与新闻加工偏见。"},
+{cat:"think",name:"BitterPillEngineering",cn:"苦药丸工程",desc:"用「更聪明的模型是否会让这条规则变多余」的核心测试审计任意 AI 指令集，对每条规则跑五问，砍掉过度提示。"},
+{cat:"think",name:"Council",cn:"议会辩论",desc:"多智能体协作辩论：成员是按主题简报过的定制智能体，跑三轮辩论，输出逐轮可见、有真实思想摩擦的完整记录。"},
+
+{cat:"adv",name:"RedTeam",cn:"红队攻防",desc:"对抗性分析：并行专家智能体压力测试想法、战略与计划——拆成原子主张、逐一攻击，再钢人化并给出反论证。"},
+{cat:"adv",name:"ThreatModel",cn:"个人威胁建模",desc:"面向自有资产的防御性威胁建模与风险管理：绘制敏感数据在资产图谱中的分布，推演失陷场景（某资产被黑会暴露什么）。"},
+{cat:"adv",name:"WorldThreatModel",cn:"世界推演",desc:"持久化世界模型 harness：把想法、战略与投资对着 11 个时间地平线（6 个月到 50 年）做地缘、科技等维度的深度压力测试。"},
+
+{cat:"research",name:"Research",cn:"多智能体研究",desc:"多智能体网络研究：强制 URL 核验、置信度标注输出、四档深度模式（快查到深度调查）。"},
+{cat:"research",name:"ArXiv",cn:"论文检索",desc:"按主题、分类或论文 ID 检索 arXiv 学术论文，附 AlphaXiv 增强的 AI 综述；走 arXiv Atom API，覆盖 cs.AI/LG/CL/CR/MA 等。"},
+{cat:"research",name:"ExtractWisdom",cn:"智慧提取",desc:"内容自适应的智慧提取：先通读内容、检测其中出现的智慧域，再围绕它们定制章节，五档深度可调。"},
+{cat:"research",name:"Fabric",cn:"Fabric 模式库",desc:"原生执行 240+ 个专业提示词模式，横跨提取、摘要、分析、创作、改进、安全与评级——如 extract_wisdom、create_threat_model。"},
+{cat:"research",name:"PrivateInvestigator",cn:"合规寻人",desc:"合乎伦理的寻人与身份核验：并行研究智能体横跨人员搜索站、社交媒体、公共记录与电话/邮箱/图像/用户名反查。"},
+{cat:"research",name:"LocalIntelligence",cn:"城市情报",desc:"面向任意美国城市的公民情报聚合器：施工许可、犯罪、新开业、公职人员、立法、选举与逮捕的每日本地摘要。"},
+{cat:"research",name:"USMetrics",cn:"美国经济指标",desc:"从五个政府 API（FRED、EIA、财政部、BLS、人口普查局）分析并更新 68 项美国经济社会指标，覆盖 GDP、通胀、就业、住房等 10 类。"},
+{cat:"research",name:"DetectAI",cn:"AI 文本检测",desc:"双路检测 AI 生成文本：对照已知 AI 写作模式目录做启发式审计 + Pangram API 的实证检测评分。"},
+{cat:"research",name:"Aphorisms",cn:"格言库",desc:"可增删改查的精选格言集：按作者、主题、语境与用法组织，支持内容匹配、主题检索与思想家研究，避免重复引用。"},
+
+{cat:"create",name:"WriteStory",cn:"故事写作",desc:"帮写作者搭建他们本就想讲的故事：从作者自己的素材出发，跨七种叙事结构填充结构、隐伤、主题与文笔。"},
+{cat:"create",name:"BeCreative",cn:"发散创意",desc:"用 Verbalized Sampling + 扩展思考做发散式创意与语料扩充：单次生成多个内部差异化候选并浮出最强者。"},
+{cat:"create",name:"Prompting",cn:"元提示库",desc:"元提示标准库：经 Standards、Handlebars 模板与工具编程化地生成、优化与组合提示词——产出永远是一个可直接使用的提示词。"},
+{cat:"create",name:"Art",cn:"视觉创作",desc:"20+ 种静态视觉产出：图解、mermaid、信息图、D3 看板、漫画、图标、壁纸——默认走 Nano Banana Pro，另支持 Flux。"},
+{cat:"create",name:"Sales",cn:"销售包装",desc:"把产品文档转化为销售就绪包：经叙事弧线流水线产出故事化讲解、炭笔速写风配图与谈话要点。"},
+{cat:"create",name:"Remotion",cn:"程序化视频",desc:"用 React + Remotion 做程序化视频：composition、sequence 与 useCurrentFrame() 驱动的动效图形，渲染为 MP4。"},
+{cat:"create",name:"AudioEditor",cn:"AI 音频剪辑",desc:"AI 音频剪辑流水线：Whisper 逐词转写 → Claude 分段分类（保留/口头语/口误/结巴/静默）→ ffmpeg 40ms 交叉淡化无痕剪辑。"},
+
+{cat:"web",name:"Webdesign",cn:"网页设计",desc:"三条路径设计并集成 Web 界面：DirectDesign 按 Anthropic 前端设计哲学内联写设计（默认主力），另有原生 /design 等路径。"},
+{cat:"web",name:"HTML",cn:"会话渲染",desc:"把当前会话的产出（分析、研究、红队、报告、计划）经确定性渲染器输出为设计精良的自包含 HTML 工件。"},
+{cat:"web",name:"Tldraw",cn:"画布绘图",desc:"确定性读写 tldraw .tldr 画布文件：直接向画布绘制手绘风图解——方框、箭头、便签、框架与文本。"},
+{cat:"web",name:"Interceptor",cn:"真实浏览器操控",desc:"从浏览器内部驱动真实 Chrome/Brave + macOS Computer Use：零 CDP 指纹、真实会话；部署视觉验证的强制工具。"},
+{cat:"web",name:"Apify",cn:"社交平台抓取",desc:"通过 Apify actors 抓取社交、商业与电商数据——Instagram、LinkedIn、TikTok、YouTube、Facebook、Google Maps、Amazon 及网页爬取。"},
+{cat:"web",name:"BrightData",cn:"四级递进抓取",desc:"四级递进式网页抓取：WebFetch → curl → Interceptor → Bright Data 代理，自动升级以对抗 bot 检测与验证码，支持单页与多页爬取。"},
+
+{cat:"dev",name:"CreateCLI",cn:"CLI 生成器",desc:"按三级模板体系（手写解析 / Commander.js / oclif）生成生产级 TypeScript CLI，附完整实现、文档、package.json 与严格配置。"},
+{cat:"dev",name:"CMUX",cn:"智能体驾驶舱",desc:"驱动 cmux 作为智能体驾驶舱：启动、赛马与监控可见的智能体团队，三层编排（仅限 Mac）。"}
+];
+
+const railList=document.getElementById("rail-list"),catalogue=document.getElementById("catalogue"),
+      readout=document.getElementById("readout"),searchEl=document.getElementById("search");
+let activeCat="all";
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function catCount(id){return ROWS.filter(d=>d.cat===id).length;}
+
+document.getElementById("copy").addEventListener("click",function(){
+  const btn=this;
+  navigator.clipboard.writeText(document.getElementById("cmd").textContent).then(()=>{
+    btn.textContent="已复制";setTimeout(()=>btn.textContent="复制",1400);
+  }).catch(()=>{btn.textContent="请手动复制";setTimeout(()=>btn.textContent="复制",1800);});
+});
+
+function buildRail(){
+  let html=`<li data-cat="all" class="${activeCat==="all"?"active":""}" tabindex="0"><span class="cname">全部</span><span class="ccount">${ROWS.length}</span></li>`;
+  CATS.forEach(c=>{const n=catCount(c.id);if(!n)return;
+    html+=`<li data-cat="${c.id}" class="${activeCat===c.id?"active":""}" tabindex="0"><span class="cname">${esc(c.cn)}</span><span class="ccount">${n}</span></li>`;});
+  railList.innerHTML=html;
+  railList.querySelectorAll("li").forEach(li=>{
+    const set=()=>{activeCat=li.dataset.cat;buildRail();render();catalogue.scrollIntoView({behavior:"smooth",block:"start"});};
+    li.addEventListener("click",set);
+    li.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();set();}});
+  });
+}
+function matches(d,q){
+  if(!q) return true;
+  const c=CATS.find(x=>x.id===d.cat);
+  const hay=(d.name+" "+d.cn+" "+d.desc+" "+(c?c.cn+" "+c.en:"")).toLowerCase();
+  return q.split(/\s+/).every(t=>hay.includes(t));
+}
+function render(){
+  const q=searchEl.value.trim().toLowerCase();
+  const cats=activeCat==="all"?CATS.map(c=>c.id):[activeCat];
+  let num=0,shown=0,html="";
+  cats.forEach(cid=>{
+    const c=CATS.find(x=>x.id===cid);
+    const items=ROWS.filter(d=>d.cat===cid && matches(d,q));
+    if(!items.length)return;
+    html+=`<section class="cat-block"><header class="cat-head"><h2>${esc(c.cn)}</h2><span class="cat-full">${esc(c.en)}</span><span class="cat-count">${items.length}</span></header>`;
+    items.forEach(d=>{
+      num++;shown++;
+      const url=B+d.name;
+      html+=`<a class="entry" href="${esc(url)}" target="_blank" rel="noopener" title="${esc(d.name)}">
+        <span class="entry-num">${String(num).padStart(2,"0")}</span>
+        <span class="entry-main">
+          <span class="entry-head"><h3 class="entry-title">${esc(d.cn)}</h3><span class="entry-en">${esc(d.name)}</span></span>
+          <p class="entry-desc">${esc(d.desc)}</p>
+        </span>
+        <span class="entry-go">源码 ↗</span>
+      </a>`;
+    });
+    html+=`</section>`;
+  });
+  if(!shown) html=`<div class="empty"><h3>没有匹配的条目</h3><p>换个关键词或分类试试</p></div>`;
+  catalogue.innerHTML=html;
+  catalogue.classList.remove("fade-in");void catalogue.offsetWidth;catalogue.classList.add("fade-in");
+  readout.innerHTML=`共 <b>${shown}</b> / 全部 ${ROWS.length} 个 skill`;
+}
+searchEl.addEventListener("input",render);
+buildRail();render();
+</script>
+</body>
+</html>
