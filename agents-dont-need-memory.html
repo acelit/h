@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能体不需要记忆，它们需要的是文档</title>
+</head>
+<body style="margin:0;background:#f2f2f2;padding:24px 0 48px;-webkit-font-smoothing:antialiased;">
+<section style="max-width:677px;margin:0 auto;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;color:#374151;line-height:1.75;letter-spacing:0.5px;overflow-x:hidden;">
+
+  <!-- 编者按 -->
+  <section style="margin:10px 10px 24px;background:#FAFAF8;border-left:4px solid #DC2626;border-radius:0 8px 8px 0;padding:16px 18px;">
+    <p style="margin:0 0 8px;">
+      <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:11px;font-weight:700;padding:2px 10px;border-radius:4px;letter-spacing:1px;"><span leaf="">编者按</span></span>
+    </p>
+    <p style="font-size:14px;color:#4B5563;margin:0;line-height:1.85;text-align:justify;">
+      <span leaf="">10 月 3 日，工程师 Kevin Liao 发表《Agents don’t need memory, they need documentation》，很快冲上 Hacker News 热榜，因为它精准戳中了当下 agent 工程最尴尬的痛点。主流做法执着于给 agent 装「长期记忆」（向量库、记忆压缩、遗忘曲线），但 Liao 指出，这条路是在模仿人脑，却忽略了软件真正擅长的东西：</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">可版本化、可检索、可审计的文档</span></span>
+      <span leaf="">。与其让模型「记住」上次做了什么，不如让它像工程师维护文档一样，把决策、约束、接口契约显式写下来，下次直接读。文档是外化的、可 diff、可回溯的记忆，而模型的隐式记忆则是黑箱、易漂移、难调试。</span>
+    </p>
+    <p style="font-size:14px;color:#4B5563;margin:12px 0 0;line-height:1.85;text-align:justify;">
+      <span leaf="">这个观点在实践层面很有共鸣：Claude Code、Cursor 这类工具真正拉开差距的往往不是「记忆多强」，而是能否围绕 README、AGENTS.md、issue 与 commit history 组织上下文。往深一层，它其实是在提醒整个 agent 行业：不要把「智能」浪漫化，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">先把「工程可维护性」做扎实</span></span>
+      <span leaf="">——会写、会读、会更新文档的 agent，比会「回忆」的 agent 更可靠。</span>
+    </p>
+  </section>
+
+  <!-- 封面图 -->
+  <section style="margin:0 10px 24px;background:#FFF;border-radius:12px;padding:6px;border:1px solid #E5E7EB;box-shadow:0 4px 12px -2px rgba(0,0,0,0.08);">
+    <section style="margin:0;border-radius:8px;overflow:hidden;">
+      <span leaf=""><img src="https://acelit.github.io/h/agents-docs/hero.jpg" style="max-width:100%;height:auto;display:block;margin:0 auto;"></span>
+    </section>
+  </section>
+
+  <!-- 引言卡 -->
+  <section style="margin:10px 10px 32px;background:#ffffff;border-radius:12px;box-shadow:0 4px 24px -4px rgba(220,38,38,0.15);padding:28px 24px 22px;overflow:hidden;">
+    <p style="font-size:42px;color:#DC2626;font-weight:900;margin:0;line-height:0.6;">
+      <span leaf="">“</span>
+    </p>
+    <p style="font-size:16px;font-weight:800;color:#1C1917;margin:12px 0 8px;line-height:1.75;padding-left:4px;">
+      <span leaf="">让智能体去</span>
+      <span style="background:#DC2626;color:#FFFFFF;padding:2px 8px;border-radius:4px;"><span leaf="">记住过去</span></span>
+      <span leaf="">，或许从一开始就是个伪命题——真正该做的，是让它学会</span>
+      <span style="background:#DC2626;color:#FFFFFF;padding:2px 8px;border-radius:4px;"><span leaf="">读文档、写文档</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="text-align:right;font-size:12px;color:#9CA3AF;margin:8px 0 0;letter-spacing:1px;">
+      <span leaf="">—— Kevin Liao</span>
+    </p>
+  </section>
+
+  <!-- 前言正文 -->
+  <section style="padding:0 10px;">
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:3px;font-weight:700;"><span leaf="">“记忆”插件</span></span>
+      <span leaf="">会分析你的对话记录，生成上千条彼此孤立的片段，把它们塞进一个</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">向量数据库</span></span>
+      <span leaf="">。你每发出一个提示（prompt），它就附上相似度最高的五条片段；要是智能体仍然一头雾水（它多半会的），还得自己去手动搜更多。</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">这就是他们所谓的“记忆”</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">可一旦你想清楚自己到底要解决什么问题，就会发现这东西用起来很别扭。你真正想要的，是让智能体</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">理解你的项目</span></span>
+      <span leaf="">——知道某个功能在哪里、当初为什么这么建、你们敲定了什么、你在乎什么。可换来的却是一场</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">RAG 片段抽奖</span></span>
+      <span leaf="">：每个提示都注入一批，祈祷碰巧有对的那几条浮上来。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">即便它真的管用，智能体依然没有理解你的项目。整个“记忆插件”生态，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">从一开始就在解决一个错误的问题</span></span>
+      <span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 居中金句（全文点题） -->
+  <section style="padding:0 10px;">
+    <p style="font-size:15px;margin:8px 0 28px;text-align:center;color:#DC2626;font-weight:700;letter-spacing:1px;border-top:1px solid #FEE2E2;border-bottom:1px solid #FEE2E2;padding:14px 10px;">
+      <span leaf="">智能体不需要记忆，它们需要的是文档。</span>
+    </p>
+  </section>
+
+  <!-- 第一章 -->
+  <section style="margin-top:16px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">01</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">RAG</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">说到底，都只是 RAG</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">市面上的每一款记忆插件，运作方式都</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">一模一样</span></span>
+      <span leaf="">：</span>
+    </p>
+
+    <section style="margin-bottom:24px;">
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#DC2626;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">1</span></span>
+        <p style="font-size:15px;color:#374151;margin:0;line-height:1.8;flex:1;"><span leaf="">翻一遍会话记录（transcript）</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#DC2626;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">2</span></span>
+        <p style="font-size:15px;color:#374151;margin:0;line-height:1.8;flex:1;"><span leaf="">生成一条条“记忆”片段</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#DC2626;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">3</span></span>
+        <p style="font-size:15px;color:#374151;margin:0;line-height:1.8;flex:1;"><span leaf="">插入一个 RAG 数据库</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#DC2626;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">4</span></span>
+        <p style="font-size:15px;color:#374151;margin:0;line-height:1.8;flex:1;"><span leaf="">每次提示时，检索出 Top 5 并注入</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#DC2626;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">5</span></span>
+        <p style="font-size:15px;color:#374151;margin:0;line-height:1.8;flex:1;"><span leaf="">还不够用？那就给智能体一个工具，让它自己在 RAG 数据库里搜</span></p>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">这就是全部的架构。有些工具花样更多：有的让智能体逐字检索过往的会话记录；有的搞出某种</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">多层级记忆系统</span></span>
+      <span leaf="">，把记忆分成长期和短期；有的则塞进一大堆后台守护进程（daemon）来审阅、合并或去重记忆——那种在夜里重写记忆的“做梦者（Dreamers）”，还有持续的上下文压缩、重排序器（Reranker）等等，诸如此类。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">每个插件都试图加上新的、</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">疯狂消耗 token 的“功能”</span></span>
+      <span leaf="">，去修补底下那套同样有缺陷的架构。也正因如此，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">它们没有一个能可靠地工作</span></span>
+      <span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 第二章 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">02</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">RECALL</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">“靠回忆”的问题</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">所有这些记忆插件，都困在几乎相同的一堆问题里。</span>
+    </p>
+
+    <section style="margin-bottom:14px;">
+      <p style="margin:0 0 6px;">
+        <span style="display:inline-block;font-size:14px;font-weight:700;color:#991B1B;background:#FEE2E2;padding:3px 10px;border-radius:999px;"><span style="display:inline-block;width:6px;height:6px;background:#DC2626;border-radius:50%;margin-right:5px;vertical-align:middle;"><span leaf=""><br></span></span><span leaf="">记忆靠相似度浮现</span></span>
+      </p>
+      <p style="font-size:14px;color:#4B5563;margin:0 0 16px;line-height:1.7;text-align:justify;">
+        <span leaf="">相似度检索衡量的只是两条片段在嵌入空间里离得多近，仅此而已。你无法判断</span>
+        <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">哪条正确、哪条当前有效、又有什么被漏掉</span></span>
+        <span leaf="">。</span>
+      </p>
+    </section>
+    <section style="margin-bottom:14px;">
+      <p style="margin:0 0 6px;">
+        <span style="display:inline-block;font-size:14px;font-weight:700;color:#991B1B;background:#FEE2E2;padding:3px 10px;border-radius:999px;"><span style="display:inline-block;width:6px;height:6px;background:#DC2626;border-radius:50%;margin-right:5px;vertical-align:middle;"><span leaf=""><br></span></span><span leaf="">记忆存储时脱离上下文</span></span>
+      </p>
+      <p style="font-size:14px;color:#4B5563;margin:0 0 16px;line-height:1.7;text-align:justify;">
+        <span leaf="">一个 RAG 片段装得下的东西有限，于是你丢掉了其余的一切：</span>
+        <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">上下文、动机、经验教训、运行环境</span></span>
+        <span leaf="">。</span>
+      </p>
+    </section>
+    <section style="margin-bottom:14px;">
+      <p style="margin:0 0 6px;">
+        <span style="display:inline-block;font-size:14px;font-weight:700;color:#991B1B;background:#FEE2E2;padding:3px 10px;border-radius:999px;"><span style="display:inline-block;width:6px;height:6px;background:#DC2626;border-radius:50%;margin-right:5px;vertical-align:middle;"><span leaf=""><br></span></span><span leaf="">把过去当作事实</span></span>
+      </p>
+      <p style="font-size:14px;color:#4B5563;margin:0 0 16px;line-height:1.7;text-align:justify;">
+        <span leaf="">这些插件都依赖“回忆”，可</span>
+        <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">代码库每天都在变</span></span>
+        <span leaf="">。那么关于身份认证（authentication）的那 500 条片段，究竟还有多少是准确的？</span>
+      </p>
+    </section>
+    <section style="margin-bottom:14px;">
+      <p style="margin:0 0 6px;">
+        <span style="display:inline-block;font-size:14px;font-weight:700;color:#991B1B;background:#FEE2E2;padding:3px 10px;border-radius:999px;"><span style="display:inline-block;width:6px;height:6px;background:#DC2626;border-radius:50%;margin-right:5px;vertical-align:middle;"><span leaf=""><br></span></span><span leaf="">智能体搜不出自己不知道的东西</span></span>
+      </p>
+      <p style="font-size:14px;color:#4B5563;margin:0 0 16px;line-height:1.7;text-align:justify;">
+        <span leaf="">就算你真的开了一个搜索工具，它又怎么知道该在什么时候用？</span>
+        <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">智能体并不知道自己不知道什么</span></span>
+        <span leaf="">。</span>
+      </p>
+    </section>
+    <section style="margin-bottom:14px;">
+      <p style="margin:0 0 6px;">
+        <span style="display:inline-block;font-size:14px;font-weight:700;color:#991B1B;background:#FEE2E2;padding:3px 10px;border-radius:999px;"><span style="display:inline-block;width:6px;height:6px;background:#DC2626;border-radius:50%;margin-right:5px;vertical-align:middle;"><span leaf=""><br></span></span><span leaf="">这个存储库无法审计</span></span>
+      </p>
+      <p style="font-size:14px;color:#4B5563;margin:0 0 16px;line-height:1.7;text-align:justify;">
+        <span leaf="">SQLite 里躺着上万个嵌入向量。到底存在哪些记忆？哪些已过期？哪些从来没被检索到过？</span>
+        <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">哪些是错的、却在暗中影响智能体的行为</span></span>
+        <span leaf="">？</span>
+      </p>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">而这些，只不过是记忆插件所面对、所尝试、却又修复失败的众多问题中的</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">五个</span></span>
+      <span leaf="">。因为它们都做出了同一个假设：</span>
+    </p>
+
+    <section style="background:#FEF2F2;border-radius:10px;padding:18px 20px;margin-bottom:24px;border:1px solid #FECACA;">
+      <p style="font-size:15px;color:#374151;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">智能体会遗忘：这就是问题所在。所以解决办法就是“记住”。要想记得更好，就应该</span>
+        <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">抓取更多、索引更好、检索更聪明</span></span>
+        <span leaf="">。</span>
+      </p>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">它们的全部论点，都围绕“抓取并回忆过去”打转。可别人处理知识根本不是这么干的。没人为了记住某个功能的约束条件，去把三年前的团队会议录像重看一遍。人们的做法是</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">把它写下来，然后使用这些记录</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">同样地，解决办法不是给智能体一个搜索工具，让它在上千万 token 的历史对话里翻找，去拼凑出当时到底发生了什么的一鳞半爪。</span>
+    </p>
+
+    <section style="background:#FEF2F2;border-radius:0 10px 10px 0;border-left:4px solid #DC2626;padding:18px 22px;margin-bottom:24px;">
+      <p style="font-size:16px;font-weight:800;color:#991B1B;margin:0;line-height:1.8;">
+        <span leaf="">“解决办法，是基于文档的记忆。”</span>
+      </p>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">如今，人们用 AI 以光速量产产品、功能和一堆注水的垃圾（slop），却连一行代码都不读、不懂。在这样的境况下很容易就能看出：文档为什么最终</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">沦落成了事后想起的东西</span></span>
+      <span leaf="">——尽管此时此刻，它比以往任何时候都更重要。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 第三章 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">03</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">DOCUMENTATION</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">用文档，替代回忆</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">人们早就知道智能体需要上下文，所以才发明了 </span>
+      <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:3px;font-weight:700;"><span leaf="">AGENTS.md</span></span>
+      <span leaf=""> 文件：好让智能体不至于两眼一抹黑地扎进代码库。它确实管用。但很多时候，这一个文件就是整个项目</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">仅有的文档</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">单个文件是不够的。智能体需要的是一整颗“大脑”——</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">一个结构化的工作区</span></span>
+      <span leaf="">，让它能在无人吩咐的情况下自行记录指令、规格、决策、调研、索引等各种内容：规定代码评审流程该怎么走的指令、详述与用户讨论结论的规格文档、可复用的对某个陌生库或 API 的调研笔记。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">当智能体干活时，它可以从这颗大脑里读取文件，获得</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">相关而完整的上下文</span></span>
+      <span leaf="">；干完活后，它再更新那些过时的内容，在必要处补上新的文档——而在此期间，全局图景始终留在上下文里。记忆也就从一副硬绑在智能体身上的 RAG 数据库，变成了一个</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">你能读、能更新、甚至能分享的工作区</span></span>
+      <span leaf="">。</span>
+    </p>
+
+    <p style="font-size:16px;font-weight:800;color:#1C1917;margin:28px 0 14px;padding-left:10px;border-left:3px solid #DC2626;line-height:1.4;">
+      <span leaf="">智能体循环的重构</span>
+    </p>
+
+    <section style="background:#FFF;border-radius:12px;padding:6px;border:1px solid #E5E7EB;box-shadow:0 4px 12px -2px rgba(0,0,0,0.08);margin-bottom:8px;">
+      <section style="margin:0;border-radius:8px;overflow:hidden;">
+        <span leaf=""><img src="https://acelit.github.io/h/agents-docs/loop.jpg" style="max-width:100%;height:auto;display:block;margin:0 auto;"></span>
+      </section>
+    </section>
+    <p style="font-size:12px;color:#9CA3AF;text-align:center;margin:0 0 24px;">
+      <span leaf="">— 从「提示 → 构建 → 遗忘」到「提示 → 查阅 → 构建 → 更新」</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 第四章 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">04</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">IN PRACTICE</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">拿到实战中检验</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">一年前，当我刚开始用 AI 编程时就意识到了这个问题。我想要一种让智能体</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">跨会话记住工作</span></span>
+      <span leaf="">的办法，于是先从创建一个 </span>
+      <span style="background:#F1F5F9;color:#DC2626;padding:1px 6px;border-radius:4px;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:14px;"><span leaf="">internal/</span></span>
+      <span leaf=""> 文件夹入手——我要求智能体把一切都写下来：规格、计划、索引；并给它定下规矩：动手干活前，务必先读取相应的文档和索引，干完活后再更新它们。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">这套起初相当粗糙的指令，慢慢演化成一套正式的系统，最终变成一个叫 </span>
+      <strong style="color:#DC2626;"><span leaf="">Operator Memory</span></strong>
+      <span leaf=""> 的插件。如今它已在我的每一个项目里被日常使用。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">Operator Memory 用上文那套模型，提供了“基于文档的记忆”。它给你的智能体配了一颗 </span>
+      <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:3px;font-weight:700;"><span leaf="">Markdown 大脑</span></span>
+      <span leaf="">，让它把重要知识持久化下来：指令、规格、调研、索引。开工前，智能体总是先到这颗大脑里</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">查阅相关文档</span></span>
+      <span leaf="">；收工后，智能体更新这颗大脑——重访那些陈旧的文档，在缺失之处补上新的文档。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">没有向量数据库，没有嵌入向量，没有摘要器、整理器、更新器、“做梦者”，也没有任何其他疯狂消耗 token 的后台守护进程，更没有</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">黑盒式的检索</span></span>
+      <span leaf="">。</span>
+    </p>
+
+    <section style="background:#FEF2F2;border-left:4px solid #DC2626;border-radius:0 8px 8px 0;padding:14px 20px;margin-bottom:24px;">
+      <p style="font-size:14px;font-weight:700;color:#991B1B;margin:0;line-height:1.8;">
+        <span leaf="">💡 用 Operator，一切都只是朴素的 Markdown 文档——你能读、能改、能提交（commit），还能分享给团队。</span>
+      </p>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">这套系统我已经用了一年多。想试试的话，它</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">免费且开源</span></span>
+      <span leaf="">，地址：</span>
+      <span style="color:#DC2626;word-break:break-all;"><span leaf="">https://github.com/aerovato/operator-memory</span></span>
+    </p>
+  </section>
+
+</section>
+
+</body>
+</html>
