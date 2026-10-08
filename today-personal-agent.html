@@ -1,0 +1,390 @@
+<section style="max-width:677px;margin:0 auto;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;color:#374151;line-height:1.75;letter-spacing:0.5px;overflow-x:hidden;">
+
+  <!-- 编者按（第一段） -->
+  <section style="margin:16px 10px 8px;background:#FEF2F2;border-radius:0 10px 10px 0;border-left:4px solid #DC2626;padding:18px 20px;">
+    <p style="margin:0 0 10px;">
+      <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:11px;font-weight:700;padding:2px 14px;border-radius:4px;letter-spacing:3px;"><span leaf="">编者按</span></span>
+    </p>
+    <p style="font-size:14px;color:#374151;margin:0;line-height:1.9;text-align:justify;">
+      <span leaf="">这是「乱翻书」第 277 期，主播潘乱在上海见到了 Today 团队的两位。Suki 是 founding PM，此前在 Monica 做产品；高策负责技术，再早联名创业做向量数据库一类的底层基础设施。Today 在 9 月 24 日正式上线，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">自称国内第一个真正落地的 Personal Agent</span></span>
+      <span leaf="">。这篇想留下的一条主线是：模型的智能已经不缺货，真正的难关卡在另外两处，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">它得先记住你，再决定什么时候开口</span></span>
+      <span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 引言卡 -->
+  <section style="margin:10px 10px 32px;background:#ffffff;border-radius:12px;box-shadow:0 4px 24px -4px rgba(220,38,38,0.15);padding:28px 24px 22px;overflow:hidden;">
+    <p style="font-size:42px;color:#DC2626;font-weight:900;margin:0;line-height:0.6;">
+      <span leaf="">"</span>
+    </p>
+    <p style="font-size:16px;font-weight:800;color:#1C1917;margin:12px 0 8px;line-height:1.75;padding-left:4px;">
+      <span style="background:#DC2626;color:#FFFFFF;padding:2px 8px;border-radius:4px;"><span leaf="">没有记忆的主动</span></span>
+      <span leaf="">，很容易变成骚扰；</span>
+      <span style="background:#DC2626;color:#FFFFFF;padding:2px 8px;border-radius:4px;"><span leaf="">只有记忆没有主动</span></span>
+      <span leaf="">，它又只是一本档案。</span>
+    </p>
+  </section>
+
+  <!-- 前言导读 -->
+  <section style="padding:0 10px 32px;">
+    <p style="font-size:14px;color:#9CA3AF;margin:0 0 14px;letter-spacing:1px;">
+      <span leaf="">📌 本文看点</span>
+    </p>
+    <section style="display:flex;justify-content:space-between;">
+      <section style="flex:1;background:#FEF2F2;border-radius:10px;padding:16px 12px;margin-right:8px;text-align:center;border:1px solid #FEE2E2;">
+        <p style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:12px;font-weight:800;padding:2px 10px;border-radius:4px;margin:0 0 8px;"><span leaf="">01</span></p>
+        <p style="font-size:13px;font-weight:700;color:#1C1917;margin:0;"><span leaf="">智能不缺，难在记忆与主动</span></p>
+      </section>
+      <section style="flex:1;background:#FEF2F2;border-radius:10px;padding:16px 12px;margin-right:8px;text-align:center;border:1px solid #FEE2E2;">
+        <p style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:12px;font-weight:800;padding:2px 10px;border-radius:4px;margin:0 0 8px;"><span leaf="">02</span></p>
+        <p style="font-size:13px;font-weight:700;color:#1C1917;margin:0;"><span leaf="">同一封邮件，读不出你的逻辑</span></p>
+      </section>
+      <section style="flex:1;background:#FEF2F2;border-radius:10px;padding:16px 12px;text-align:center;border:1px solid #FEE2E2;">
+        <p style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:12px;font-weight:800;padding:2px 10px;border-radius:4px;margin:0 0 8px;"><span leaf="">03</span></p>
+        <p style="font-size:13px;font-weight:700;color:#1C1917;margin:0;"><span leaf="">好的助理，先学会少说废话</span></p>
+      </section>
+    </section>
+  </section>
+
+  <!-- HERO 产品界面图 -->
+  <section style="padding:0 10px;margin-bottom:28px;">
+    <section style="background:#FFF;border-radius:12px;padding:6px;border:1px solid #E5E7EB;box-shadow:0 4px 12px -2px rgba(0,0,0,0.08);">
+      <section style="margin:0;border-radius:8px;overflow:hidden;">
+        <span leaf=""><img src="https://acelit.github.io/h/today-hero-ui.jpg" style="max-width:100%;height:auto;display:block;margin:0 auto;"></span>
+      </section>
+    </section>
+  </section>
+
+  <!-- 01 -->
+  <section style="margin-top:16px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">01</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">BOTTLENECK</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">模型都快到 AGI 了，那还难在哪</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">高策说自己对 AI 的态度在今年 2 月转了一次弯。他之前做底层，代码复杂、对智能要求高，一直不太信 AI 能写好。直到那个月，他手写的领域被模型干净利落地接了过去，“甚至我现在感觉模型已经到了 </span>
+      <strong style="color:#DC2626;"><span leaf="">AGI 的水平</span></strong>
+      <span leaf="">了”。他接下来信的是成本会照 scaling law 往下走，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">一年降十倍没问题</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">智能不缺，那缺什么。高策的判断是，大家在这个方向上都发现了执行里能带来 aha 的地方，可</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">眼下能办成的事还远远不够</span></span>
+      <span leaf="">。他甚至对模型能不能把聪明迁移过来存疑。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">他说他们自己的交互 bench 上，跑分最高的往往不是当下最好的那几个模型。工作场景之所以看着被验证了，是因为它能写代码、能做 PPT，“这其实还是 coding 本身”，一旦落到交互、落到 personal agent，“</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">模型的泛化性没有想象中那么强</span></span>
+      <span leaf="">”。Muse 那边也是同样的看法，所以要自己去训模型，把 browser use 和交互表达这块补上。</span>
+    </p>
+  </section>
+
+  <!-- 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 02 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">02</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">MEMORY</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">同样一封邮件，它读不出你看邮件的逻辑</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">聊到差异化，高策把它拆成两层，一层是 </span>
+      <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:3px;font-weight:700;"><span leaf="">memory 记忆</span></span>
+      <span leaf="">，一层是 </span>
+      <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:3px;font-weight:700;"><span leaf="">proactive 主动</span></span>
+      <span leaf="">。他强调，记忆这一层真正的功夫在于</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">把上下文用出价值</span></span>
+      <span leaf="">，光收得多不算本事。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">训练的时候大家都讲 GPU 利用率，他说在 harness 这一层，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">context 利用率同样重要</span></span>
+      <span leaf="">。光把上下文丢给模型、指望它泛化，通常不如人做得好。“我用邮件用了很多年，我其实是某种意义上的邮件小专家”，他看邮件的逻辑和模型训练出来的逻辑很不一样，人类的 rubrics 在这里是有价值的。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">他把这条讲成了一个具体观察。给你一份邮件，普遍的扫法是翻一遍收件箱、发件箱，猜你是什么人。可发出去的邮件往往比收件箱信息密度更高，因为你写出去的时候带着意图，会把自己交代清楚，比如要跟谁合作，先自我介绍一段，那一段里的信息远超过收件箱。</span>
+    </p>
+    <p style="font-size:15px;margin:0 0 24px;text-align:center;color:#DC2626;font-weight:700;letter-spacing:1px;border-top:1px solid #FEE2E2;border-bottom:1px solid #FEE2E2;padding:14px 10px;">
+      <span leaf="">收件箱是别人对你的意图，发件箱是你对别人的意图</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">Town 能把邮件处理得格外好，也是这个道理。一封邮件进来，要不要处理、怎么处理、草稿怎么写，它能在底下铺出五层 subagent 去跑。</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">同样的上下文，谁嚼得更深，谁才有壁垒</span></span>
+      <span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 03 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">03</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">PROACTIVE</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">主动比推荐系统还难，因为停留时长不能当目标</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">潘乱提了一句他一直在琢磨的矛盾：没有记忆的主动很容易变成骚扰，邮箱、短信、推送全都成了这个结果；只有记忆没有主动，它又只是一本档案，跟一年前那堆邮件没差别。怎么把这两样接起来。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">高策说难就难在</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">主动是个开放问题</span></span>
+      <span leaf="">。工作场景是封闭的，做个 PPT、做个调研，指向明确，好不好一眼能评。主动不一样，它吃的是每天进来的增量信息，本身充满不确定，目标又特别主观，跟推送的频率有关、跟质量有关，甚至跟你当天的心情有关。产品前期你也没法像 A/B 实验那样去证明它推得对还是不对。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">他还说 proactive 有点像 agent driven 的推荐系统，但比推荐系统复杂太多。推荐系统优化停留时长就够了，proactive 带着执行的属性，而且“</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">在你这个应用里面，停留时长一定不是优化目标</span></span>
+      <span leaf="">”。他不希望你在助理里待得越久越好，它是要替你解决问题的。真正难的是找一个肯为这产品负责的人，把他脑子里对信息架构的认知灌进系统设计里，这是工程和产品要一起 co-design 的事。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">Suki 补了一个比喻。她说主动像两种下属，一种纯执行，你交代一堆上下文、推一下动一下，现在很多产品号称的主动背后其实是个定时任务。另一种是他真的懂你要什么，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">自己排优先级</span></span>
+      <span leaf="">，反过来告诉你“你有这个目标的话我能帮你做什么”。她觉得做好主动有四件事，理解用户本身、从用户反馈里学习、把频次控制住、再就是时效性，去年在意的事放到今天可能一点都不重要。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">至于最省事的主动，高策说，“OPPO 什么大家都在不断给你发 push，谁不会啊”，做好它非常难。</span>
+    </p>
+  </section>
+
+  <!-- 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 04 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">04</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">PERSONA</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">怎么认识一个一直在变的人</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">人会换工作、结婚、生孩子，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">过去的偏好会过期</span></span>
+      <span leaf="">。高策说这块大家都还在摸索，先看看别人怎么做。Instinct 的记忆系统前阵子在推特上被人逆向了，热过一篇文章，它里面专门有个 timeline，记你每天、每周发生了什么；Town 用类似 consolidation 的方式每天总结一下，也保留 recent updates。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">他更看重“时间”这个维度，因为人的变化来自 delta，一部分来自聊天记录，一部分来自连进来的应用，未来还会来自物理世界。Today 现在有录音功能，录下来的往往就是你最近的状态。这里有个像时序处理的地方，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">发生的时间和被记下来的时间都重要</span></span>
+      <span leaf="">，他举了个例子，九月在飞书上写下“我今年 2 月公司没了”，事情在 2 月发生、9 月被记录，两个时刻都得留。人和人的关系又天生是一张图，跟 timeline 那种时序数据不是一种结构，怎么把这些融合进记忆再让 agent 召回，他说这是个很难、还在很早期的问题。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">难还难在，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">行为不等于偏好</span></span>
+      <span leaf="">。他现在邮箱里积了四千多封未读邮件，不做任何设计的话，系统会梳理出一大堆它以为你在意的主题，可那些你多半早就不关注了。为什么不读，要么是太多顾不过来，要么它本来就不重要。他反问了一句：“我未读邮件，你心里没数吗。”</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">健康是 </span>
+      <strong style="color:#DC2626;"><span leaf="">Today</span></strong>
+      <span leaf=""> 第一个去优化的场景，这里冒出一个具体的坑，叫</span>
+      <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:3px;font-weight:700;"><span leaf="">身份识别</span></span>
+      <span leaf="">。潘乱替普通用户发问：我跟它说小孩发烧了怎么办、父母血压高了怎么办、我太胖了怎么办，我都没说是谁，它怎么分清这件事属于我、孩子还是父母。高策说这也是很多 bad case 的来源，现在大家的做法都还原始，靠记忆召回去碰，没做专门处理，理想情况下它得先在记忆里找到生病的那个 entity 是谁、对应的过往是什么。</span>
+    </p>
+  </section>
+
+  <!-- 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 05 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">05</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">LESS NOISE</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">好的个人助理，得先学会少说废话</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">模型都爱多说。高策说这是有道理的，任务 token 越多、他思考得越久，大概率完成率越高。可</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">个人助理这个场景正好相反</span></span>
+      <span leaf="">。他说，“你说话多，是提高了我的认知负担，你做完事给我一个结果，这个体验是最好的。”</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">他把这件事追到了训练目标上，拿小米开放的 RL 过程举例，数据配比里六到七成是 coding，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">chat 只占百分之三点五</span></span>
+      <span leaf="">。想让交互有废话少的体验，得有一个真把体验当回事的模型来做，海外有几家在探，但最终还得回到模型这一层。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">该开口之外的另一半，是能不能干脆把活干完，别来烦我。潘乱追问，AI 整理完这场会又生成八项待办，能不能顺手替我做了。高策说那一定是方向，等 token 便宜到一定程度，做错了我 declined 也没多少成本，前提是这个执行没有副作用。他说再往前一步，理想状态是执行的时候都不需要我 approve，因为</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">要我确认本身也是一种打扰</span></span>
+      <span leaf="">，就像 Codex 的 automatic mode，会学你历史上都批过什么命令。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">眼下绝大多数 personal agent 还停在信息获取这一层。他说用它问问最近有什么演唱会、哪些有票，它能做到，可那不是我真正关心的，“我对这个演唱会感兴趣，你直接给我买张票吧”。什么时候你可以自己办、什么时候必须我点头，这条线画清楚，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">提醒、准备、确认、执行这个闭环跑通</span></span>
+      <span leaf="">，才是 personal agent 往下一阶段走的标志。</span>
+    </p>
+    <section style="background:#FEF2F2;border-radius:0 10px 10px 0;border-left:4px solid #DC2626;padding:18px 22px;margin-bottom:24px;">
+      <p style="font-size:16px;font-weight:800;color:#991B1B;margin:0;line-height:1.8;">
+        <span leaf="">「personal AI 的对立面不是工作，是高委托成本。」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">这一代不用你先喂一大堆上下文，因为它已经进了你的生活、连了所有应用、认识你所有同事。高策给了个最不起眼的例子，他让 </span>
+      <strong style="color:#DC2626;"><span leaf="">Today</span></strong>
+      <span leaf=""> 帮忙约会，下午几点、约谁，它把日历全 book 好、邮件发出去，他一步不用做。过去他绝不会让 Codex 帮他约会。他的总结是，“是它的这一套记忆和主动性的设计机制，让它的委托成本，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">低于我完成这些小事的总成本</span></span>
+      <span leaf="">”，很多事才真的敢交出去。</span>
+    </p>
+  </section>
+
+  <!-- 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 06 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">06</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">MARKET</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">大厂还没认真下场，但它擅长的是另一件事</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">市场眼下还很小，也还没有 PMF。高策说大厂最擅长的，其实是“</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">高举高打，拿资源去烧</span></span>
+      <span leaf="">”，看见一个东西并且死磕它反倒不是它的长项，他听说千问和豆包年中看过这个方向，试了一阵很快放弃。创业公司要在这种竞争里活下来，靠的恰恰是</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">看见和坚持</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">这几家里他觉得真正有优势的是 Muse，主要它有钱。Muse 的架构是 agent in the sandbox，你不用它，那台虚拟电脑也在 24 小时跑着，成本压得很高，好处是服务单个用户的进程独立、不用背多租户复杂度，迭代反而快。Meta 愿意在这种不确定的方向上下注，罕见的是这次 Muse 发出来口碑很好。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">但他给创业公司指的路子是学 Town，卖订阅，从一个 connector 里那个具体的场景，就是 email，把它做深做透，付费意愿就起来了，像个工具类产品那样一步一步 scale。他自己的判断是，</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">这个领域短时间内被高估了，长时间又会被低估</span></span>
+      <span leaf="">，现在 Instinct 那点体量撑到百亿美金估值是很 hype 的阶段，长期会回到理性。</span>
+    </p>
+  </section>
+
+  <!-- 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:linear-gradient(to right,transparent,#FCA5A5,#DC2626,#FCA5A5,transparent);margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- ∞ 收尾 -->
+  <section style="margin-top:48px;margin-bottom:28px;padding:0 10px;">
+    <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #DC2626;">
+      <section style="display:flex;align-items:center;">
+        <span style="display:inline-block;background:#DC2626;color:#FFFFFF;font-size:18px;font-weight:900;padding:4px 14px;border-radius:6px;margin-right:14px;line-height:1.3;"><span leaf="">∞</span></span>
+        <section>
+          <p style="font-size:10px;color:#DC2626;font-weight:700;letter-spacing:3px;margin:0 0 2px;text-transform:uppercase;">
+            <span leaf="">THE END</span>
+          </p>
+          <h3 style="font-size:18px;font-weight:800;color:#1C1917;margin:0;letter-spacing:0.5px;">
+            <span leaf="">它想被记成的那句话</span>
+          </h3>
+        </section>
+      </section>
+    </section>
+
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">节目快结束，潘乱问他们希望用户用久了以后怎么描述 Today。Suki 说团队想过的 slogan 是 today is your day，她希望 Today 别再给人添一份 AI 焦虑，做一个</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">主动认识你、理解你的朋友</span></span>
+      <span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:20px;font-size:15px;line-height:1.8;text-align:justify;">
+      <span leaf="">高策说的是另一层意思。他希望将来被记住的是，世界上有这么一款 AI 产品，是</span>
+      <span style="border-bottom:2px solid #FECACA;font-weight:600;"><span leaf="">为了降低它对你注意力的干扰而存在</span></span>
+      <span leaf="">的，不是为了多推内容和消息而存在。用户提起它的时候说的是，这东西让我有更多时间去生活、去散步、去踢球，而不是工作效率又高了、能接更多活了。</span>
+    </p>
+
+    <!-- 小宇宙 277 分享卡（替代原出处声明） -->
+    <section style="padding:0;margin-top:28px;">
+      <section style="background:#FFF;border-radius:12px;padding:6px;border:1px solid #E5E7EB;box-shadow:0 4px 12px -2px rgba(0,0,0,0.08);">
+        <section style="margin:0;border-radius:8px;overflow:hidden;">
+          <span leaf=""><img src="https://acelit.github.io/h/today-xiaoyuzhou-277.jpg" style="max-width:100%;height:auto;display:block;margin:0 auto;"></span>
+        </section>
+      </section>
+    </section>
+  </section>
+
+  <!-- END -->
+  <section style="padding:0 10px;">
+    <section style="text-align:center;margin:0 0 8px;">
+      <section style="display:flex;align-items:center;justify-content:center;">
+        <span style="height:2px;width:60px;background:linear-gradient(to right,transparent,#DC2626);margin-right:12px;"><span leaf=""><br></span></span>
+        <span style="font-size:11px;color:#DC2626;letter-spacing:3px;font-weight:700;"><span leaf="">END</span></span>
+        <span style="height:2px;width:60px;background:linear-gradient(to left,transparent,#DC2626);margin-left:12px;"><span leaf=""><br></span></span>
+      </section>
+    </section>
+  </section>
+
+</section>
