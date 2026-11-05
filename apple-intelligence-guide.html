@@ -37,30 +37,12 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; overflow-x: clip; }
-body { color: var(--color-ink); background: var(--color-board); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
-button, a { -webkit-tap-highlight-color: var(--color-clear); }
-button { font: inherit; cursor: pointer; }
-button:focus-visible, a:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 5px; }
-button:disabled { opacity: .45; cursor: not-allowed; }
-button[aria-busy="true"] { opacity: .6; cursor: progress; }
-button[data-state="success"] { border-color: var(--color-green); color: var(--color-green); }
-button[data-state="error"] { border-color: var(--color-accent); color: var(--color-accent); }
-a { color: var(--color-accent); text-underline-offset: 4px; }
-a:hover { text-decoration-thickness: 2px; }
-a:active { opacity: .65; }
-button:active { transform: translateY(1px); }
+body { padding: 28px 0; color: var(--color-ink); background: var(--color-board); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { font-style: normal; min-width: 0; overflow-wrap: anywhere; }
 p, h1, h2, h3, figure { margin: 0; }
-.workspace-head { max-width: 1576px; margin: auto; padding: 32px 32px 24px; display: flex; justify-content: space-between; gap: 24px; align-items: end; }
-.work-title { font-family: var(--font-display); font-size: 30px; font-weight: 700; }
-.work-meta { font-size: 13px; color: var(--color-muted); margin-top: 8px; line-height: 1.7; }
-.controls { display: flex; flex-wrap: wrap; gap: 8px; }
-.control { background: var(--color-clear); border: 1px solid var(--color-muted); border-radius: 5px; padding: 10px 14px; color: var(--color-ink); font-size: 13px; white-space: nowrap; }
-.control:hover { background: var(--color-paper); }
-.control[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); border-color: var(--color-ink); }
-.deck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding: 0 32px; max-width: 1576px; margin: auto; }
+.deck { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; width: min(calc(100% - 32px), 768px); margin: auto; }
 .card-shell { position: relative; aspect-ratio: 3 / 4; min-width: 0; background: var(--color-paper); box-shadow: 0 5px 18px var(--color-shadow); }
-.card { width: 768px; height: 1024px; padding: 44px 52px 46px; position: relative; background: var(--color-paper); transform: scale(var(--scale, 1)); transform-origin: top left; isolation: isolate; }
+.card { width: 768px; height: 1024px; padding: 44px 52px 46px; position: absolute; top: 0; left: 0; background: var(--color-paper); transform: scale(var(--scale, 1)); transform-origin: top left; isolation: isolate; }
 .card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .19; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"); }
 .page-top { display: flex; justify-content: space-between; align-items: center; font-size: 17px; font-weight: 600; letter-spacing: 1px; padding-bottom: 16px; border-bottom: 1.5px solid var(--color-ink); }
 .page-top .number { font-family: var(--font-mono); font-size: 16px; color: var(--color-accent); font-weight: 500; letter-spacing: 0; }
@@ -140,42 +122,15 @@ p, h1, h2, h3, figure { margin: 0; }
 .role h3 { font-family: var(--font-display); font-size: 36px; font-weight: 700; }
 .role p { font-size: 25px; line-height: 1.7; }
 .end .scope { font-size: 22px; line-height: 1.7; border-left: 3px solid var(--color-green); padding: 0 0 0 18px; margin: 32px 0; }
-.caption-panel { max-width: 1000px; margin: 64px auto 48px; padding: 40px 48px; background: var(--color-paper); border: 1px solid var(--color-rule); }
-.caption-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--color-rule); padding-bottom: 20px; margin-bottom: 24px; }
-.caption-head h2 { font-family: var(--font-display); font-size: 30px; }
-.caption-panel h3 { font-size: 18px; margin: 24px 0 12px; }
-.caption-panel ol { padding-left: 24px; font-size: 17px; line-height: 2; }
-.caption-panel .copy { font-size: 17px; line-height: 1.9; }
-.caption-panel .copy p { margin-bottom: 16px; }
-.caption-panel blockquote { margin: 20px 0; padding-left: 20px; border-left: 3px solid var(--color-accent); font-family: var(--font-display); font-size: 25px; }
-.caption-panel .tags { font-size: 15px; line-height: 2; color: var(--color-green); overflow-wrap: anywhere; }
-.source-note { margin-top: 30px; border-top: 1px solid var(--color-rule); padding-top: 20px; font-size: 13px; line-height: 1.85; color: var(--color-muted); }
-.source-note a { display: inline-block; }
-.notice { max-width: 1576px; margin: 0 auto 24px; padding: 0 32px; color: var(--color-muted); font-size: 13px; line-height: 1.8; }
-.status { font-size: 13px; line-height: 1.7; color: var(--color-muted); margin-top: 12px; min-height: 22px; }
-body.single .deck { display: block; max-width: 832px; }
-body.single .card-shell { display: none; }
-body.single .card-shell.is-current { display: block; }
-.pager { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 24px; }
-.pager .control { min-width: 44px; padding: 10px; font-family: var(--font-mono); }
-[hidden] { display: none !important; }
-@media (max-width: 900px) {
-  .workspace-head { padding: 24px 20px 20px; align-items: start; flex-direction: column; gap: 16px; }
-  .work-title { font-size: 28px; }
-  .deck { grid-template-columns: minmax(0, 1fr); max-width: 808px; gap: 24px; padding: 0 20px; }
-  .notice { padding: 0 20px; }
-  .caption-panel { margin: 40px 20px 32px; padding: 24px; }
-  .caption-head { align-items: start; flex-direction: column; gap: 12px; }
-  .caption-head h2 { font-size: 27px; }
-  .caption-panel .copy, .caption-panel ol { font-size: 16px; }
-  body.single .deck { max-width: 808px; }
+@media (max-width: 768px) {
+  body { padding: 16px 0; }
+  .deck { gap: 16px; width: calc(100% - 16px); }
 }
 @media print {
   @page { size: 768px 1024px; margin: 0; }
-  html, body { background: var(--color-paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  .workspace-head, .notice, .pager, .caption-panel { display: none !important; }
-  .deck, body.single .deck { display: block; max-width: none; margin: 0; padding: 0; }
-  .card-shell, body.single .card-shell { display: block; width: 768px; height: 1024px; aspect-ratio: auto; box-shadow: none; break-after: page; page-break-after: always; }
+  html, body { padding: 0; background: var(--color-paper); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .deck { display: block; width: 768px; margin: 0; }
+  .card-shell { width: 768px; height: 1024px; aspect-ratio: auto; box-shadow: none; break-after: page; page-break-after: always; }
   .card-shell:last-child { break-after: auto; page-break-after: auto; }
   .card { transform: none; }
 }
@@ -185,20 +140,8 @@ body.single .card-shell.is-current { display: block; }
 </style>
 </head>
 <body>
-<header class="workspace-head">
-  <div>
-    <div class="work-title">苹果智能使用指南</div>
-    <p class="work-meta">六页图文笔记 · 3:4 竖版 · 每页 768 × 1024 · 文本可选取，配图已随文件内嵌</p>
-  </div>
-  <div class="controls" aria-label="预览方式">
-    <button class="control" id="all-view" aria-pressed="true">全部展开</button>
-    <button class="control" id="single-view" aria-pressed="false">逐页阅读</button>
-    <button class="control" id="print">打印 / 存 PDF</button>
-  </div>
-</header>
-<p class="notice">适用范围：中国大陆首批功能。测试版与正式版不同，实际可用情况以设备显示为准。</p>
 <main class="deck" aria-label="六页小红书图文笔记">
-  <section class="card-shell is-current" aria-label="第1页：封面">
+  <section class="card-shell" aria-label="第1页：封面">
     <article class="card cover">
       <div class="page-top"><span>苹果AI使用笔记</span><span class="number">01 / 06</span></div>
       <svg class="scribble" viewBox="0 0 80 70" aria-hidden="true"><path d="M39 7 L39 18 M16 16 L25 25 M64 14 L55 23 M7 37 L20 37 M61 36 L75 36 M27 49 Q37 36 46 49 M30 56 Q40 64 49 54"/></svg>
@@ -305,99 +248,13 @@ body.single .card-shell.is-current { display: block; }
     </article>
   </section>
 </main>
-<nav class="pager" aria-label="选择笔记页" hidden>
-  <button class="control" data-page="0" aria-pressed="true" aria-label="第1页">01</button>
-  <button class="control" data-page="1" aria-pressed="false" aria-label="第2页">02</button>
-  <button class="control" data-page="2" aria-pressed="false" aria-label="第3页">03</button>
-  <button class="control" data-page="3" aria-pressed="false" aria-label="第4页">04</button>
-  <button class="control" data-page="4" aria-pressed="false" aria-label="第5页">05</button>
-  <button class="control" data-page="5" aria-pressed="false" aria-label="第6页">06</button>
-</nav>
-<section class="caption-panel" aria-labelledby="caption-title">
-  <div class="caption-head"><h2 id="caption-title">配套小红书文案</h2><button class="control" id="copy-caption">复制推荐文案</button></div>
-  <h3>标题三选一</h3>
-  <ol>
-    <li><strong>苹果智能使用指南｜国行怎么开</strong>（推荐）</li>
-    <li>苹果AI来了，这几个入口先收藏</li>
-    <li>国行苹果AI，开关到底在哪？</li>
-  </ol>
-  <h3>正文</h3>
-  <div class="copy" id="caption-body">
-    <p>苹果AI来了，但开关到底藏在哪？📱</p>
-    <p>我把国行首批功能整理成了6张图：从开通到问答、写作、识图、修图，不用再到处找教程。</p>
-    <p>⚙️ <strong>先确认设备，再找开关</strong><br>不是所有iPhone都支持。测试版体验先完成Apple Developer登录，再进入「设置→通用→软件更新」，查看iOS 27.3 Beta；随后开启「Apple智能与Siri」，想体验更完整服务，再开启千问拓展并登录。</p>
-    <p>💬 <strong>问问题：长按侧边键</strong><br>唤醒Siri，说出需求；需要千问处理时，确认后继续。</p>
-    <p>✍️ <strong>写内容：从备忘录开始</strong><br>轻点空白处，找到Apple智能图标，选择校对、改写或创作。</p>
-    <p>🔍 <strong>识图、修图：各找一个入口</strong><br>视觉智能帮你查询和搜索；照片里进入「编辑→消除」，涂抹或圈画对象。</p>
-    <p>不是另装一个AI App，而是把AI放进日常操作里。苹果、千问、百度，各有分工。</p>
-    <p>⚠️ 测试版升级前先备份，实际可用情况以设备显示为准。</p>
-    <blockquote>这几个功能里，你最想先用哪一个？</blockquote>
-  </div>
-  <h3>互动收尾</h3>
-  <p class="copy" id="caption-closing">6张图建议收藏，再转给还在找开关的iPhone朋友。下次要用，直接翻这份指南。</p>
-  <h3>话题标签</h3>
-  <p class="tags" id="caption-tags">#苹果智能 #苹果智能使用指南 #国行苹果智能 #iPhone使用技巧 #Siri #千问 #手机修图 #AI写作 #AI智能体 #苹果手机 #实用教程 #科技数码</p>
-  <p class="status" id="copy-status" role="status" aria-live="polite"></p>
-  <footer class="source-note">
-    <p>卡片尺寸为 768 × 1024，统一使用「产品老A」品牌落款；页面可离线打开，支持全部展开、逐页阅读及打印六页卡片。</p>
-    <p>图片版权归各自权利人所有。版本与支持机型以实际设备显示为准。</p>
-  </footer>
-</section>
 <script>
 const shells = [...document.querySelectorAll('.card-shell')];
-const pager = document.querySelector('.pager');
-const allButton = document.getElementById('all-view');
-const singleButton = document.getElementById('single-view');
-let selectedPage = 0;
 function scaleCards() {
-  shells.forEach(shell => {
-    if (shell.clientWidth) shell.style.setProperty('--scale', shell.clientWidth / 768);
-  });
+  shells.forEach(shell => shell.style.setProperty('--scale', shell.clientWidth / 768));
 }
 const resizeObserver = new ResizeObserver(scaleCards);
 shells.forEach(shell => resizeObserver.observe(shell));
-function selectPage(index) {
-  selectedPage = index;
-  shells.forEach((shell, i) => shell.classList.toggle('is-current', i === index));
-  document.querySelectorAll('[data-page]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.page) === index)));
-  scaleCards();
-}
-function setView(single) {
-  document.body.classList.toggle('single', single);
-  pager.hidden = !single;
-  allButton.setAttribute('aria-pressed', String(!single));
-  singleButton.setAttribute('aria-pressed', String(single));
-  selectPage(selectedPage);
-}
-allButton.addEventListener('click', () => setView(false));
-singleButton.addEventListener('click', () => setView(true));
-document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => selectPage(Number(button.dataset.page))));
-document.getElementById('print').addEventListener('click', () => window.print());
-const copyButton = document.getElementById('copy-caption');
-copyButton.addEventListener('click', async () => {
-  const status = document.getElementById('copy-status');
-  const copy = ['苹果智能使用指南｜国行怎么开', document.getElementById('caption-body').innerText, document.getElementById('caption-closing').innerText, document.getElementById('caption-tags').innerText].join('\n\n');
-  copyButton.disabled = true;
-  copyButton.setAttribute('aria-busy', 'true');
-  try {
-    await navigator.clipboard.writeText(copy);
-    copyButton.dataset.state = 'success';
-    copyButton.textContent = '已复制';
-    status.textContent = '推荐标题、正文、互动收尾和标签已复制。';
-  } catch {
-    copyButton.dataset.state = 'error';
-    copyButton.textContent = '请手动复制';
-    status.textContent = '当前浏览器未开放剪贴板权限，请直接选取下方文案复制。';
-    const range = document.createRange();
-    range.selectNodeContents(document.getElementById('caption-body'));
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  } finally {
-    copyButton.disabled = false;
-    copyButton.setAttribute('aria-busy', 'false');
-  }
-});
 scaleCards();
 </script>
 </body>
